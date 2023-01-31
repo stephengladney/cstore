@@ -13,7 +13,7 @@ export function MenuItemContainer({
     <div
       className={`my-1 grid ${
         isDisabled ? "cursor-not-allowed" : "cursor-pointer"
-      } my-1 grid grid-cols-[1fr,3fr] rounded-lg bg-white p-4 hover:bg-gray-100 sm:border-b lg:my-5 lg:border lg:border-solid lg:border-gray-300 lg:odd:col-span-1 lg:even:col-span-1`}
+      } grid grid-cols-[1fr,3fr] rounded-lg bg-white p-3 hover:bg-slate-100 sm:border-b lg:border lg:border-solid lg:border-gray-300  lg:odd:col-span-1 lg:even:col-span-1`}
     >
       {children}
     </div>
@@ -28,7 +28,7 @@ export function MenuItemDescription({
     <div
       className={`${
         isDisabled ? "text-disabled" : ""
-      } py-2 font-poppins text-[14px]`}
+      } py-2 font-poppins text-[14px] text-gray-600`}
     >
       {children}
     </div>
@@ -36,7 +36,7 @@ export function MenuItemDescription({
 }
 
 export function MenuItemHeader({ children }: ReactComponents) {
-  return <div className="flex lg:flex-col lg:items-start">{children}</div>
+  return <div className="flex flex-row lg:items-start">{children}</div>
 }
 
 export function MenuItemPrimaryContainer({ children }: ReactComponents) {
@@ -44,7 +44,7 @@ export function MenuItemPrimaryContainer({ children }: ReactComponents) {
 }
 
 export function MenuItemSecondaryContainer({ children }: ReactComponents) {
-  return <div className="flex flex-col justify-center">{children}</div>
+  return <div className="flex flex-col justify-center px-4">{children}</div>
 }
 
 export function MenuItemName({
@@ -55,7 +55,7 @@ export function MenuItemName({
     <div
       className={`font-poppins font-bold ${
         isDisabled ? "text-disabled" : ""
-      } text-base`}
+      } text-base text-slate-900`}
     >
       {children}
     </div>
@@ -76,7 +76,11 @@ export function MenuItemPhoto({ src }: { src: string }) {
 }
 
 export function MenuItemPrice({ children }: ReactComponents) {
-  return <span className="bold text-md font-poppins text-base">{children}</span>
+  return (
+    <span className="text-md mt-1 font-poppins text-sm font-bold leading-4 text-gray-600">
+      {children}
+    </span>
+  )
 }
 
 export function MenuItemPriceContainer({ children }: ReactComponents) {

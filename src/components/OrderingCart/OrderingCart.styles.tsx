@@ -2,7 +2,7 @@ import type { ReactComponents } from "../../types/React"
 
 export function CartContainer({ children }: ReactComponents) {
   return (
-    <div className="flex hidden h-full w-96 flex-col border border-solid border-gray-300 px-1 pt-6 md:block">
+    <div className="flex hidden h-full w-[360px] flex-col border border-solid border-gray-300 px-1 pt-6 md:block">
       {children}
     </div>
   )

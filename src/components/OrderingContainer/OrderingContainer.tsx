@@ -21,7 +21,7 @@ export function OrderingContainer({}) {
 
   return (
     <>
-      <div className="grow lg:px-52">
+      <div className="flex grow justify-center">
         <OrderingMenu
           setSelectedItem={setSelectedItem}
           openModal={() => null}
