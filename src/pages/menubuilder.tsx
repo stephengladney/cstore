@@ -1,19 +1,30 @@
-import { type ReactNode, useState } from "react"
+import { type ReactNode, useState, useEffect } from "react"
 import { type NextPage } from "next"
 import { api } from "../utils/api"
-import { parseMenu } from "../lib/menu"
-import type { ApiMenu } from "../types/Menu"
+import { getMenuFromApiMenuItems } from "../lib/menu"
+import type { ApiMenu, Menu } from "../types/Menu"
 import type { ApiMenuCategory } from "../types/MenuCategory"
-import type { ApiMenuItem } from "../types/MenuItem"
+import type { MenuItem } from "../types/MenuItem"
 
-function getUiMenu(json: { [key: string]: ApiMenuItem[] }): ReactNode {
-  return Object.keys(json).map((category, i) => (
-    <div key={i}>
-      <h1 className="text-lg font-bold">{category}</h1>
-      {json[category]?.map((item: ApiMenuItem) => (
-        <div className="grid grid-cols-2" key={`menu-item-${item.id}`}>
-          <div className="col-span-1 pl-4">{item.itemName}</div>
-          <div className="col-span-1">${Number(item.itemPrice).toFixed(2)}</div>
+function getUiMenu(menu: Menu) {
+  const { categories } = menu
+  return categories.map((category, i) => (
+    <div key={i} className="mb-4 max-w-xs">
+      <h1 className="text-lg font-bold">{category.name}</h1>
+      {category.items?.map((item: MenuItem) => (
+        <div
+          className="m-1 grid cursor-pointer grid-cols-2 border border-solid p-2"
+          key={`menu-item-${item.id}`}
+        >
+          <div className="col-span-1 flex flex-col justify-center p-1">
+            {item.name}
+          </div>
+          <div className="col-span-1 pt-1 text-right">
+            $ {Number(item.price).toFixed(2)}
+            <button className="ml-4 rounded-full bg-red-600 py-1 px-2 text-xs text-white hover:bg-red-700">
+              X
+            </button>
+          </div>
         </div>
       ))}
     </div>
@@ -35,6 +46,16 @@ const MenuBuilder: NextPage = () => {
   const { data: categories } = api.category.getAll.useQuery()
   const { data: menu } = api.menu.get.useQuery({ id: 3 })
 
+  const clearInputs = () => {
+    setMenuName("")
+    setCategoryName("")
+    setCategoryMenuId(0)
+    setItemCategoryId(0)
+    setItemName("")
+    setItemPrice("")
+    setItemDescription("")
+  }
+
   return (
     <div className="grid grid-cols-2 p-8">
       <div>
@@ -49,9 +70,10 @@ const MenuBuilder: NextPage = () => {
             value={menuName}
           />
           <button
-            className="col-start-2 w-60 bg-red-600 p-2 text-white"
+            className="col-start-2 w-60 rounded-full bg-red-600 p-2 text-white hover:bg-red-700"
             onClick={() => {
               createMenu({ name: menuName })
+              clearInputs()
             }}
           >
             Create Menu
@@ -63,6 +85,7 @@ const MenuBuilder: NextPage = () => {
           <select
             className="w-60 border border-solid border-black py-1 px-2"
             onChange={(e) => setCategoryMenuId(Number(e.target.value))}
+            value={categoryMenuId}
           >
             <option value={0}>Select a menu...</option>
             {menus?.map((menu: ApiMenu) => (
@@ -79,9 +102,10 @@ const MenuBuilder: NextPage = () => {
             value={categoryName}
           />
           <button
-            className="col-start-2 w-60 bg-red-600 p-2 text-white"
+            className="col-start-2 w-60 rounded-full bg-red-600 p-2 text-white hover:bg-red-700"
             onClick={() => {
               createCategory({ menuId: categoryMenuId, name: categoryName })
+              clearInputs()
             }}
           >
             Create Category
@@ -93,6 +117,7 @@ const MenuBuilder: NextPage = () => {
           <select
             className="w-60 border border-solid border-black py-1 px-2"
             onChange={(e) => setItemCategoryId(Number(e.target.value))}
+            value={itemCategoryId}
           >
             <option value={0}>Select a category...</option>
             {categories?.map((category: ApiMenuCategory) => (
@@ -126,7 +151,7 @@ const MenuBuilder: NextPage = () => {
             value={itemDescription}
           />
           <button
-            className="col-start-2 w-60 bg-red-600 p-2 text-white"
+            className="hover:bg-red--700 col-start-2 w-60 rounded-full bg-red-600 p-2 text-white hover:bg-red-700"
             onClick={() => {
               createItem({
                 categoryId: itemCategoryId,
@@ -134,6 +159,7 @@ const MenuBuilder: NextPage = () => {
                 name: itemName,
                 description: itemDescription,
               })
+              clearInputs()
             }}
           >
             Create Item
@@ -144,7 +170,7 @@ const MenuBuilder: NextPage = () => {
         <h1 className="mt-4 mb-4 text-3xl font-bold">
           {menu && menu[0]?.menuName}
         </h1>
-        {menu && getUiMenu(parseMenu(menu))}
+        {menu && getUiMenu(getMenuFromApiMenuItems(menu))}
       </div>
     </div>
   )

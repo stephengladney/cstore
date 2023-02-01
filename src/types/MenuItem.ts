@@ -1,6 +1,7 @@
 import type { MenuOption } from "./MenuOption"
 
 export type MenuItem = {
+  id: number
   category: string
   description?: string
   imageUrl: string
@@ -12,6 +13,8 @@ export type MenuItem = {
 
 export type ApiMenuItem = {
   id: number
+  itemIsAvailable: boolean
+  itemImageUrl: string
   itemName: string
   menuName: string
   categoryName: string
