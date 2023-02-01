@@ -41,7 +41,10 @@ export function CheckoutButton() {
 
 export function EmptyStateMessage() {
   return (
-    <div style={{ fontFamily: "Inter, Avenir, Helvetica, Arial, sans-serif" }}>
+    <div
+      className="mb-20 flex h-full flex-col items-center justify-center text-gray-500"
+      style={{ fontFamily: "Inter, Avenir, Helvetica, Arial, sans-serif" }}
+    >
       {"You haven't ordered anything yet."}
     </div>
   )
