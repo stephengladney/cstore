@@ -40,7 +40,7 @@ export function HeaderRightCell({ children }: ReactComponents) {
 
 export function HeaderTitle({ children }: ReactComponents) {
   return (
-    <div className="font-poppins text-2xl font-bold text-zinc-100">
+    <div className="font-poppins text-lg font-bold tracking-wide text-zinc-100 lg:text-2xl">
       {children}
     </div>
   )

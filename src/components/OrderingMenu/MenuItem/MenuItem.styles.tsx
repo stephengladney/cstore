@@ -55,9 +55,9 @@ export function MenuItemName({
 }: ReactComponents & IsDisabled) {
   return (
     <div
-      className={`font-poppins font-bold ${
+      className={`font-poppins font-semibold ${
         isDisabled ? "text-disabled" : ""
-      } text-base text-slate-900`}
+      } text-base text-slate-800`}
     >
       {children}
     </div>
@@ -79,7 +79,7 @@ export function MenuItemPhoto({ src }: { src: string }) {
 
 export function MenuItemPrice({ children }: ReactComponents) {
   return (
-    <span className="text-md mt-1 font-poppins text-sm font-bold leading-4 text-gray-600">
+    <span className="text-md mt-1 font-poppins text-sm font-semibold leading-4 text-gray-600">
       {children}
     </span>
   )
