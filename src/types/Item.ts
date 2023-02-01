@@ -1,7 +1,4 @@
-export type Category = {
-  name: string
-  items: Item[]
-}
+import type { Option } from "./Option"
 
 export type Item = {
   category: string
@@ -13,8 +10,10 @@ export type Item = {
   price: number
 }
 
-export type Option = {
-  category: string
-  name: string
-  price: number
+export type ApiMenuItem = {
+  id: number
+  itemName: string
+  menuName: string
+  categoryName: string
+  itemPrice: number
 }

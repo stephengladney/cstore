@@ -125,3 +125,32 @@ export function getMenu(items: Item[]): Category[] {
 
   return result
 }
+interface ApiMenu {
+  id: number
+  name: string
+}
+
+interface ApiMenuCategory {
+  id: number
+  name: string
+  menuId: number
+}
+interface ApiMenuItem {
+  id: number
+  itemName: string
+  menuName: string
+  categoryName: string
+  itemPrice: number
+}
+
+export function parseMenu(json: ApiMenuItem[]) {
+  const result: { [key: string]: ApiMenuItem[] } = {}
+  json.forEach((item: ApiMenuItem) => {
+    if (result[item.categoryName]) {
+      result[item.categoryName].push(item)
+    } else {
+      result[item.categoryName] = [item]
+    }
+  })
+  return result
+}

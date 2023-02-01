@@ -1,4 +1,5 @@
-import type { Item, Option } from "./Item"
+import type { Item } from "./Item"
+import type { Option } from "./Option"
 
 export type Cart = {
   items: CartItem[]

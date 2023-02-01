@@ -48,6 +48,7 @@ model MenuItem {
     name        String
     category    MenuCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
     categoryId  Int
+    description String?
     imageUrl    String?
     isAvailable Boolean      @default(true)
     price       Decimal
