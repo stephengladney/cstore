@@ -1,7 +1,7 @@
 import { type Dispatch, Fragment, type SetStateAction } from "react"
 import { MenuCategory } from "./MenuCategory/MenuCategory"
 import { CategoryDivider, MenuContainer } from "./OrderingMenu.styles"
-import type { Category, Item } from "../../types/Item"
+import type { Category, Item } from "../../types/MenuItem"
 import { dummyItems, getMenu } from "../../lib/menu"
 
 interface MenuProps {

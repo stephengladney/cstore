@@ -1,15 +1,15 @@
-import type { Item } from "./Item"
-import type { Option } from "./Option"
+import type { MenuItem } from "./MenuItem"
+import type { MenuOption } from "./MenuOption"
 
 export type Cart = {
   items: CartItem[]
 }
 
-export type CartItem = Item & {
+export type CartItem = MenuItem & {
   instructions?: string
   quantity: number
 }
 
-export type CartItemOption = Option & {
+export type CartItemOption = MenuOption & {
   quantity: number
 }

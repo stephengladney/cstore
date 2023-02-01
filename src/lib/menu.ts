@@ -1,6 +1,7 @@
-import type { Category, Item } from "../types/Item"
+import type { ApiMenuItem, MenuItem } from "../types/MenuItem"
+import type { MenuCategory } from "../types/MenuCategory"
 
-export const dummyItems: Item[] = [
+export const dummyItems: MenuItem[] = [
   {
     category: "Drinks",
     name: "Coca-Cola",
@@ -108,9 +109,9 @@ export const dummyItems: Item[] = [
   },
 ]
 
-export function getMenu(items: Item[]): Category[] {
-  const categories: { [key: string]: Item[] } = {}
-  const result: Category[] = []
+export function getMenu(items: MenuItem[]): MenuCategory[] {
+  const categories: { [key: string]: MenuItem[] } = {}
+  const result: MenuCategory[] = []
   items.forEach((item) => {
     if (categories[item.category]) {
       categories[item.category]!.push(item)
@@ -125,29 +126,11 @@ export function getMenu(items: Item[]): Category[] {
 
   return result
 }
-interface ApiMenu {
-  id: number
-  name: string
-}
-
-interface ApiMenuCategory {
-  id: number
-  name: string
-  menuId: number
-}
-interface ApiMenuItem {
-  id: number
-  itemName: string
-  menuName: string
-  categoryName: string
-  itemPrice: number
-}
-
 export function parseMenu(json: ApiMenuItem[]) {
   const result: { [key: string]: ApiMenuItem[] } = {}
   json.forEach((item: ApiMenuItem) => {
     if (result[item.categoryName]) {
-      result[item.categoryName].push(item)
+      result[item.categoryName]!.push(item)
     } else {
       result[item.categoryName] = [item]
     }

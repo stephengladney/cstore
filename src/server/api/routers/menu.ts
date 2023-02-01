@@ -1,7 +1,7 @@
 import { z } from "zod"
 
-import { createTRPCRouter, publicProcedure, protectedProcedure } from "../trpc"
-import type { ApiMenuItem } from "../../../types/Item"
+import { createTRPCRouter, publicProcedure } from "../trpc"
+import type { ApiMenuItem } from "../../../types/MenuItem"
 
 export const menuRouter = createTRPCRouter({
   create: publicProcedure

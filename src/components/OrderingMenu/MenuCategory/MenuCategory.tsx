@@ -6,7 +6,7 @@ import {
   ItemsContainer,
 } from "./MenuCategory.styles"
 import { MenuItem } from "../MenuItem/MenuItem"
-import type { Item } from "../../../types/Item"
+import type { Item } from "../../../types/MenuItem"
 
 interface CategoryProps {
   items: Item[]

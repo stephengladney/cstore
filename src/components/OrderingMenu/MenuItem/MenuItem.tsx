@@ -1,6 +1,6 @@
 import { type Dispatch, type SetStateAction, useContext } from "react"
 import { cartContext } from "../../../contexts/cartContext"
-import type { Item } from "../../../types/Item"
+import type { Item } from "../../../types/MenuItem"
 import {
   MenuItemContainer,
   MenuItemDescription,

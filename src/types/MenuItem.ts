@@ -1,12 +1,12 @@
-import type { Option } from "./Option"
+import type { MenuOption } from "./MenuOption"
 
-export type Item = {
+export type MenuItem = {
   category: string
   description?: string
   imageUrl: string
   isAvailable: boolean
   name: string
-  options?: Option[]
+  options?: MenuOption[]
   price: number
 }
 

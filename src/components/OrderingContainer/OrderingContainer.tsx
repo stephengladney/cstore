@@ -7,7 +7,7 @@ import { useState } from "react"
 import { cartContext, CartProvider } from "../../contexts/cartContext"
 import type { Cart, CartItem } from "../../types/Cart"
 import { PopupActions } from "reactjs-popup/dist/types"
-import type { Item } from "../../types/Item"
+import type { Item } from "../../types/MenuItem"
 import { ReactComponents } from "../../types/React"
 import { OrderCart } from "../OrderCart/OrderCart"
 

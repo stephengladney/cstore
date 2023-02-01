@@ -3,8 +3,8 @@ import { type NextPage } from "next"
 import { api } from "../utils/api"
 import { parseMenu } from "../lib/menu"
 import type { ApiMenu } from "../types/Menu"
-import type { ApiMenuCategory } from "../types/Category"
-import type { ApiMenuItem } from "../types/Item"
+import type { ApiMenuCategory } from "../types/MenuCategory"
+import type { ApiMenuItem } from "../types/MenuItem"
 
 function getUiMenu(json: { [key: string]: ApiMenuItem[] }): ReactNode {
   return Object.keys(json).map((category, i) => (
