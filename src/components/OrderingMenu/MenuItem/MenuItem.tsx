@@ -1,4 +1,5 @@
-import type { Dispatch, SetStateAction } from "react"
+import { type Dispatch, type SetStateAction, useContext } from "react"
+import { cartContext } from "../../../contexts/cartContext"
 import type { Item } from "../../../types/Item"
 import {
   MenuItemContainer,
@@ -21,6 +22,7 @@ interface MenuItemProps {
 }
 
 export function MenuItem({ item, openModal, setSelectedItem }: MenuItemProps) {
+  const { dispatch } = useContext(cartContext)
   const selectItem = () => {
     setSelectedItem(item)
     openModal()
@@ -30,7 +32,9 @@ export function MenuItem({ item, openModal, setSelectedItem }: MenuItemProps) {
     <MenuItemContainer
       isDisabled={!item.isAvailable}
       onClick={() => {
-        if (item.isAvailable) selectItem()
+        if (item.isAvailable) {
+          dispatch({ type: "ADD_ITEM", payload: { ...item, quantity: 1 } })
+        }
       }}
     >
       <MenuItemPrimaryContainer>

@@ -25,6 +25,7 @@ export function OrderingMenu({ openModal, setSelectedItem }: MenuProps) {
           {i !== menu.length - 1 && <CategoryDivider />}
         </Fragment>
       ))}
+      <div style={{ minHeight: "100px" }} />
     </MenuContainer>
   )
 }

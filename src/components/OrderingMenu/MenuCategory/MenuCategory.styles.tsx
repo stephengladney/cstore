@@ -13,7 +13,7 @@ export function CategoryHeader({
 
 export function CategoryName({ children }: ReactComponents) {
   return (
-    <span className="pl-4 font-poppins text-xl font-bold uppercase text-teal-700">
+    <span className="pl-4 font-poppins text-[22px] font-bold uppercase text-teal-700">
       {children}
     </span>
   )

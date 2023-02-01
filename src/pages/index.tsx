@@ -10,7 +10,7 @@ import { Header } from "../components/Header/Header"
 import { Body } from "../components/Body/Body"
 import { OrderingMenu } from "../components/OrderingMenu/OrderingMenu"
 import { OrderingContainer } from "../components/OrderingContainer/OrderingContainer"
-import { CartContainer } from "../components/OrderingCart/OrderingCart.styles"
+import { CartContainer } from "../components/OrderCart/OrderCart.styles"
 import { api } from "../utils/api"
 
 const Home: NextPage = () => {
@@ -28,9 +28,8 @@ const Home: NextPage = () => {
         <div className="flex h-screen flex-col">
           <Header />
           <Body>
-            <OrderingContainer>
-              {/* <OrderingMenu openModal={() => {}} setSelectedItem /> */}
-            </OrderingContainer>
+            <OrderingContainer />
+            {/* <OrderingMenu openModal={() => {}} setSelectedItem /> */}
           </Body>
         </div>
       </CartProvider>

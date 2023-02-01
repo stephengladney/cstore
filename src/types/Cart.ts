@@ -5,6 +5,7 @@ export type Cart = {
 }
 
 export type CartItem = Item & {
+  instructions?: string
   quantity: number
 }
 

@@ -9,8 +9,7 @@ import type { Cart, CartItem } from "../../types/Cart"
 import { PopupActions } from "reactjs-popup/dist/types"
 import type { Item } from "../../types/Item"
 import { ReactComponents } from "../../types/React"
-import { OrderingCart } from "../OrderingCart/OrderingCart"
-import { CartContainer } from "../OrderingCart/OrderingCart.styles"
+import { OrderCart } from "../OrderCart/OrderCart"
 
 export function OrderingContainer({}) {
   const [selectedItem, setSelectedItem] = useState<Item | undefined>(undefined)
@@ -21,19 +20,19 @@ export function OrderingContainer({}) {
 
   return (
     <>
-      <div className="flex grow justify-center">
+      <div className="flex grow justify-center overflow-y-scroll pb-32">
         <OrderingMenu
           setSelectedItem={setSelectedItem}
           openModal={() => null}
         />
+
         {/* <OrderItemModal
           closeModal={closeModal}
           modalRef={modalRef}
           selectedItem={selectedItem}
         /> */}
       </div>
-      <CartContainer>x</CartContainer>
-      {/* <OrderCart cart={cartState} /> */}
+      <OrderCart cart={cartState} />
     </>
   )
 }

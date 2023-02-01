@@ -2,7 +2,7 @@ import type { ReactComponents } from "../../types/React"
 
 export function HeaderContainer({ children }: ReactComponents) {
   return (
-    <div className="flex w-full flex-row justify-center bg-[#2a6f8a] py-3.5 px-4 shadow-md lg:px-6">
+    <div className="flex w-full flex-row justify-center bg-valero py-3.5 px-4 shadow-md lg:px-6">
       {children}
     </div>
   )
@@ -18,7 +18,7 @@ export function MaxWidthContainer({ children }: ReactComponents) {
 
 export function HeaderLeftCell({ children }: ReactComponents) {
   return (
-    <div className="text-zinc-50 flex flex-row items-center justify-start">
+    <div className="flex flex-row items-center justify-start text-zinc-50">
       {children}
     </div>
   )
@@ -32,7 +32,7 @@ export function HeaderCenterCell({ children }: ReactComponents) {
 
 export function HeaderRightCell({ children }: ReactComponents) {
   return (
-    <div className="text-zinc-50 flex flex-row items-center justify-end lg:hidden">
+    <div className="flex flex-row items-center justify-end text-zinc-50 lg:hidden">
       {children}
     </div>
   )
@@ -40,13 +40,15 @@ export function HeaderRightCell({ children }: ReactComponents) {
 
 export function HeaderTitle({ children }: ReactComponents) {
   return (
-    <div className="text-white font-poppins text-lg font-bold">{children}</div>
+    <div className="font-poppins text-2xl font-bold text-zinc-100">
+      {children}
+    </div>
   )
 }
 
 export function HeaderSubTitle({ children }: ReactComponents) {
   return (
-    <div className="text-zinc-50 hidden pt-0.5 font-poppins text-base md:block">
+    <div className="hidden pt-0.5 font-poppins text-base text-zinc-200 md:block">
       {children}
     </div>
   )
@@ -54,7 +56,7 @@ export function HeaderSubTitle({ children }: ReactComponents) {
 
 export function CartBadge({ itemCount }: { itemCount: number }) {
   return (
-    <div className="bg-red-600 text-zinc-50 z-20 -ml-1 -mt-4 rounded-3xl font-poppins text-xs font-bold">
+    <div className="z-20 -ml-1 -mt-4 rounded-3xl bg-red-600 font-poppins text-xs font-bold text-zinc-50">
       {itemCount}
     </div>
   )

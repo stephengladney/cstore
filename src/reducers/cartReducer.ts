@@ -25,6 +25,7 @@ interface CardAction {
 export function reducer(state: CartState, action: CardAction): CartState {
   switch (action.type) {
     case ActionTypes.ADD_ITEM:
+      console.log("adding", action.payload)
       return {
         items: [...state.items, action.payload as CartItem],
       }
