@@ -1,4 +1,4 @@
-import { type Dispatch, Fragment, type SetStateAction } from "react"
+import { type Dispatch, Fragment, type SetStateAction, useEffect } from "react"
 import { MenuCategory } from "./MenuCategory/MenuCategory"
 import { CategoryDivider, MenuContainer } from "./OrderingMenu.styles"
 import { api } from "../../utils/api"

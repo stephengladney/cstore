@@ -2,7 +2,7 @@ import { z } from "zod"
 
 import { createTRPCRouter, publicProcedure } from "../trpc"
 import type { ApiMenuItem } from "../../../types/MenuItem"
-import { getMenuFromApiMenuItems, seedDatabase } from "../../../lib/menu"
+import { getMenuFromApiMenuItems } from "../../../lib/menu"
 
 export const menuRouter = createTRPCRouter({
   create: publicProcedure
@@ -18,7 +18,7 @@ export const menuRouter = createTRPCRouter({
     .input(z.object({ id: z.number() }))
     .query(async ({ input, ctx }) => {
       const rawItems = await ctx.prisma.$queryRaw`
-      SELECT "Menu".id as "menuId","MenuItem".id as "itemId","MenuItem"."isAvailable" as "isAvailable","MenuItem".price as "price","MenuItem"."imageUrl" as "imageUrl","MenuItem".name as "itemName","MenuItem".price as "price","Menu"."name" as "menuName","MenuCategory"."name" as "categoryName"
+      SELECT "Menu".id as "menuId","MenuItem".id as "itemId","MenuItem"."isAvailable" as "isAvailable","MenuItem".price as "price","MenuItem"."imageUrl" as "imageUrl","MenuItem".name as "itemName","MenuItem".price as "price","MenuItem"."description" as "description","Menu"."name" as "menuName","MenuCategory"."name" as "categoryName"
 FROM public."MenuCategory"
 INNER JOIN public."Menu"
 ON public."MenuCategory"."menuId" = public."Menu".id AND "MenuCategory"."menuId" = ${input.id}

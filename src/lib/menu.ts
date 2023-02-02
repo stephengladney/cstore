@@ -176,6 +176,7 @@ export function getMenuFromApiMenuItems(items: ApiMenuItem[]): Menu {
   const convertApiMenuItemToMenuItem = (item: ApiMenuItem): MenuItem => ({
     id: item.itemId,
     name: item.itemName,
+    description: item.description,
     category: item.categoryName,
     imageUrl: item.imageUrl,
     isAvailable: item.isAvailable,

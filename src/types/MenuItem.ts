@@ -16,6 +16,7 @@ export type ApiMenuItem = {
   isAvailable: boolean
   imageUrl: string
   itemName: string
+  description: string
   menuName: string
   categoryName: string
   price: number
