@@ -1,5 +1,5 @@
 import { type Dispatch, Fragment, type SetStateAction, useEffect } from "react"
-import { MenuCategory } from "./MenuCategory/MenuCategory"
+import { MenuCategoryComponent } from "./MenuCategory/MenuCategoryComponent"
 import { CategoryDivider, MenuContainer } from "./OrderingMenu.styles"
 import { api } from "../../utils/api"
 import type { MenuItem } from "../../types/MenuItem"
@@ -9,16 +9,15 @@ interface MenuProps {
   setSelectedItem: Dispatch<SetStateAction<MenuItem | undefined>>
 }
 
-export function OrderingMenu({ openModal, setSelectedItem }: MenuProps) {
+export function OrderingMenu({ setSelectedItem }: MenuProps) {
   const { data: menu } = api.menu.get.useQuery({ id: 1 })
   return (
     <MenuContainer>
       {menu?.categories.map((category, i) => (
         <Fragment key={`menu-category-${category.name}`}>
-          <MenuCategory
+          <MenuCategoryComponent
             items={category.items}
             name={category.name}
-            openModal={openModal}
             setSelectedItem={setSelectedItem}
           />
           {i !== menu.categories.length - 1 && <CategoryDivider />}
