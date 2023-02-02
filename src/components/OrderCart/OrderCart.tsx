@@ -13,10 +13,7 @@ import { CartPricing } from "./CartPricing/CartPricing"
 import { CartItem } from "./CartItem/CartItem"
 import type { Cart } from "../../types/Cart"
 import { api } from "../../utils/api"
-import {
-  getCheckoutPricingFromCart,
-  getEmailBodyFromCart,
-} from "../../lib/order"
+import { getCheckoutPricingFromCart } from "../../lib/order"
 
 export function OrderCart({ cart }: { cart: Cart }) {
   const { subtotal, tax, total } = getCheckoutPricingFromCart(cart)
