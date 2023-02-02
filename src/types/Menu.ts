@@ -6,5 +6,6 @@ export type ApiMenu = {
 }
 
 export type Menu = {
+  name: string
   categories: MenuCategory[]
 }

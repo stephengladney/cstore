@@ -12,11 +12,11 @@ export type MenuItem = {
 }
 
 export type ApiMenuItem = {
-  id: number
-  itemIsAvailable: boolean
-  itemImageUrl: string
+  itemId: number
+  isAvailable: boolean
+  imageUrl: string
   itemName: string
   menuName: string
   categoryName: string
-  itemPrice: number
+  price: number
 }

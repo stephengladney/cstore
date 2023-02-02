@@ -56,8 +56,8 @@ export function MenuItemName({
   return (
     <div
       className={`font-poppins font-semibold ${
-        isDisabled ? "text-disabled" : ""
-      } text-base text-slate-800`}
+        isDisabled ? "text-disabled text-slate-400" : " text-slate-800"
+      } text-base `}
     >
       {children}
     </div>
@@ -91,7 +91,7 @@ export function MenuItemPriceContainer({ children }: ReactComponents) {
 
 export function UnavailablePill() {
   return (
-    <div className="mx-1 rounded-3xl bg-gray-400 font-poppins text-xs">
+    <div className="mx-1 rounded-3xl bg-gray-300 px-2 py-1 font-poppins text-xs">
       Unavailable
     </div>
   )

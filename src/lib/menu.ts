@@ -1,6 +1,9 @@
 import type { ApiMenuItem, MenuItem } from "../types/MenuItem"
 import type { MenuCategory } from "../types/MenuCategory"
 import type { Menu } from "../types/Menu"
+import { PrismaClient } from "@prisma/client"
+
+const prisma = new PrismaClient()
 
 function getCategoryIdFromName(name: string): number {
   const ids: { [key: string]: number } = {
@@ -11,7 +14,22 @@ function getCategoryIdFromName(name: string): number {
   return ids[name] || 0
 }
 
-export function getMenuItemsFromCsv(text: string) {
+type DbMenuItem = {
+  name: string
+  categoryId: number
+  price: number
+  description: string
+  isAvailable: boolean
+  imageUrl: string
+}
+
+const csvText = `Coke,Drinks,2.00,,TRUE,a
+Diet Coke,Drinks,2.00,,TRUE,b
+Sprite,Drinks,2.00,,TRUE,c
+Lays,Chips,1.52,,TRUE,d
+Fritos,Chips,1.50,,FALSE,e`
+
+export function getMenuItemsFromCsv(text: string): DbMenuItem[] {
   const items: string[] = text.split("\n")
   return items.map((item) => {
     const itemProperties = item.split(",")
@@ -24,6 +42,22 @@ export function getMenuItemsFromCsv(text: string) {
       imageUrl: itemProperties[5] || "",
     }
   })
+}
+
+export async function seedItems(items: DbMenuItem[]) {
+  for (let i = 0; i < items.length; i++) {
+    try {
+      await prisma.menuItem.create({ data: items[i]! })
+    } catch (e) {
+      console.log("Unable to add item!", items[i])
+      break
+    }
+  }
+  await prisma.$disconnect()
+}
+
+export async function seedDatabase() {
+  await seedItems(getMenuItemsFromCsv(csvText))
 }
 
 export const dummyItems: Omit<MenuItem, "id">[] = [
@@ -134,20 +168,20 @@ export const dummyItems: Omit<MenuItem, "id">[] = [
   },
 ]
 
-export function convertApiMenuItemToMenuItem(item: ApiMenuItem): MenuItem {
-  return {
-    id: item.id,
-    name: item.itemName,
-    category: item.categoryName,
-    imageUrl: item.itemImageUrl,
-    isAvailable: item.itemIsAvailable,
-    price: item.itemPrice,
-  }
-}
-
 export function getMenuFromApiMenuItems(items: ApiMenuItem[]): Menu {
   const categories: { [key: string]: MenuItem[] } = {}
   const categoriesWithItems: MenuCategory[] = []
+  const name = items[0]?.menuName as string
+
+  const convertApiMenuItemToMenuItem = (item: ApiMenuItem): MenuItem => ({
+    id: item.itemId,
+    name: item.itemName,
+    category: item.categoryName,
+    imageUrl: item.imageUrl,
+    isAvailable: item.isAvailable,
+    price: item.price,
+  })
+
   items.forEach((item) => {
     if (categories[item.categoryName]) {
       categories[item.categoryName]!.push(convertApiMenuItemToMenuItem(item))
@@ -160,5 +194,5 @@ export function getMenuFromApiMenuItems(items: ApiMenuItem[]): Menu {
     categoriesWithItems.push({ name: category, items: categories[category]! })
   })
 
-  return { categories: categoriesWithItems }
+  return { name, categories: categoriesWithItems }
 }

@@ -1,7 +1,6 @@
-import { type ReactNode, useState, useEffect } from "react"
+import { useState } from "react"
 import { type NextPage } from "next"
 import { api } from "../utils/api"
-import { getMenuFromApiMenuItems } from "../lib/menu"
 import type { ApiMenu, Menu } from "../types/Menu"
 import type { ApiMenuCategory } from "../types/MenuCategory"
 import type { MenuItem } from "../types/MenuItem"
@@ -10,16 +9,16 @@ function getUiMenu(menu: Menu) {
   const { categories } = menu
   return categories.map((category, i) => (
     <div key={i} className="mb-4 max-w-xs">
-      <h1 className="text-lg font-bold">{category.name}</h1>
+      <h1 className="text-sm font-bold">{category.name}</h1>
       {category.items?.map((item: MenuItem) => (
         <div
           className="m-1 grid cursor-pointer grid-cols-2 border border-solid p-2"
           key={`menu-item-${item.id}`}
         >
-          <div className="col-span-1 flex flex-col justify-center p-1">
+          <div className="col-span-1 flex flex-col justify-center p-1 text-sm">
             {item.name}
           </div>
-          <div className="col-span-1 pt-1 text-right">
+          <div className="col-span-1 pt-1 text-right text-sm">
             $ {Number(item.price).toFixed(2)}
             <button className="ml-4 rounded-full bg-red-600 py-1 px-2 text-xs text-white hover:bg-red-700">
               X
@@ -44,7 +43,7 @@ const MenuBuilder: NextPage = () => {
   const { mutate: createItem } = api.item.create.useMutation()
   const { data: menus } = api.menu.getAll.useQuery()
   const { data: categories } = api.category.getAll.useQuery()
-  const { data: menu } = api.menu.get.useQuery({ id: 3 })
+  const { data: menu } = api.menu.get.useQuery({ id: 1 })
 
   const clearInputs = () => {
     setMenuName("")
@@ -59,7 +58,7 @@ const MenuBuilder: NextPage = () => {
   return (
     <div className="grid grid-cols-2 p-8">
       <div>
-        <h1 className="mt-4 mb-4 text-3xl font-bold">New Menu</h1>
+        <h1 className="mt-4 mb-4 text-2xl font-bold">New Menu</h1>
 
         <div className="grid w-72 grid-cols-2 gap-3">
           <span className="mt-1">Name</span>
@@ -79,7 +78,7 @@ const MenuBuilder: NextPage = () => {
             Create Menu
           </button>
         </div>
-        <h1 className="mt-8 mb-4 text-3xl font-bold">New Category</h1>
+        <h1 className="mt-8 mb-4 text-2xl font-bold">New Category</h1>
         <div className="grid w-72 grid-cols-2 gap-3">
           <span className="mt-1">Menu</span>
           <select
@@ -111,7 +110,7 @@ const MenuBuilder: NextPage = () => {
             Create Category
           </button>
         </div>
-        <h1 className="mt-8 mb-4 text-3xl font-bold">New Item</h1>
+        <h1 className="mt-8 mb-4 text-2xl font-bold">New Item</h1>
         <div className="grid w-72 grid-cols-2 gap-3">
           <span className="mt-1">Category</span>
           <select
@@ -167,10 +166,8 @@ const MenuBuilder: NextPage = () => {
         </div>
       </div>
       <div>
-        <h1 className="mt-4 mb-4 text-3xl font-bold">
-          {menu && menu[0]?.menuName}
-        </h1>
-        {menu && getUiMenu(getMenuFromApiMenuItems(menu))}
+        <h1 className="mt-4 mb-4 text-lg font-bold">{menu && menu.name}</h1>
+        {menu && getUiMenu(menu)}
       </div>
     </div>
   )

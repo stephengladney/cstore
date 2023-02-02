@@ -1,20 +1,19 @@
 import { type Dispatch, Fragment, type SetStateAction } from "react"
 import { MenuCategory } from "./MenuCategory/MenuCategory"
 import { CategoryDivider, MenuContainer } from "./OrderingMenu.styles"
-import type { Category, Item } from "../../types/MenuItem"
-import { dummyItems, getMenu } from "../../lib/menu"
+import { api } from "../../utils/api"
+import type { MenuItem } from "@prisma/client"
 
 interface MenuProps {
   openModal: () => void
-  setSelectedItem: Dispatch<SetStateAction<Item | undefined>>
+  setSelectedItem: Dispatch<SetStateAction<MenuItem | undefined>>
 }
 
-const menu: Category[] = getMenu(dummyItems)
-
 export function OrderingMenu({ openModal, setSelectedItem }: MenuProps) {
+  const { data: menu } = api.menu.get.useQuery({ id: 1 })
   return (
     <MenuContainer>
-      {menu.map((category, i) => (
+      {menu?.categories.map((category, i) => (
         <Fragment key={`menu-category-${category.name}`}>
           <MenuCategory
             items={category.items}
@@ -22,7 +21,7 @@ export function OrderingMenu({ openModal, setSelectedItem }: MenuProps) {
             openModal={openModal}
             setSelectedItem={setSelectedItem}
           />
-          {i !== menu.length - 1 && <CategoryDivider />}
+          {i !== menu.categories.length - 1 && <CategoryDivider />}
         </Fragment>
       ))}
       <div style={{ minHeight: "100px" }} />
