@@ -10,12 +10,16 @@ import { Dimmer } from "./Dimmer"
 
 export function OrderingContainer({}) {
   const [selectedItem, setSelectedItem] = useState<MenuItem | undefined>()
-  const modalRef = useRef<PopupActions>()
+  const modalRef = useRef<PopupActions>({
+    open: () => undefined,
+    close: () => undefined,
+    toggle: () => undefined,
+  })
   const closeModal = () => {
     setSelectedItem(undefined)
-    modalRef.current!.close()
+    modalRef.current.close()
   }
-  const openModal = () => modalRef.current!.open()
+  const openModal = () => modalRef.current.open()
   const { cartState } = useContext(cartContext)
 
   useEffect(() => {
@@ -24,12 +28,11 @@ export function OrderingContainer({}) {
 
   return (
     <>
-      <div className="flex grow justify-center overflow-y-scroll pb-32">
+      <div className="flex grow justify-center overflow-y-scroll px-0 pb-32 lg:px-10">
         <OrderingMenu setSelectedItem={setSelectedItem} />
         <Dimmer isItemSelected={!!selectedItem}>
           <OrderItemModal
             closeModal={closeModal}
-            // @ts-ignore
             modalRef={modalRef}
             selectedItem={selectedItem}
           />

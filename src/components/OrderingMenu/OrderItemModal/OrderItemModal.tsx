@@ -20,11 +20,11 @@ import {
 import type { MenuItem } from "../../../types/MenuItem"
 import { QuantitySelector } from "../QuantitySelector/QuantitySelector"
 import { PopupActions } from "reactjs-popup/dist/types"
+import { redirect } from "next/dist/server/api-utils"
 
 interface OrderItemModalProps {
   closeModal: () => void
-  index: number
-  modalRef: MutableRefObject<PopupActions> | undefined
+  modalRef: MutableRefObject<PopupActions>
   selectedItem?: MenuItem
 }
 
