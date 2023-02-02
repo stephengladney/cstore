@@ -1,6 +1,6 @@
 import { type Dispatch, type SetStateAction, useContext } from "react"
 import { cartContext } from "../../../contexts/cartContext"
-import type { Item } from "../../../types/MenuItem"
+import type { MenuItem } from "../../../types/MenuItem"
 import {
   MenuItemContainer,
   MenuItemDescription,
@@ -16,9 +16,9 @@ import {
 } from "./MenuItem.styles"
 
 interface MenuItemProps {
-  item: Item
+  item: MenuItem
   openModal: () => void
-  setSelectedItem: Dispatch<SetStateAction<Item | undefined>>
+  setSelectedItem: Dispatch<SetStateAction<MenuItem | undefined>>
 }
 
 export function MenuItem({ item, openModal, setSelectedItem }: MenuItemProps) {
