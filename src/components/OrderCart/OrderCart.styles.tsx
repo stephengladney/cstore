@@ -3,7 +3,7 @@ import type { ReactComponents } from "../../types/React"
 export function CartContainer({ children }: ReactComponents) {
   return (
     <div
-      className="hidden h-full min-w-[360px] flex-col border border-solid border-gray-300 px-1 px-2 md:flex"
+      className="hidden h-full min-w-[360px] flex-col border border-solid border-gray-300 px-2 md:flex"
       style={{ boxShadow: "0px 0px 6px #ddd" }}
     >
       {children}

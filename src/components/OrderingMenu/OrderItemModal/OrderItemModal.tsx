@@ -1,4 +1,4 @@
-import { MutableRefObject, Ref, useContext, useState } from "react"
+import { type MutableRefObject, useContext, useState } from "react"
 import Popup from "reactjs-popup"
 import { cartContext } from "../../../contexts/cartContext"
 import {
@@ -19,8 +19,7 @@ import {
 
 import type { MenuItem } from "../../../types/MenuItem"
 import { QuantitySelector } from "../QuantitySelector/QuantitySelector"
-import { PopupActions } from "reactjs-popup/dist/types"
-import { redirect } from "next/dist/server/api-utils"
+import type { PopupActions } from "reactjs-popup/dist/types"
 
 interface OrderItemModalProps {
   closeModal: () => void
