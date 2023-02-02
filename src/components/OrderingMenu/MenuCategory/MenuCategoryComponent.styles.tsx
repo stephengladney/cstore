@@ -8,7 +8,11 @@ export function CategoryHeader({
   children,
   onClick,
 }: ReactComponents & { onClick?: () => void }) {
-  return <div onClick={onClick}>{children}</div>
+  return (
+    <div className="mb-4" onClick={onClick}>
+      {children}
+    </div>
+  )
 }
 
 export function CategoryName({ children }: ReactComponents) {

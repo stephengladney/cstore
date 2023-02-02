@@ -73,6 +73,18 @@ model MenuOption {
     updatedAt DateTime @updatedAt
 }
 
+model Order {
+    id            Int      @id @default(autoincrement())
+    items         Json[]
+    subtotal      Decimal  @db.Decimal(10, 2)
+    tax           Decimal  @db.Decimal(10, 2)
+    total         Decimal  @db.Decimal(10, 2)
+    customerName  String
+    customerPhone String
+    createdAt     DateTime @default(now())
+    updatedAt     DateTime @updatedAt
+}
+
 model Session {
     id           String   @id @default(cuid())
     sessionToken String   @unique
