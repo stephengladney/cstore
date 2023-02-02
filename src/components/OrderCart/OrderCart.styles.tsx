@@ -29,10 +29,13 @@ export function CheckoutContainer({ children }: ReactComponents) {
   )
 }
 
-export function CheckoutButton() {
+export function CheckoutButton({ onClick }: { onClick: () => void }) {
   return (
     <div className="mt-6 mb-2 flex w-full flex-row justify-center ">
-      <button className="bold w-[300px] rounded-full bg-valero p-5 font-poppins font-bold text-slate-50">
+      <button
+        className="bold w-[300px] rounded-full bg-valero p-5 font-poppins font-bold text-slate-50"
+        onClick={onClick}
+      >
         Checkout
       </button>
     </div>

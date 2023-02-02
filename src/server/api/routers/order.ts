@@ -19,9 +19,9 @@ export const orderRouter = createTRPCRouter({
           to: "stephengladney@gmail.com",
           from: "cstoreonlineorders@gmail.com",
           subject: `Online Order #${1}`,
-          text: input.items,
+          html: input.items,
         })
-        return ctx.prisma.menu.create({ data: input })
+        // return ctx.prisma.menu.create({ data: input })
       } catch (e) {
         return e
       }

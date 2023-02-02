@@ -12,11 +12,18 @@ import { CartPricing } from "./CartPricing/CartPricing"
 
 import { CartItem } from "./CartItem/CartItem"
 import type { Cart } from "../../types/Cart"
+import { api } from "../../utils/api"
+import { getEmailBodyFromCart } from "../../lib/order"
 
 export function OrderCart({ cart }: { cart: Cart }) {
   const subtotal = cart.items.reduce((acc, item) => acc + Number(item.price), 0)
   const taxRate = 0.09
   const tax = subtotal * taxRate
+  const { mutate: sendOrderEmail } = api.order.create.useMutation()
+
+  const submitOrder = () => {
+    sendOrderEmail({ name: "Derp", items: getEmailBodyFromCart(cart) })
+  }
   return (
     <CartContainer>
       <CartHeader>Your Order</CartHeader>
@@ -40,7 +47,7 @@ export function OrderCart({ cart }: { cart: Cart }) {
               label="Total"
               style={{ marginTop: "10px" }}
             />
-            <CheckoutButton />
+            <CheckoutButton onClick={submitOrder} />
           </CheckoutContainer>
         </Fragment>
       ) : (
