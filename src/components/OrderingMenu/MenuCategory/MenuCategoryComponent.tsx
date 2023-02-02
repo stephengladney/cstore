@@ -4,21 +4,19 @@ import {
   CategoryHeader,
   CategoryName,
   ItemsContainer,
-} from "./MenuCategory.styles"
-import { MenuItem } from "../MenuItem/MenuItem"
-import type { Item } from "../../../types/Item"
+} from "./MenuCategoryComponent.styles"
+import { MenuItemComponent } from "../MenuItem/MenuItemComponent"
+import type { MenuItem } from "../../../types/MenuItem"
 
 interface CategoryProps {
-  items: Item[]
+  items: MenuItem[]
   name: string
-  openModal: () => void
-  setSelectedItem: React.Dispatch<SetStateAction<Item | undefined>>
+  setSelectedItem: React.Dispatch<SetStateAction<MenuItem | undefined>>
 }
 
-export function MenuCategory({
+export function MenuCategoryComponent({
   items,
   name,
-  openModal,
   setSelectedItem,
 }: CategoryProps) {
   const [isExpanded, setIsExpanded] = useState(true)
@@ -30,10 +28,9 @@ export function MenuCategory({
       {isExpanded && (
         <ItemsContainer>
           {items.map((item, i) => (
-            <MenuItem
+            <MenuItemComponent
               item={item}
               key={`item-${i}`}
-              openModal={openModal}
               setSelectedItem={setSelectedItem}
             />
           ))}

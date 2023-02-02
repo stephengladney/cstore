@@ -20,7 +20,7 @@ export function CartHeader({ children }: ReactComponents) {
 }
 
 export function CartItemsContainer({ children }: ReactComponents) {
-  return <div className="grow overflow-y-auto">{children}</div>
+  return <div className="grow overflow-y-scroll">{children}</div>
 }
 
 export function CheckoutContainer({ children }: ReactComponents) {
@@ -31,7 +31,7 @@ export function CheckoutContainer({ children }: ReactComponents) {
 
 export function CheckoutButton() {
   return (
-    <div className="mt-6 flex w-full flex-row justify-center ">
+    <div className="mt-6 mb-2 flex w-full flex-row justify-center ">
       <button className="bold w-[300px] rounded-full bg-valero p-5 font-poppins font-bold text-slate-50">
         Checkout
       </button>
@@ -41,7 +41,10 @@ export function CheckoutButton() {
 
 export function EmptyStateMessage() {
   return (
-    <div style={{ fontFamily: "Inter, Avenir, Helvetica, Arial, sans-serif" }}>
+    <div
+      className="mb-20 flex h-full flex-col items-center justify-center text-gray-500"
+      style={{ fontFamily: "Inter, Avenir, Helvetica, Arial, sans-serif" }}
+    >
       {"You haven't ordered anything yet."}
     </div>
   )

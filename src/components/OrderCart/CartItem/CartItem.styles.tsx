@@ -10,7 +10,7 @@ export function ItemContainer({
 }) {
   return (
     <div
-      className="grid grid-cols-8 border-b border-solid border-[#ddd] py-4 px-3 font-poppins text-base"
+      className="grid animate-fadein grid-cols-8 border-b border-solid border-[#ddd] py-4 px-3 font-poppins text-base"
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
       // style={{ gridTemplateColumns: "0.75fr 7fr 1.5gr" }}

@@ -1,18 +1,14 @@
-import { ReactNode, useContext, useReducer, useRef } from "react"
+import { useContext, useRef } from "react"
 import { OrderingMenu } from "../OrderingMenu/OrderingMenu"
-// import { OrderCart } from "../OrderCart/OrderCart"
 import { useState } from "react"
-// import { Container } from "./OrderingContainer.styles"
 // import { OrderItemModal } from "./OrderItemModal/OrderItemModal"
-import { cartContext, CartProvider } from "../../contexts/cartContext"
-import type { Cart, CartItem } from "../../types/Cart"
+import { cartContext } from "../../contexts/cartContext"
 import { PopupActions } from "reactjs-popup/dist/types"
-import type { Item } from "../../types/Item"
-import { ReactComponents } from "../../types/React"
+import type { MenuItem } from "../../types/MenuItem"
 import { OrderCart } from "../OrderCart/OrderCart"
 
 export function OrderingContainer({}) {
-  const [selectedItem, setSelectedItem] = useState<Item | undefined>(undefined)
+  const [selectedItem, setSelectedItem] = useState<MenuItem | undefined>()
   const modalRef = useRef<PopupActions>()
   // const closeModal = () => modalRef.current!.close()
   // const openModal = () => modalRef.current!.open()

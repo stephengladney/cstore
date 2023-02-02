@@ -1,28 +1,26 @@
-import { type Dispatch, Fragment, type SetStateAction } from "react"
-import { MenuCategory } from "./MenuCategory/MenuCategory"
+import { type Dispatch, Fragment, type SetStateAction, useEffect } from "react"
+import { MenuCategoryComponent } from "./MenuCategory/MenuCategoryComponent"
 import { CategoryDivider, MenuContainer } from "./OrderingMenu.styles"
-import type { Category, Item } from "../../types/Item"
-import { dummyItems, getMenu } from "../../lib/menu"
+import { api } from "../../utils/api"
+import type { MenuItem } from "../../types/MenuItem"
 
 interface MenuProps {
   openModal: () => void
-  setSelectedItem: Dispatch<SetStateAction<Item | undefined>>
+  setSelectedItem: Dispatch<SetStateAction<MenuItem | undefined>>
 }
 
-const menu: Category[] = getMenu(dummyItems)
-
-export function OrderingMenu({ openModal, setSelectedItem }: MenuProps) {
+export function OrderingMenu({ setSelectedItem }: MenuProps) {
+  const { data: menu } = api.menu.get.useQuery({ id: 1 })
   return (
     <MenuContainer>
-      {menu.map((category, i) => (
+      {menu?.categories.map((category, i) => (
         <Fragment key={`menu-category-${category.name}`}>
-          <MenuCategory
+          <MenuCategoryComponent
             items={category.items}
             name={category.name}
-            openModal={openModal}
             setSelectedItem={setSelectedItem}
           />
-          {i !== menu.length - 1 && <CategoryDivider />}
+          {i !== menu.categories.length - 1 && <CategoryDivider />}
         </Fragment>
       ))}
       <div style={{ minHeight: "100px" }} />

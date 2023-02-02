@@ -1,6 +1,6 @@
 import { type Dispatch, type SetStateAction, useContext } from "react"
 import { cartContext } from "../../../contexts/cartContext"
-import type { Item } from "../../../types/Item"
+import type { MenuItem } from "../../../types/MenuItem"
 import {
   MenuItemContainer,
   MenuItemDescription,
@@ -13,27 +13,23 @@ import {
   MenuItemPrice,
   MenuItemPriceContainer,
   UnavailablePill,
-} from "./MenuItem.styles"
+} from "./MenuItemComponent.styles"
 
 interface MenuItemProps {
-  item: Item
-  openModal: () => void
-  setSelectedItem: Dispatch<SetStateAction<Item | undefined>>
+  item: MenuItem
+  setSelectedItem: Dispatch<SetStateAction<MenuItem | undefined>>
 }
 
-export function MenuItem({ item, openModal, setSelectedItem }: MenuItemProps) {
+export function MenuItemComponent({ item, setSelectedItem }: MenuItemProps) {
   const { dispatch } = useContext(cartContext)
-  const selectItem = () => {
-    setSelectedItem(item)
-    openModal()
-  }
 
   return (
     <MenuItemContainer
       isDisabled={!item.isAvailable}
       onClick={() => {
         if (item.isAvailable) {
-          dispatch({ type: "ADD_ITEM", payload: { ...item, quantity: 1 } })
+          setSelectedItem(item)
+          // dispatch({ type: "ADD_ITEM", payload: { ...item, quantity: 1 } })
         }
       }}
     >
