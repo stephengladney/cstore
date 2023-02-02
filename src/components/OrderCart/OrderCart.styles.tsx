@@ -3,7 +3,7 @@ import type { ReactComponents } from "../../types/React"
 export function CartContainer({ children }: ReactComponents) {
   return (
     <div
-      className="hidden h-full min-w-[360px] flex-col border border-solid border-gray-300 px-1 px-2 md:flex"
+      className="hidden h-full min-w-[360px] flex-col border border-solid border-gray-300 px-2 md:flex"
       style={{ boxShadow: "0px 0px 6px #ddd" }}
     >
       {children}
@@ -29,10 +29,13 @@ export function CheckoutContainer({ children }: ReactComponents) {
   )
 }
 
-export function CheckoutButton() {
+export function CheckoutButton({ onClick }: { onClick: () => void }) {
   return (
     <div className="mt-6 mb-2 flex w-full flex-row justify-center ">
-      <button className="bold w-[300px] rounded-full bg-valero p-5 font-poppins font-bold text-slate-50">
+      <button
+        className="bold w-[300px] rounded-full bg-valero p-5 font-poppins font-bold text-slate-50"
+        onClick={onClick}
+      >
         Checkout
       </button>
     </div>

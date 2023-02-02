@@ -1,5 +1,4 @@
-import { type Dispatch, type SetStateAction, useContext } from "react"
-import { cartContext } from "../../../contexts/cartContext"
+import { type Dispatch, type SetStateAction } from "react"
 import type { MenuItem } from "../../../types/MenuItem"
 import {
   MenuItemContainer,
@@ -21,8 +20,6 @@ interface MenuItemProps {
 }
 
 export function MenuItemComponent({ item, setSelectedItem }: MenuItemProps) {
-  const { dispatch } = useContext(cartContext)
-
   return (
     <MenuItemContainer
       isDisabled={!item.isAvailable}

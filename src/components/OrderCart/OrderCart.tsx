@@ -12,11 +12,23 @@ import { CartPricing } from "./CartPricing/CartPricing"
 
 import { CartItem } from "./CartItem/CartItem"
 import type { Cart } from "../../types/Cart"
+import { api } from "../../utils/api"
+import { getCheckoutPricingFromCart } from "../../lib/order"
 
 export function OrderCart({ cart }: { cart: Cart }) {
-  const subtotal = cart.items.reduce((acc, item) => acc + Number(item.price), 0)
-  const taxRate = 0.09
-  const tax = subtotal * taxRate
+  const { subtotal, tax, total } = getCheckoutPricingFromCart(cart)
+  const { mutate: submitOrder } = api.order.create.useMutation()
+
+  const handleSubmitOrderClick = () => {
+    submitOrder({
+      customerName: "Test",
+      customerPhone: "404-123-4567",
+      items: cart.items,
+      subtotal,
+      tax,
+      total,
+    })
+  }
   return (
     <CartContainer>
       <CartHeader>Your Order</CartHeader>
@@ -36,11 +48,11 @@ export function OrderCart({ cart }: { cart: Cart }) {
             <CartPricing label="Tax" amount={tax} style={{ color: "#888" }} />
             <CartPricing
               isBig
-              amount={subtotal + tax}
+              amount={total}
               label="Total"
               style={{ marginTop: "10px" }}
             />
-            <CheckoutButton />
+            <CheckoutButton onClick={handleSubmitOrderClick} />
           </CheckoutContainer>
         </Fragment>
       ) : (

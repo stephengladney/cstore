@@ -1,11 +1,10 @@
-import { type Dispatch, Fragment, type SetStateAction, useEffect } from "react"
+import { type Dispatch, Fragment, type SetStateAction } from "react"
 import { MenuCategoryComponent } from "./MenuCategory/MenuCategoryComponent"
 import { CategoryDivider, MenuContainer } from "./OrderingMenu.styles"
 import { api } from "../../utils/api"
 import type { MenuItem } from "../../types/MenuItem"
 
 interface MenuProps {
-  openModal: () => void
   setSelectedItem: Dispatch<SetStateAction<MenuItem | undefined>>
 }
 

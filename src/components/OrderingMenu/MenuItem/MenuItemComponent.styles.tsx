@@ -14,7 +14,7 @@ export function MenuItemContainer({
     <div
       className={`grid ${
         isDisabled ? "cursor-not-allowed" : "cursor-pointer"
-      } grid grid-cols-[1fr,3fr] rounded-lg bg-white p-3 hover:bg-slate-100 hover:drop-shadow-sm sm:border-b lg:border lg:border-solid lg:border-gray-300  lg:odd:col-span-1 lg:even:col-span-1`}
+      } grid w-screen grid-cols-[1fr,3fr] rounded-lg border-b bg-white p-3 hover:bg-slate-100 hover:drop-shadow-sm md:w-full  lg:border lg:border-solid lg:border-gray-300 lg:odd:col-span-1 lg:even:col-span-1`}
       onClick={onClick}
     >
       {children}
