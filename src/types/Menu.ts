@@ -1,11 +1,7 @@
 import type { MenuCategory } from "./MenuCategory"
 
-export type ApiMenu = {
+export type Menu = {
   id: number
   name: string
-}
-
-export type Menu = {
-  name: string
-  categories: MenuCategory[]
+  categories?: MenuCategory[]
 }

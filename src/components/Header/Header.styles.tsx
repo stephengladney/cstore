@@ -54,9 +54,18 @@ export function HeaderSubTitle({ children }: ReactComponents) {
   )
 }
 
-export function CartBadge({ itemCount }: { itemCount: number }) {
+export function CartBadge({
+  itemCount,
+  onClick,
+}: {
+  itemCount: number
+  onClick: () => void
+}) {
   return (
-    <div className="absolute right-2 -mt-4 rounded-full bg-red-600 px-[6px] py-[1px] font-poppins text-xs font-bold text-zinc-50">
+    <div
+      className="absolute right-2 -mt-4 rounded-full bg-red-600 px-[6px] py-[1px] font-poppins text-xs font-bold text-zinc-50"
+      onClick={onClick}
+    >
       {itemCount}
     </div>
   )

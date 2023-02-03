@@ -1,3 +1,4 @@
+import { useRef } from "react"
 import {
   HeaderContainer,
   HeaderCenterCell,
@@ -14,9 +15,27 @@ import { BsCart2 } from "react-icons/bs"
 import { useContext } from "react"
 import { cartContext } from "../../contexts/cartContext"
 import { getCartItemCount } from "../../lib/cart"
+import type { Store } from "../../types/Store"
+import type { PopupActions } from "reactjs-popup/dist/types"
+import { ModalOrderCart } from "../ModalOrderCart/ModalOrderCart"
 
-export function Header({}) {
+export function Header({ store }: { store: Store }) {
   const { cartState } = useContext(cartContext)
+
+  const modalOrderCartRef = useRef<PopupActions>({
+    open: () => undefined,
+    close: () => undefined,
+    toggle: () => undefined,
+  })
+  const openCartModal = () => {
+    if (cartState.items.length > 0) {
+      modalOrderCartRef.current.open()
+    }
+  }
+
+  const closeCartModal = () => {
+    modalOrderCartRef.current.close()
+  }
 
   return (
     <HeaderContainer>
@@ -25,20 +44,26 @@ export function Header({}) {
           <RxHamburgerMenu size="1.5em" />
         </HeaderLeftCell>
         <HeaderCenterCell>
-          <HeaderTitle>Valero Kirkwood Market</HeaderTitle>
-          <HeaderSubTitle>
-            1989 Hosea L Williams Dr SE, Atlanta, GA 30317
-          </HeaderSubTitle>
+          <HeaderTitle>{store.name}</HeaderTitle>
+          <HeaderSubTitle>{store.address}</HeaderSubTitle>
         </HeaderCenterCell>
         <HeaderRightCell>
           <IconContext.Provider value={{ color: "#eee" }}>
-            <BsCart2 size="1.5em" />
+            <BsCart2 size="1.5em" onClick={openCartModal} />
           </IconContext.Provider>
           {cartState.items.length > 0 && (
-            <CartBadge itemCount={getCartItemCount(cartState)} />
+            <CartBadge
+              itemCount={getCartItemCount(cartState)}
+              onClick={openCartModal}
+            />
           )}
         </HeaderRightCell>
       </MaxWidthContainer>
+      <ModalOrderCart
+        cart={cartState}
+        closeModal={closeCartModal}
+        modalRef={modalOrderCartRef}
+      />
     </HeaderContainer>
   )
 }

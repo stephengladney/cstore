@@ -1,4 +1,4 @@
-import type { ApiMenuItem, MenuItem } from "../types/MenuItem"
+import type { MenuItem } from "../types/MenuItem"
 import type { MenuCategory } from "../types/MenuCategory"
 import type { Menu } from "../types/Menu"
 import { PrismaClient } from "@prisma/client"
@@ -62,7 +62,7 @@ export async function seedDatabase() {
 
 export const dummyItems: Omit<MenuItem, "id">[] = [
   {
-    category: "Drinks",
+    categoryName: "Drinks",
     name: "Coca-Cola",
     imageUrl: "/cocacola.png",
     isAvailable: true,
@@ -70,7 +70,7 @@ export const dummyItems: Omit<MenuItem, "id">[] = [
     description: "20oz bottle",
   },
   {
-    category: "Drinks",
+    categoryName: "Drinks",
     name: "Diet Coke",
     imageUrl: "/dietcoke.jpeg",
     isAvailable: true,
@@ -78,7 +78,7 @@ export const dummyItems: Omit<MenuItem, "id">[] = [
     description: "20oz bottle",
   },
   {
-    category: "Drinks",
+    categoryName: "Drinks",
     name: "Sprite",
     imageUrl: "/sprite.png",
     isAvailable: true,
@@ -86,7 +86,7 @@ export const dummyItems: Omit<MenuItem, "id">[] = [
     description: "20oz bottle",
   },
   {
-    category: "Drinks",
+    categoryName: "Drinks",
     name: "Dr. Pepper",
     imageUrl: "/drpepper.png",
     isAvailable: true,
@@ -94,7 +94,7 @@ export const dummyItems: Omit<MenuItem, "id">[] = [
     description: "20oz bottle",
   },
   {
-    category: "Drinks",
+    categoryName: "Drinks",
     name: "Dasani Water",
     imageUrl: "/dasani.png",
     isAvailable: true,
@@ -102,7 +102,7 @@ export const dummyItems: Omit<MenuItem, "id">[] = [
     description: "20oz bottle",
   },
   {
-    category: "Drinks",
+    categoryName: "Drinks",
     name: "Powerade Fruit Punch",
     imageUrl: "/powerade.jpeg",
     isAvailable: true,
@@ -110,7 +110,7 @@ export const dummyItems: Omit<MenuItem, "id">[] = [
     description: "20oz bottle",
   },
   {
-    category: "Candy",
+    categoryName: "Candy",
     name: "Snickers",
     description: "This is the best thing ever",
     imageUrl: "/snickers.png",
@@ -118,49 +118,49 @@ export const dummyItems: Omit<MenuItem, "id">[] = [
     price: 2.75,
   },
   {
-    category: "Candy",
+    categoryName: "Candy",
     name: "Milky Way",
     imageUrl: "/milkyway.png",
     isAvailable: true,
     price: 2.75,
   },
   {
-    category: "Candy",
+    categoryName: "Candy",
     name: "Twix",
     imageUrl: "/twix.png",
     isAvailable: true,
     price: 2.75,
   },
   {
-    category: "Candy",
+    categoryName: "Candy",
     name: "Reese's Cup",
     imageUrl: "/reeses.png",
     isAvailable: true,
     price: 2.75,
   },
   {
-    category: "Chips",
+    categoryName: "Chips",
     name: "Lays Classic",
     imageUrl: "/laysclassic.png",
     isAvailable: true,
     price: 2.75,
   },
   {
-    category: "Chips",
+    categoryName: "Chips",
     name: "Lays Barbecue",
     imageUrl: "/laysbbq.png",
     isAvailable: true,
     price: 2.75,
   },
   {
-    category: "Chips",
+    categoryName: "Chips",
     name: "Lays Salt and Vinegar",
     imageUrl: "/layssnv.png",
     isAvailable: true,
     price: 2.75,
   },
   {
-    category: "Chips",
+    categoryName: "Chips",
     name: "Lays Sour Cream and Onion",
     imageUrl: "/layssourcream.png",
     isAvailable: true,
@@ -168,16 +168,17 @@ export const dummyItems: Omit<MenuItem, "id">[] = [
   },
 ]
 
-export function getMenuFromApiMenuItems(items: ApiMenuItem[]): Menu {
+export function getMenuFromApiMenuItems(items: MenuItem[]): Menu {
   const categories: { [key: string]: MenuItem[] } = {}
   const categoriesWithItems: MenuCategory[] = []
   const name = items[0]?.menuName as string
+  const id = items[0]?.menuId as number
 
-  const convertApiMenuItemToMenuItem = (item: ApiMenuItem): MenuItem => ({
-    id: item.itemId,
-    name: item.itemName,
+  const convertApiMenuItemToMenuItem = (item: MenuItem): MenuItem => ({
+    id: item.id,
+    name: item.name,
     description: item.description,
-    category: item.categoryName,
+    categoryName: item.categoryName,
     imageUrl: item.imageUrl,
     isAvailable: item.isAvailable,
     price: item.price,
@@ -195,5 +196,5 @@ export function getMenuFromApiMenuItems(items: ApiMenuItem[]): Menu {
     categoriesWithItems.push({ name: category, items: categories[category]! })
   })
 
-  return { name, categories: categoriesWithItems }
+  return { id, name, categories: categoriesWithItems }
 }
