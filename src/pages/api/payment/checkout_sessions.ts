@@ -14,14 +14,19 @@ export default async function handler(
         line_items: [
           {
             // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
-            price: "{{PRICE_ID}}",
+            price: "price_1MXBqXCtOqAVlzo3CA6JDDcD",
+            quantity: 1,
+          },
+          {
+            // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
+            price: "price_1MXCCUCtOqAVlzo3pam0Yl2c",
             quantity: 1,
           },
         ],
         mode: "payment",
         success_url: `${req.headers.origin as string}/?success=true`,
         cancel_url: `${req.headers.origin as string}/?canceled=true`,
-        automatic_tax: { enabled: true },
+        automatic_tax: { enabled: false },
       })
       res.redirect(303, session.url as string)
     } catch ({ message }) {

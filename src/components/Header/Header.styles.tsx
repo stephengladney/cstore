@@ -32,7 +32,7 @@ export function HeaderCenterCell({ children }: ReactComponents) {
 
 export function HeaderRightCell({ children }: ReactComponents) {
   return (
-    <div className="flex flex-row items-center justify-end text-zinc-50 lg:hidden">
+    <div className="flex flex-row items-center justify-end text-zinc-50 md:hidden">
       {children}
     </div>
   )
@@ -56,7 +56,7 @@ export function HeaderSubTitle({ children }: ReactComponents) {
 
 export function CartBadge({ itemCount }: { itemCount: number }) {
   return (
-    <div className="z-20 -ml-1 -mt-4 rounded-3xl bg-red-600 font-poppins text-xs font-bold text-zinc-50">
+    <div className="absolute right-2 -mt-4 rounded-full bg-red-600 px-[6px] py-[1px] font-poppins text-xs font-bold text-zinc-50">
       {itemCount}
     </div>
   )
