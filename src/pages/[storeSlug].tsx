@@ -8,7 +8,7 @@ import { CartProvider } from "../contexts/cartContext"
 import { Header } from "../components/Header/Header"
 import { Body } from "../components/Body/Body"
 import { OrderingContainer } from "../components/OrderingContainer/OrderingContainer"
-import { NextRequest } from "next/server"
+import type { NextRequest } from "next/server"
 import type { Store } from "../types/Store"
 import { PrismaClient } from "@prisma/client"
 
