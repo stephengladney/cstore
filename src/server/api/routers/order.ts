@@ -17,7 +17,7 @@ export const orderRouter = createTRPCRouter({
             id: number(),
             name: z.string(),
             price: z.number(),
-            category: z.string(),
+            categoryName: z.string(),
             quantity: z.number(),
           })
         ),

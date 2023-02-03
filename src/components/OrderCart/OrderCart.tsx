@@ -17,6 +17,7 @@ import type { Cart } from "../../types/Cart"
 import { api } from "../../utils/api"
 import { getCheckoutPricingFromCart } from "../../lib/order"
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const stripePromise = loadStripe(env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
 
 export function OrderCart({ cart }: { cart: Cart }) {

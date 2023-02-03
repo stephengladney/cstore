@@ -1,5 +1,4 @@
 import { z } from "zod"
-import { Store } from "../../../types/Store"
 import { createTRPCRouter, publicProcedure } from "../trpc"
 
 export const storeRouter = createTRPCRouter({
