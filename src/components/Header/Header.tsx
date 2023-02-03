@@ -15,7 +15,7 @@ import { useContext } from "react"
 import { cartContext } from "../../contexts/cartContext"
 import { getCartItemCount } from "../../lib/cart"
 
-export function Header({}) {
+export function Header({ storeUrl }: { storeUrl: string }) {
   const { cartState } = useContext(cartContext)
 
   return (
@@ -25,7 +25,7 @@ export function Header({}) {
           <RxHamburgerMenu size="1.5em" />
         </HeaderLeftCell>
         <HeaderCenterCell>
-          <HeaderTitle>Valero Kirkwood Market</HeaderTitle>
+          <HeaderTitle>{storeUrl}</HeaderTitle>
           <HeaderSubTitle>
             1989 Hosea L Williams Dr SE, Atlanta, GA 30317
           </HeaderSubTitle>

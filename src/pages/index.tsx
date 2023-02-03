@@ -2,19 +2,17 @@ import { type NextPage } from "next"
 import Head from "next/head"
 import Link from "next/link"
 import { signIn, signOut, useSession } from "next-auth/react"
-import { useReducer } from "react"
+import { useEffect, useReducer } from "react"
 import { initialCartState, reducer } from "../reducers/cartReducer"
 import { CartProvider } from "../contexts/cartContext"
 
 import { Header } from "../components/Header/Header"
 import { Body } from "../components/Body/Body"
-import { OrderingMenu } from "../components/OrderingMenu/OrderingMenu"
 import { OrderingContainer } from "../components/OrderingContainer/OrderingContainer"
-import { CartContainer } from "../components/OrderCart/OrderCart.styles"
 import { api } from "../utils/api"
+import { useRouter } from "next/router"
 
 const Home: NextPage = () => {
-  const hello = api.example.hello.useQuery({ text: "from tRPC" })
   const [cartState, dispatch] = useReducer(reducer, initialCartState)
 
   return (
@@ -29,7 +27,6 @@ const Home: NextPage = () => {
           <Header />
           <Body>
             <OrderingContainer />
-            {/* <OrderingMenu openModal={() => {}} setSelectedItem /> */}
           </Body>
         </div>
       </CartProvider>
