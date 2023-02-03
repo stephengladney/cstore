@@ -1,14 +1,14 @@
 import { useState } from "react"
 import { type NextPage } from "next"
 import { api } from "../utils/api"
-import type { ApiMenu, Menu } from "../types/Menu"
+import type { Menu } from "../types/Menu"
 import type { ApiMenuCategory } from "../types/MenuCategory"
 import type { MenuItem } from "../types/MenuItem"
-import { Store } from "../types/Store"
+import type { Store } from "../types/Store"
 
 function getUiMenu(menu: Menu) {
   const { categories } = menu
-  return categories.map((category, i) => (
+  return categories?.map((category, i) => (
     <div key={i} className="mb-4 max-w-xs">
       <h1 className="text-sm font-bold">{category.name}</h1>
       {category.items?.map((item: MenuItem) => (
@@ -148,7 +148,7 @@ const MenuBuilder: NextPage = () => {
             value={categoryMenuId}
           >
             <option value={0}>Select a menu...</option>
-            {menus?.map((menu: ApiMenu) => (
+            {menus?.map((menu: Menu) => (
               <option key={`menu-dropdown-${menu.id}`} value={menu.id}>
                 {menu.name}
               </option>

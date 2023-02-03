@@ -58,9 +58,9 @@ export function ModalOrderCart({
               <CartPricing
                 label="Subtotal"
                 amount={subtotal}
-                style={{ color: "#888" }}
+                style={{ color: "#666" }}
               />
-              <CartPricing label="Tax" amount={tax} style={{ color: "#888" }} />
+              <CartPricing label="Tax" amount={tax} style={{ color: "#666" }} />
               <CartPricing
                 isBig
                 amount={total}

@@ -31,7 +31,7 @@ export function OrderingContainer({}) {
     } else {
       setIsDimmed(false)
     }
-  }, [selectedItem])
+  }, [selectedItem, setIsDimmed])
 
   return (
     <>
