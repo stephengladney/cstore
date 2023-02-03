@@ -62,7 +62,10 @@ export function CartBadge({
   onClick: () => void
 }) {
   return (
-    <div className="absolute right-2 -mt-4 rounded-full bg-red-600 px-[6px] py-[1px] font-poppins text-xs font-bold text-zinc-50">
+    <div
+      className="absolute right-2 -mt-4 rounded-full bg-red-600 px-[6px] py-[1px] font-poppins text-xs font-bold text-zinc-50"
+      onClick={onClick}
+    >
       {itemCount}
     </div>
   )
