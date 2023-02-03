@@ -14,8 +14,9 @@ import { BsCart2 } from "react-icons/bs"
 import { useContext } from "react"
 import { cartContext } from "../../contexts/cartContext"
 import { getCartItemCount } from "../../lib/cart"
+import { Store } from "../../types/Store"
 
-export function Header({ storeUrl }: { storeUrl: string }) {
+export function Header({ store }: { store: Store }) {
   const { cartState } = useContext(cartContext)
 
   return (
@@ -25,10 +26,8 @@ export function Header({ storeUrl }: { storeUrl: string }) {
           <RxHamburgerMenu size="1.5em" />
         </HeaderLeftCell>
         <HeaderCenterCell>
-          <HeaderTitle>{storeUrl}</HeaderTitle>
-          <HeaderSubTitle>
-            1989 Hosea L Williams Dr SE, Atlanta, GA 30317
-          </HeaderSubTitle>
+          <HeaderTitle>{store.name}</HeaderTitle>
+          <HeaderSubTitle>{store.address}</HeaderSubTitle>
         </HeaderCenterCell>
         <HeaderRightCell>
           <IconContext.Provider value={{ color: "#eee" }}>
