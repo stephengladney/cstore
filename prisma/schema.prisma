@@ -10,13 +10,6 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
-model Example {
-    id        String   @id @default(cuid())
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-}
-
-// Necessary for Next auth
 model Account {
     id                String  @id @default(cuid())
     userId            String
@@ -38,6 +31,8 @@ model Account {
 model Menu {
     id           Int            @id @default(autoincrement())
     name         String
+    store        Store          @relation(fields: [storeId], references: [id], onDelete: Cascade)
+    storeId      Int            @default(1)
     createdAt    DateTime       @default(now())
     updatedAt    DateTime       @updatedAt
     MenuCategory MenuCategory[]
@@ -81,8 +76,21 @@ model Order {
     total         Decimal  @db.Decimal(10, 2)
     customerName  String
     customerPhone String
+    store         Store    @relation(fields: [storeId], references: [id], onDelete: Cascade)
+    storeId       Int      @default(1)
     createdAt     DateTime @default(now())
     updatedAt     DateTime @updatedAt
+}
+
+model Store {
+    id        Int      @id @default(autoincrement())
+    name      String
+    address   String
+    slug      String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    Menu      Menu[]
+    Order     Order[]
 }
 
 model Session {
