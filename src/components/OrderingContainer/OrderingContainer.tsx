@@ -10,17 +10,18 @@ import { dimmerContext } from "../../contexts/dimmerContext"
 
 export function OrderingContainer({}) {
   const [selectedItem, setSelectedItem] = useState<MenuItem | undefined>()
-  const { isDimmed, setIsDimmed } = useContext(dimmerContext)
-  const modalRef = useRef<PopupActions>({
+  const { setIsDimmed } = useContext(dimmerContext)
+  const orderItemModalRef = useRef<PopupActions>({
     open: () => undefined,
     close: () => undefined,
     toggle: () => undefined,
   })
+
   const closeModal = () => {
     setSelectedItem(undefined)
-    modalRef.current.close()
+    orderItemModalRef.current.close()
   }
-  const openModal = () => modalRef.current.open()
+  const openModal = () => orderItemModalRef.current.open()
   const { cartState } = useContext(cartContext)
 
   useEffect(() => {
@@ -38,7 +39,7 @@ export function OrderingContainer({}) {
         <OrderingMenu setSelectedItem={setSelectedItem} />
         <OrderItemModal
           closeModal={closeModal}
-          modalRef={modalRef}
+          modalRef={orderItemModalRef}
           selectedItem={selectedItem}
         />
       </div>

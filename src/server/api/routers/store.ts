@@ -19,4 +19,7 @@ export const storeRouter = createTRPCRouter({
     .query(({ input, ctx }) => {
       return ctx.prisma.store.findFirst({ where: input })
     }),
+  getAll: publicProcedure.query(({ ctx }) => {
+    return ctx.prisma.store.findMany()
+  }),
 })

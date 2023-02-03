@@ -4,6 +4,7 @@ import { api } from "../utils/api"
 import type { ApiMenu, Menu } from "../types/Menu"
 import type { ApiMenuCategory } from "../types/MenuCategory"
 import type { MenuItem } from "../types/MenuItem"
+import { Store } from "../types/Store"
 
 function getUiMenu(menu: Menu) {
   const { categories } = menu
@@ -32,6 +33,7 @@ function getUiMenu(menu: Menu) {
 
 const MenuBuilder: NextPage = () => {
   const [menuName, setMenuName] = useState("")
+  const [menuStoreId, setMenuStoreId] = useState(0)
   const [categoryName, setCategoryName] = useState("")
   const [categoryMenuId, setCategoryMenuId] = useState(0)
   const [itemCategoryId, setItemCategoryId] = useState(0)
@@ -45,6 +47,7 @@ const MenuBuilder: NextPage = () => {
   const { mutate: createCategory } = api.category.create.useMutation()
   const { mutate: createItem } = api.item.create.useMutation()
   const { mutate: createStore } = api.store.create.useMutation()
+  const { data: stores } = api.store.getAll.useQuery()
   const { data: menus } = api.menu.getAll.useQuery()
   const { data: categories } = api.category.getAll.useQuery()
   const { data: menu } = api.menu.get.useQuery({ id: 1 })
@@ -72,21 +75,21 @@ const MenuBuilder: NextPage = () => {
           <input
             className="w-60 border border-solid border-black py-1 px-2"
             onChange={(e) => setStoreName(e.target.value)}
-            placeholder="Menu name"
+            placeholder="My Store"
             value={storeName}
           />
           <span className="mt-1">Address</span>
           <input
             className="w-60 border border-solid border-black py-1 px-2"
             onChange={(e) => setStoreAddress(e.target.value)}
-            placeholder="Menu name"
+            placeholder="123 Right Way"
             value={storeAddress}
           />
           <span className="mt-1">Slug</span>
           <input
             className="w-60 border border-solid border-black py-1 px-2"
             onChange={(e) => setStoreSlug(e.target.value)}
-            placeholder="Menu name"
+            placeholder="slug"
             value={storeSlug}
           />
           <button
@@ -106,6 +109,19 @@ const MenuBuilder: NextPage = () => {
         <h1 className="mt-4 mb-4 text-2xl font-bold">New Menu</h1>
 
         <div className="grid w-72 grid-cols-2 gap-3">
+          <span className="mt-1">Store</span>
+          <select
+            className="w-60 border border-solid border-black py-1 px-2"
+            onChange={(e) => setMenuStoreId(Number(e.target.value))}
+            value={menuStoreId}
+          >
+            <option value={0}>Select a store...</option>
+            {stores?.map((store: Store) => (
+              <option key={`menu-dropdown-${store.id}`} value={store.id}>
+                {store.name}
+              </option>
+            ))}
+          </select>
           <span className="mt-1">Name</span>
           <input
             className="w-60 border border-solid border-black py-1 px-2"
@@ -116,7 +132,7 @@ const MenuBuilder: NextPage = () => {
           <button
             className="col-start-2 w-60 rounded-full bg-red-600 p-2 text-white hover:bg-red-700"
             onClick={() => {
-              createMenu({ name: menuName })
+              createMenu({ name: menuName, storeId: menuStoreId })
               clearInputs()
             }}
           >

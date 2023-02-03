@@ -9,6 +9,7 @@ export const menuRouter = createTRPCRouter({
     .input(
       z.object({
         name: z.string(),
+        storeId: z.number(),
       })
     )
     .mutation(({ input, ctx }) => {
