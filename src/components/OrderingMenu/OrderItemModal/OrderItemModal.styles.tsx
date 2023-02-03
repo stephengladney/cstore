@@ -3,7 +3,7 @@ import type { ReactComponents } from "../../../types/React"
 
 export function ModalWrapper({ children }: ReactComponents) {
   return (
-    <div className="h-screen w-screen rounded-xl border border-solid border-gray-200 bg-white px-8 pt-2 pb-8 shadow-sm md:h-auto md:w-[475px]">
+    <div className="h-screen w-screen border border-solid border-gray-200 bg-white px-8 pt-2 pb-8 shadow-sm md:h-auto md:w-[475px] md:rounded-xl">
       {children}
     </div>
   )
