@@ -2,7 +2,7 @@ import type { ReactComponents } from "../../types/React"
 
 export function HeaderContainer({ children }: ReactComponents) {
   return (
-    <div className="flex w-full flex-row justify-center bg-valero py-3.5 px-4 shadow-md lg:px-6">
+    <div className="flex w-full flex-row justify-center bg-valero py-3.5 px-4 shadow-md lg:py-2.5 lg:px-6">
       {children}
     </div>
   )
