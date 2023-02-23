@@ -25,7 +25,7 @@ export function CartItem({ index, item }: { index: number; item: CartItem }) {
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
     >
-      <ItemCategory>{item.category}</ItemCategory>
+      <ItemCategory>{item.categoryName}</ItemCategory>
       <ItemQuantity>{item.quantity || 1} x</ItemQuantity>
       <ItemName>{item.name}</ItemName>
       {isHover ? (
