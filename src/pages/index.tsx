@@ -4,7 +4,7 @@ import { useEffect } from "react"
 const Home: NextPage = () => {
   useEffect(() => {
     const win: Window = window
-    win.location = "https://google.com"
+    win.location = "https://aol.com"
   }, [])
   return <></>
 }
