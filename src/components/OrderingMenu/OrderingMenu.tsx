@@ -10,19 +10,19 @@ interface MenuProps {
 
 export function OrderingMenu({ setSelectedItem }: MenuProps) {
   const { data: menu } = api.menu.get.useQuery({ id: 5 })
-  return (
+  return menu ? (
     <MenuContainer>
-      {menu?.categories.map((category, i) => (
+      {menu.categories!.map((category, i) => (
         <Fragment key={`menu-category-${category.name}`}>
           <MenuCategoryComponent
             items={category.items}
             name={category.name}
             setSelectedItem={setSelectedItem}
           />
-          {i !== menu.categories.length - 1 && <CategoryDivider />}
+          {i !== menu.categories!.length - 1 && <CategoryDivider />}
         </Fragment>
       ))}
       <div style={{ minHeight: "100px" }} />
     </MenuContainer>
-  )
+  ) : null
 }
