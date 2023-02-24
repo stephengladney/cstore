@@ -1,14 +1,17 @@
 import { createContext } from "react"
-import { ActionTypes, CartState, PayloadTypes } from "../reducers/cartReducer"
+import type {
+  ActionTypes,
+  CartState,
+  PayloadTypes,
+} from "../reducers/cartReducer"
+
+type DispatchPayload = {
+  type: keyof typeof ActionTypes
+  payload: PayloadTypes
+}
 
 export const cartContext = createContext({
-  dispatch: ({
-    type,
-    payload,
-  }: {
-    type: keyof typeof ActionTypes
-    payload: PayloadTypes
-  }) => {
+  dispatch: (_: DispatchPayload) => {
     items: []
   },
   cartState: {} as CartState,
