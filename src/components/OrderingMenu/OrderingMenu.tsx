@@ -1,15 +1,18 @@
-import { type Dispatch, Fragment, type SetStateAction } from "react"
+import { type Dispatch, Fragment, type SetStateAction, useContext } from "react"
 import { MenuCategoryComponent } from "./MenuCategory/MenuCategoryComponent"
 import { CategoryDivider, MenuContainer } from "./OrderingMenu.styles"
 import { api } from "../../utils/api"
 import type { MenuItem } from "../../types/MenuItem"
+import { storeContext } from "../../contexts/storeContext"
 
 interface MenuProps {
   setSelectedItem: Dispatch<SetStateAction<MenuItem | undefined>>
 }
 
 export function OrderingMenu({ setSelectedItem }: MenuProps) {
-  const { data: menu } = api.menu.get.useQuery({ id: 5 })
+  const store = useContext(storeContext)
+  const { data: menu } = api.menu.getByStoreId.useQuery({ id: store.id })
+
   return menu ? (
     <MenuContainer>
       {menu.categories!.map((category, i) => (
