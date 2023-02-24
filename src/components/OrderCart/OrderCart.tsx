@@ -12,7 +12,7 @@ import {
 } from "./OrderCart.styles"
 import { CartPricing } from "./CartPricing/CartPricing"
 
-import { CartItem } from "./CartItem/CartItem"
+import { CartItemComponent } from "./CartItem/CartItem"
 import type { Cart } from "../../types/Cart"
 import { api } from "../../utils/api"
 import { getCheckoutPricingFromCart } from "../../lib/order"
@@ -20,7 +20,12 @@ import { getCheckoutPricingFromCart } from "../../lib/order"
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const stripePromise = loadStripe(env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
 
-export function OrderCart({ cart }: { cart: Cart }) {
+interface OrderCartProps {
+  cart: Cart
+  editCartItem: (itemIndex: number) => void
+}
+
+export function OrderCart({ cart, editCartItem }: OrderCartProps) {
   const { subtotal, tax, total } = getCheckoutPricingFromCart(cart)
   const { mutate: submitOrder } = api.order.create.useMutation()
 
@@ -41,7 +46,12 @@ export function OrderCart({ cart }: { cart: Cart }) {
         <Fragment>
           <CartItemsContainer>
             {cart.items.map((item, i) => (
-              <CartItem index={i} key={`cart-item-${i}`} item={item} />
+              <CartItemComponent
+                index={i}
+                key={`cart-item-${i}`}
+                item={item}
+                onClick={() => editCartItem(i)}
+              />
             ))}
           </CartItemsContainer>
           <CheckoutContainer>

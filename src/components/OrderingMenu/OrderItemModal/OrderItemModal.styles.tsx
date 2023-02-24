@@ -72,7 +72,10 @@ export function ItemDescription({ children }: ReactComponents) {
   )
 }
 
-export function OrderButton({ onClick }: { onClick: () => void }) {
+export function OrderButton({
+  children,
+  onClick,
+}: ReactComponents & { onClick: () => void }) {
   const store = useContext(storeContext)
   return (
     <button
@@ -80,7 +83,7 @@ export function OrderButton({ onClick }: { onClick: () => void }) {
       style={{ backgroundColor: store.color }}
       onClick={onClick}
     >
-      Add to Order
+      {children}
     </button>
   )
 }

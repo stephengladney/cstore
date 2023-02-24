@@ -1,4 +1,4 @@
-import { type MutableRefObject, useContext, useState } from "react"
+import { type MutableRefObject, useContext, useState, useEffect } from "react"
 import Popup from "reactjs-popup"
 import { cartContext } from "../../../contexts/cartContext"
 import {
@@ -18,18 +18,22 @@ import {
 } from "./OrderItemModal.styles"
 
 import type { MenuItem } from "../../../types/MenuItem"
+import type { CartItem } from "../../../types/Cart"
 import { QuantitySelector } from "../QuantitySelector/QuantitySelector"
 import type { PopupActions } from "reactjs-popup/dist/types"
 
 interface OrderItemModalProps {
+  cartItemIndex?: number
   closeModal: () => void
   modalRef: MutableRefObject<PopupActions>
-  selectedItem?: MenuItem
+  selectedItem?: MenuItem | CartItem
+  selectedCartItemIndex?: number
 }
 
 export function OrderItemModal({
   closeModal,
   modalRef,
+  selectedCartItemIndex,
   selectedItem,
 }: OrderItemModalProps) {
   // const [specialInstructions, setSpecialInstructions] = useState("")
@@ -41,9 +45,24 @@ export function OrderItemModal({
   }
 
   const { dispatch } = useContext(cartContext)
+  const isEditingCartItem = !isNaN(selectedCartItemIndex!)
 
   const handleOrderItemClick = () => {
-    if (selectedItem) {
+    if (isEditingCartItem) {
+      dispatch({
+        type: "EDIT_CART_ITEM",
+        payload: {
+          index: selectedCartItemIndex as number,
+          newItem: {
+            ...(selectedItem as MenuItem),
+            quantity,
+            price: Number(Number(selectedItem?.price) * quantity),
+          },
+        },
+      })
+      setQuantity(1)
+      closeModal()
+    } else if (selectedItem) {
       dispatch({
         type: "ADD_ITEM",
         payload: {
@@ -56,6 +75,13 @@ export function OrderItemModal({
       closeModal()
     }
   }
+
+  useEffect(() => {
+    const itemAsCartItem = selectedItem as CartItem
+    if (itemAsCartItem?.quantity) {
+      setQuantity(itemAsCartItem.quantity)
+    }
+  }, [selectedItem])
 
   return (
     <Popup ref={modalRef} closeOnDocumentClick onClose={closeModal}>
@@ -72,7 +98,6 @@ export function OrderItemModal({
             <RightContainer>
               <ItemHeader>
                 <ItemName>{selectedItem?.name}</ItemName>
-                <ItemPrice>${Number(selectedItem?.price).toFixed(2)}</ItemPrice>
               </ItemHeader>
               <ItemDescription>{selectedItem?.description}</ItemDescription>
             </RightContainer>
@@ -91,7 +116,10 @@ export function OrderItemModal({
               decreaseQuantity={decreaseQuantity}
               quantity={quantity}
             />
-            <OrderButton onClick={handleOrderItemClick} />
+            <OrderButton onClick={handleOrderItemClick}>
+              {isEditingCartItem ? "Update Order" : "Add to Order"} - $
+              {Number((selectedItem?.price as number) * quantity).toFixed(2)}
+            </OrderButton>
           </ButtonsContainer>
         </ModalContent>
       </ModalWrapper>

@@ -5,10 +5,7 @@ export type Cart = {
   items: CartItem[]
 }
 
-export type CartItem = Omit<
-  MenuItem,
-  "imageUrl" | "description" | "isAvailable"
-> & {
+export type CartItem = Omit<MenuItem, "isAvailable"> & {
   instructions?: string
   quantity: number
 }

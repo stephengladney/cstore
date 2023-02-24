@@ -7,11 +7,14 @@ import {
 } from "./MenuCategoryComponent.styles"
 import { MenuItemComponent } from "../MenuItem/MenuItemComponent"
 import type { MenuItem } from "../../../types/MenuItem"
+import type { CartItem } from "../../../types/Cart"
 
 interface CategoryProps {
   items: MenuItem[]
   name: string
-  setSelectedItem: React.Dispatch<SetStateAction<MenuItem | undefined>>
+  setSelectedItem: React.Dispatch<
+    SetStateAction<MenuItem | CartItem | undefined>
+  >
 }
 
 export function MenuCategoryComponent({

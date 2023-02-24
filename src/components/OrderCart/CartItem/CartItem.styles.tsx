@@ -4,15 +4,18 @@ import type { ReactComponents } from "../../../types/React"
 
 export function ItemContainer({
   children,
+  onClick,
   onMouseEnter,
   onMouseLeave,
 }: ReactComponents & {
+  onClick: (e: React.MouseEvent<HTMLElement>) => void
   onMouseEnter: () => void
   onMouseLeave: () => void
 }) {
   return (
     <div
       className="grid animate-fadein cursor-pointer grid-cols-8 border-b border-solid border-[#ddd] py-4 px-3 font-poppins text-base hover:bg-slate-100"
+      onClick={onClick}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
       // style={{ gridTemplateColumns: "0.75fr 7fr 1.5gr" }}
