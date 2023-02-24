@@ -3,5 +3,6 @@ export type Store = {
   name: string
   address: string
   slug: string
+  color: string
   stripeAccount?: string
 }

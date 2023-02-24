@@ -56,8 +56,8 @@ export async function getServerSideProps({ req }: { req: NextRequest }) {
     const store = await prisma.store.findFirst({ where: { slug: pathSlug } })
     await prisma.$disconnect()
     if (store) {
-      const { id, name, address, slug } = store
-      return { props: { store: { id, name, address, slug } } }
+      const { id, color, name, address, slug } = store
+      return { props: { store: { id, color, name, address, slug } } }
     } else {
       return { props: {} }
     }

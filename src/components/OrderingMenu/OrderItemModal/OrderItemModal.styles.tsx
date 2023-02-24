@@ -1,4 +1,6 @@
 import Image from "next/image"
+import { useContext } from "react"
+import { storeContext } from "../../../contexts/storeContext"
 import type { ReactComponents } from "../../../types/React"
 
 export function ModalWrapper({ children }: ReactComponents) {
@@ -71,9 +73,11 @@ export function ItemDescription({ children }: ReactComponents) {
 }
 
 export function OrderButton({ onClick }: { onClick: () => void }) {
+  const store = useContext(storeContext)
   return (
     <button
-      className="ml-5 block h-12 w-52 rounded-full bg-valero font-bold text-white md:w-64"
+      className="ml-5 block h-12 w-52 rounded-full font-bold text-white md:w-64"
+      style={{ backgroundColor: store.color }}
       onClick={onClick}
     >
       Add to Order

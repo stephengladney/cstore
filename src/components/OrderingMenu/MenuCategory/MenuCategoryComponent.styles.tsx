@@ -1,4 +1,6 @@
 import type { ReactComponents } from "../../../types/React"
+import { useContext } from "react"
+import { storeContext } from "../../../contexts/storeContext"
 
 export function CategoryContainer({ children }: ReactComponents) {
   return <div>{children}</div>
@@ -16,8 +18,12 @@ export function CategoryHeader({
 }
 
 export function CategoryName({ children }: ReactComponents) {
+  const store = useContext(storeContext)
   return (
-    <span className="pl-4 font-poppins text-[22px] font-bold uppercase text-teal-700">
+    <span
+      className="pl-4 font-poppins text-[22px] font-bold uppercase"
+      style={{ color: store.color }}
+    >
       {children}
     </span>
   )

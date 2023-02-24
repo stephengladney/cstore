@@ -6,6 +6,7 @@ export const storeContext = createContext({
   name: "",
   address: "",
   slug: "",
+  color: "",
 } as Store)
 
 export const StoreProvider = storeContext.Provider

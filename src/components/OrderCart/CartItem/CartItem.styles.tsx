@@ -1,3 +1,5 @@
+import { useContext } from "react"
+import { storeContext } from "../../../contexts/storeContext"
 import type { ReactComponents } from "../../../types/React"
 
 export function ItemContainer({
@@ -21,8 +23,12 @@ export function ItemContainer({
 }
 
 export function ItemCategory({ children }: ReactComponents) {
+  const store = useContext(storeContext)
   return (
-    <span className="col-span-5 col-start-2  mb-1 font-poppins font-bold text-valero">
+    <span
+      className="col-span-5 col-start-2  mb-1 font-poppins font-bold"
+      style={{ color: store.color }}
+    >
       {children}
     </span>
   )

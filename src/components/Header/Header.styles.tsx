@@ -1,8 +1,14 @@
 import type { ReactComponents } from "../../types/React"
+import { useContext } from "react"
+import { storeContext } from "../../contexts/storeContext"
 
 export function HeaderContainer({ children }: ReactComponents) {
+  const store = useContext(storeContext)
   return (
-    <div className="flex w-full flex-row justify-center bg-littles py-3.5 px-4 shadow-md lg:py-2.5 lg:px-6">
+    <div
+      className={`flex w-full flex-row justify-center py-3.5 px-4 shadow-md lg:py-2.5 lg:px-6`}
+      style={{ backgroundColor: store.color }}
+    >
       {children}
     </div>
   )

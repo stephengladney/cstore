@@ -1,4 +1,6 @@
 import type { ReactComponents } from "../../types/React"
+import { useContext } from "react"
+import { storeContext } from "../../contexts/storeContext"
 
 export function CartContainer({ children }: ReactComponents) {
   return (
@@ -30,10 +32,12 @@ export function CheckoutContainer({ children }: ReactComponents) {
 }
 
 export function CheckoutButton({ onClick }: { onClick: () => void }) {
+  const store = useContext(storeContext)
   return (
     <div className="mt-6 mb-2 flex w-full flex-row justify-center ">
       <button
-        className="bold w-[300px] rounded-full bg-valero p-5 font-poppins font-bold text-slate-50"
+        className={`bold w-[300px] rounded-full p-5 font-poppins font-bold text-slate-50`}
+        style={{ backgroundColor: store.color }}
         // onClick={onClick}
         type="submit"
       >
