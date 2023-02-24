@@ -12,7 +12,7 @@ export function ItemContainer({
 }) {
   return (
     <div
-      className="grid animate-fadein grid-cols-8 border-b border-solid border-[#ddd] py-4 px-3 font-poppins text-base"
+      className="grid animate-fadein cursor-pointer grid-cols-8 border-b border-solid border-[#ddd] py-4 px-3 font-poppins text-base hover:bg-slate-100"
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
       // style={{ gridTemplateColumns: "0.75fr 7fr 1.5gr" }}
@@ -67,12 +67,15 @@ export function RemoveItemButton({
   onClick,
 }: ReactComponents & { onClick: () => void }) {
   return (
-    <button
-      className="animate-fadein cursor-pointer rounded-full bg-red-600 px-[8px] py-[1px] text-base text-white hover:bg-red-500"
-      onClick={onClick}
-    >
-      {children}
-    </button>
+    <span className="text-sm text-red-600 hover:underline" onClick={onClick}>
+      Remove
+    </span>
+    // <button
+    //   className="animate-fadein cursor-pointer rounded-full bg-red-600 px-[8px] py-[1px] text-base text-white hover:bg-red-500"
+    //   onClick={onClick}
+    // >
+    //   {children}
+    // </button>
   )
 }
 // export const RemoveItemButtonContainer = styled.div`
