@@ -9,7 +9,7 @@ interface MenuProps {
 }
 
 export function OrderingMenu({ setSelectedItem }: MenuProps) {
-  const { data: menu } = api.menu.get.useQuery({ id: 1 })
+  const { data: menu } = api.menu.get.useQuery({ id: 5 })
   return menu ? (
     <MenuContainer>
       {menu.categories!.map((category, i) => (
