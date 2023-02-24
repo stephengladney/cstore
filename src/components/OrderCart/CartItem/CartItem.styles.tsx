@@ -68,7 +68,7 @@ export function RemoveItemButtonContainer({ children }: ReactComponents) {
 export function RemoveItemButton({
   children,
   onClick,
-}: ReactComponents & { onClick: () => void }) {
+}: ReactComponents & { onClick: (e: React.MouseEvent<HTMLElement>) => void }) {
   return (
     <span className="text-sm text-red-600 hover:underline" onClick={onClick}>
       Remove
