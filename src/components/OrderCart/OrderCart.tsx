@@ -29,10 +29,6 @@ export function OrderCart({ cart, editCartItem }: OrderCartProps) {
   const { subtotal, tax, total } = getCheckoutPricingFromCart(cart)
   const { mutate: submitOrder } = api.order.create.useMutation()
 
-  useEffect(() => {
-    console.log(cart.items)
-  }, [cart])
-
   const handleSubmitOrderClick = () => {
     submitOrder({
       customerName: "Test",
