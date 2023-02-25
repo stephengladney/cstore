@@ -4,12 +4,7 @@ import type { NextApiRequest, NextApiResponse } from "next"
 const stripe = new Stripe(env.STRIPE_PRIVATE_KEY, { apiVersion: "2022-11-15" })
 import type { CartItem } from "../../../types/Cart.js"
 
-type LineItem = {
-  price: string
-  quantity: number
-}
-
-function getStripeItemPayload(itemsString: string): LineItem[] {
+function getStripeItemPayload(itemsString: string) {
   return (JSON.parse(itemsString) as CartItem[]).map((item: CartItem) => ({
     price: item.stripeId as string,
     quantity: item.quantity,
