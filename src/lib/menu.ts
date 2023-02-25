@@ -40,6 +40,7 @@ export function getMenuItemsFromCsv(text: string): DbMenuItem[] {
       description: itemProperties[3] || "",
       isAvailable: itemProperties[4] === "TRUE",
       imageUrl: itemProperties[5] || "",
+      stripeId: itemProperties[6] || "",
     }
   })
 }
