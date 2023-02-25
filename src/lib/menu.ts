@@ -182,6 +182,7 @@ export function getMenuFromApiMenuItems(items: MenuItem[]): Menu {
     imageUrl: item.imageUrl,
     isAvailable: item.isAvailable,
     price: item.price,
+    stripeId: item.stripeId,
   })
 
   items.forEach((item) => {

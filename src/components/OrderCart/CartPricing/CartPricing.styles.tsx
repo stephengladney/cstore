@@ -1,5 +1,6 @@
 import type { ReactComponents } from "../../../types/React"
-import type { CSSProperties } from "react"
+import { type CSSProperties, useContext } from "react"
+import { storeContext } from "../../../contexts/storeContext"
 
 export function PricingContainer({
   children,
@@ -17,12 +18,13 @@ export function PricingLabel({
   isBig,
   style,
 }: ReactComponents & { isBig?: boolean; style?: CSSProperties }) {
+  const store = useContext(storeContext)
   return (
     <span
       className={`col-span-1 font-poppins ${
         isBig ? "text-lg" : "text-base"
-      } flex flex-row font-bold text-valero`}
-      style={style}
+      } flex flex-row font-bold text-gray-500`}
+      style={{ ...style, color: isBig ? store.color : "" }}
     >
       {children}
     </span>
@@ -37,8 +39,8 @@ export function PricingAmount({
   return (
     <span
       className={`text-right font-poppins ${
-        isBig ? "text-lg" : "text-base"
-      } font-bold`}
+        isBig ? "text-lg text-gray-800" : "text-base text-gray-500"
+      } font-bold `}
       style={style}
     >
       {children}

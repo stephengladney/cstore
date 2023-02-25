@@ -1,4 +1,4 @@
-import { Fragment } from "react"
+import { Fragment, useEffect } from "react"
 import { loadStripe } from "@stripe/stripe-js"
 import { env } from "../../env/client.mjs"
 
@@ -12,7 +12,7 @@ import {
 } from "./OrderCart.styles"
 import { CartPricing } from "./CartPricing/CartPricing"
 
-import { CartItem } from "./CartItem/CartItem"
+import { CartItemComponent } from "./CartItem/CartItem"
 import type { Cart } from "../../types/Cart"
 import { api } from "../../utils/api"
 import { getCheckoutPricingFromCart } from "../../lib/order"
@@ -20,7 +20,12 @@ import { getCheckoutPricingFromCart } from "../../lib/order"
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const stripePromise = loadStripe(env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
 
-export function OrderCart({ cart }: { cart: Cart }) {
+interface OrderCartProps {
+  cart: Cart
+  editCartItem: (itemIndex: number) => void
+}
+
+export function OrderCart({ cart, editCartItem }: OrderCartProps) {
   const { subtotal, tax, total } = getCheckoutPricingFromCart(cart)
   const { mutate: submitOrder } = api.order.create.useMutation()
 
@@ -41,16 +46,17 @@ export function OrderCart({ cart }: { cart: Cart }) {
         <Fragment>
           <CartItemsContainer>
             {cart.items.map((item, i) => (
-              <CartItem index={i} key={`cart-item-${i}`} item={item} />
+              <CartItemComponent
+                index={i}
+                key={`cart-item-${i}`}
+                item={item}
+                onClick={() => editCartItem(i)}
+              />
             ))}
           </CartItemsContainer>
           <CheckoutContainer>
-            <CartPricing
-              label="Subtotal"
-              amount={subtotal}
-              style={{ color: "#666" }}
-            />
-            <CartPricing label="Tax" amount={tax} style={{ color: "#666" }} />
+            <CartPricing label="Subtotal" amount={subtotal} />
+            <CartPricing label="Tax" amount={tax} />
             <CartPricing
               isBig
               amount={total}
@@ -58,6 +64,7 @@ export function OrderCart({ cart }: { cart: Cart }) {
               style={{ marginTop: "10px" }}
             />
             <form action="/api/payment/checkout_sessions" method="POST">
+              <input name="items" value={JSON.stringify(cart.items)} hidden />
               <CheckoutButton onClick={handleSubmitOrderClick} />
             </form>
           </CheckoutContainer>

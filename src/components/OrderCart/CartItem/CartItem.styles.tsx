@@ -4,15 +4,18 @@ import type { ReactComponents } from "../../../types/React"
 
 export function ItemContainer({
   children,
+  onClick,
   onMouseEnter,
   onMouseLeave,
 }: ReactComponents & {
+  onClick: (e: React.MouseEvent<HTMLElement>) => void
   onMouseEnter: () => void
   onMouseLeave: () => void
 }) {
   return (
     <div
-      className="grid animate-fadein grid-cols-8 border-b border-solid border-[#ddd] py-4 px-3 font-poppins text-base"
+      className="grid animate-fadein cursor-pointer grid-cols-8 border-b border-solid border-[#ddd] py-4 px-3 font-poppins text-base hover:bg-slate-100"
+      onClick={onClick}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
       // style={{ gridTemplateColumns: "0.75fr 7fr 1.5gr" }}
@@ -44,14 +47,18 @@ export function ItemName({ children }: ReactComponents) {
 
 export function ItemQuantity({ children }: ReactComponents) {
   return (
-    <span className="col-span-1 col-start-1 font-poppins font-bold">
+    <span className="col-span-1 col-start-1 font-poppins font-bold text-gray-700">
       {children}
     </span>
   )
 }
 
 export function ItemPrice({ children }: ReactComponents) {
-  return <span className="col-span-2 text-right font-poppins">{children}</span>
+  return (
+    <span className="col-span-2 text-right font-poppins text-gray-700">
+      {children}
+    </span>
+  )
 }
 
 export function RemoveItemButtonContainer({ children }: ReactComponents) {
@@ -65,14 +72,17 @@ export function RemoveItemButtonContainer({ children }: ReactComponents) {
 export function RemoveItemButton({
   children,
   onClick,
-}: ReactComponents & { onClick: () => void }) {
+}: ReactComponents & { onClick: (e: React.MouseEvent<HTMLElement>) => void }) {
   return (
-    <button
-      className="animate-fadein cursor-pointer rounded-full bg-red-600 px-[8px] py-[1px] text-base text-white hover:bg-red-500"
-      onClick={onClick}
-    >
-      {children}
-    </button>
+    <span className="text-sm text-red-600 hover:underline" onClick={onClick}>
+      Remove
+    </span>
+    // <button
+    //   className="animate-fadein cursor-pointer rounded-full bg-red-600 px-[8px] py-[1px] text-base text-white hover:bg-red-500"
+    //   onClick={onClick}
+    // >
+    //   {children}
+    // </button>
   )
 }
 // export const RemoveItemButtonContainer = styled.div`

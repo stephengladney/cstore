@@ -5,11 +5,15 @@ import { OrderItemModal } from "../OrderingMenu/OrderItemModal/OrderItemModal"
 import { cartContext } from "../../contexts/cartContext"
 import type { PopupActions } from "reactjs-popup/dist/types"
 import type { MenuItem } from "../../types/MenuItem"
+import type { CartItem } from "../../types/Cart"
 import { OrderCart } from "../OrderCart/OrderCart"
 import { dimmerContext } from "../../contexts/dimmerContext"
 
 export function OrderingContainer({}) {
-  const [selectedItem, setSelectedItem] = useState<MenuItem | undefined>()
+  const [selectedItem, setSelectedItem] = useState<
+    MenuItem | CartItem | undefined
+  >()
+  const [selectedCartItemIndex, setSelectedCartItemIndex] = useState<number>()
   const { setIsDimmed } = useContext(dimmerContext)
   const orderItemModalRef = useRef<PopupActions>({
     open: () => undefined,
@@ -19,10 +23,22 @@ export function OrderingContainer({}) {
 
   const closeModal = () => {
     setSelectedItem(undefined)
+    setSelectedCartItemIndex(undefined)
     orderItemModalRef.current.close()
   }
   const openModal = () => orderItemModalRef.current.open()
   const { cartState } = useContext(cartContext)
+
+  const editCartItem = (itemIndex: number) => {
+    const itemToEdit = cartState.items[itemIndex]
+    if (itemToEdit) {
+      setSelectedCartItemIndex(itemIndex)
+      setSelectedItem({
+        ...itemToEdit,
+        price: itemToEdit.price / itemToEdit.quantity,
+      })
+    }
+  }
 
   useEffect(() => {
     if (selectedItem) {
@@ -39,11 +55,12 @@ export function OrderingContainer({}) {
         <OrderingMenu setSelectedItem={setSelectedItem} />
         <OrderItemModal
           closeModal={closeModal}
+          selectedCartItemIndex={selectedCartItemIndex}
           modalRef={orderItemModalRef}
           selectedItem={selectedItem}
         />
       </div>
-      <OrderCart cart={cartState} />
+      <OrderCart cart={cartState} editCartItem={editCartItem} />
     </>
   )
 }

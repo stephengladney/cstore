@@ -13,15 +13,26 @@ import {
 // import { OrderCartItemInstructions } from "./OrderCartItemInstructions/OrderCartItemInstructions"
 // import { OrderCartItemOption } from "./OrderCartItemOption/OrderCartItemOption"
 
-export function CartItem({ index, item }: { index: number; item: CartItem }) {
+export function CartItemComponent({
+  index,
+  item,
+  onClick,
+}: {
+  index: number
+  item: CartItem
+  onClick: () => void
+}) {
   const [isHover, setIsHover] = useState(false)
   const { dispatch } = useContext(cartContext)
 
-  const handleRemoveItemClick = () =>
+  const handleRemoveItemClick = (e: React.MouseEvent<HTMLElement>) => {
+    e.stopPropagation()
     dispatch({ type: "REMOVE_ITEM", payload: index })
+  }
 
   return (
     <ItemContainer
+      onClick={onClick}
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
     >

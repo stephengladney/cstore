@@ -11,4 +11,5 @@ export type MenuItem = {
   name: string
   options?: MenuOption[]
   price: number
+  stripeId?: string
 }

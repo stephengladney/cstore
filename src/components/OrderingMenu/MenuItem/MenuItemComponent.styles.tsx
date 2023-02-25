@@ -56,7 +56,7 @@ export function MenuItemName({
   return (
     <div
       className={`font-poppins font-semibold ${
-        isDisabled ? "text-disabled text-slate-400" : " text-slate-800"
+        isDisabled ? "text-disabled text-slate-400" : " text-gray-800"
       } text-base `}
     >
       {children}

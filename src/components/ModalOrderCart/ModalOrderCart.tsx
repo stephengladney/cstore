@@ -8,7 +8,7 @@ import {
   CheckoutContainer,
 } from "../OrderCart/OrderCart.styles"
 import { CartPricing } from "../OrderCart/CartPricing/CartPricing"
-import { CartItem } from "../OrderCart/CartItem/CartItem"
+import { CartItemComponent } from "../OrderCart/CartItem/CartItem"
 import { getCheckoutPricingFromCart } from "../../lib/order"
 import { api } from "../../utils/api"
 import {
@@ -51,7 +51,12 @@ export function ModalOrderCart({
           <CartItemsContainer>
             <CartItemsContainer>
               {cart.items.map((item, i) => (
-                <CartItem index={i} key={`cart-item-${i}`} item={item} />
+                <CartItemComponent
+                  index={i}
+                  key={`cart-item-${i}`}
+                  item={item}
+                  onClick={() => null}
+                />
               ))}
             </CartItemsContainer>
             <CheckoutContainer>

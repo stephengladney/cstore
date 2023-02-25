@@ -1,5 +1,6 @@
 import { type Dispatch, type SetStateAction } from "react"
 import type { MenuItem } from "../../../types/MenuItem"
+import type { CartItem } from "../../../types/Cart"
 import {
   MenuItemContainer,
   MenuItemDescription,
@@ -16,7 +17,7 @@ import {
 
 interface MenuItemProps {
   item: MenuItem
-  setSelectedItem: Dispatch<SetStateAction<MenuItem | undefined>>
+  setSelectedItem: Dispatch<SetStateAction<MenuItem | CartItem | undefined>>
 }
 
 export function MenuItemComponent({ item, setSelectedItem }: MenuItemProps) {
