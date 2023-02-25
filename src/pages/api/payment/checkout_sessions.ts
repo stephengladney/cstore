@@ -2,31 +2,39 @@ import { env } from "../../../env/server.mjs"
 import Stripe from "stripe"
 import type { NextApiRequest, NextApiResponse } from "next"
 const stripe = new Stripe(env.STRIPE_PRIVATE_KEY, { apiVersion: "2022-11-15" })
+import type { CartItem } from "../../../types/Cart.js"
+
+type LineItem = {
+  price: string
+  quantity: number
+}
+
+function getStripeItemPayload(itemsString: string): LineItem[] {
+  return (JSON.parse(itemsString) as CartItem[]).map((item: CartItem) => ({
+    price: item.stripeId as string,
+    quantity: item.quantity,
+  }))
+}
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   if (req.method === "POST") {
+    const { items } = req.body as { items: string }
     try {
       // Create Checkout Sessions from body params.
       const session = await stripe.checkout.sessions.create({
-        line_items: [
-          {
-            // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
-            price: "price_1MXBqXCtOqAVlzo3CA6JDDcD",
-            quantity: 1,
-          },
-          {
-            // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
-            price: "price_1MXCCUCtOqAVlzo3pam0Yl2c",
-            quantity: 1,
-          },
-        ],
+        line_items: getStripeItemPayload(items),
+        // {
+        //   // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
+        //   price: "price_1MXCCUCtOqAVlzo3pam0Yl2c",
+        //   quantity: 1,
+        // },
         mode: "payment",
         success_url: `${req.headers.origin as string}/?success=true`,
         cancel_url: `${req.headers.origin as string}/?canceled=true`,
-        automatic_tax: { enabled: false },
+        automatic_tax: { enabled: true },
       })
       res.redirect(303, session.url as string)
     } catch ({ message }) {

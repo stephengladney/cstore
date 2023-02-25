@@ -1,4 +1,4 @@
-import { Fragment } from "react"
+import { Fragment, useEffect } from "react"
 import { loadStripe } from "@stripe/stripe-js"
 import { env } from "../../env/client.mjs"
 
@@ -28,6 +28,10 @@ interface OrderCartProps {
 export function OrderCart({ cart, editCartItem }: OrderCartProps) {
   const { subtotal, tax, total } = getCheckoutPricingFromCart(cart)
   const { mutate: submitOrder } = api.order.create.useMutation()
+
+  useEffect(() => {
+    console.log(cart.items)
+  }, [cart])
 
   const handleSubmitOrderClick = () => {
     submitOrder({
@@ -64,6 +68,7 @@ export function OrderCart({ cart, editCartItem }: OrderCartProps) {
               style={{ marginTop: "10px" }}
             />
             <form action="/api/payment/checkout_sessions" method="POST">
+              <input name="items" value={JSON.stringify(cart.items)} hidden />
               <CheckoutButton onClick={handleSubmitOrderClick} />
             </form>
           </CheckoutContainer>
