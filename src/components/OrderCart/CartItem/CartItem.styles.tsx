@@ -47,14 +47,18 @@ export function ItemName({ children }: ReactComponents) {
 
 export function ItemQuantity({ children }: ReactComponents) {
   return (
-    <span className="col-span-1 col-start-1 font-poppins font-bold">
+    <span className="col-span-1 col-start-1 font-poppins font-bold text-gray-700">
       {children}
     </span>
   )
 }
 
 export function ItemPrice({ children }: ReactComponents) {
-  return <span className="col-span-2 text-right font-poppins">{children}</span>
+  return (
+    <span className="col-span-2 text-right font-poppins text-gray-700">
+      {children}
+    </span>
+  )
 }
 
 export function RemoveItemButtonContainer({ children }: ReactComponents) {

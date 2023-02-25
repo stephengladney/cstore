@@ -55,12 +55,8 @@ export function OrderCart({ cart, editCartItem }: OrderCartProps) {
             ))}
           </CartItemsContainer>
           <CheckoutContainer>
-            <CartPricing
-              label="Subtotal"
-              amount={subtotal}
-              style={{ color: "#666" }}
-            />
-            <CartPricing label="Tax" amount={tax} style={{ color: "#666" }} />
+            <CartPricing label="Subtotal" amount={subtotal} />
+            <CartPricing label="Tax" amount={tax} />
             <CartPricing
               isBig
               amount={total}
