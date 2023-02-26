@@ -1,4 +1,4 @@
-import type { MutableRefObject } from "react"
+import { type MutableRefObject, useContext } from "react"
 import type { PopupActions } from "reactjs-popup/dist/types"
 import Popup from "reactjs-popup"
 import type { Cart } from "../../types/Cart"
@@ -10,6 +10,7 @@ import {
 import { CartPricing } from "../OrderCart/CartPricing/CartPricing"
 import { CartItemComponent } from "../OrderCart/CartItem/CartItem"
 import { getCheckoutPricingFromCart } from "../../lib/order"
+import { storeContext } from "../../contexts/storeContext"
 import { api } from "../../utils/api"
 import {
   ModalContent,
@@ -28,6 +29,7 @@ export function ModalOrderCart({
 }) {
   const { subtotal, tax, total } = getCheckoutPricingFromCart(cart)
   const { mutate: submitOrder } = api.order.create.useMutation()
+  const store = useContext(storeContext)
 
   const handleSubmitOrderClick = () => {
     submitOrder({
@@ -45,7 +47,10 @@ export function ModalOrderCart({
       <ModalWrapper>
         <ModalContent>
           <CloseButton closeModal={closeModal} />
-          <h1 className="mb-8 block text-center font-poppins text-3xl font-bold text-valero">
+          <h1
+            className="mb-8 block text-center font-poppins text-3xl font-bold"
+            style={{ color: store.color }}
+          >
             Your Cart
           </h1>
           <CartItemsContainer>

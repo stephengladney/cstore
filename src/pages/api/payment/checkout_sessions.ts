@@ -21,11 +21,6 @@ export default async function handler(
       // Create Checkout Sessions from body params.
       const session = await stripe.checkout.sessions.create({
         line_items: getStripeItemPayload(items),
-        // {
-        //   // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
-        //   price: "price_1MXCCUCtOqAVlzo3pam0Yl2c",
-        //   quantity: 1,
-        // },
         mode: "payment",
         success_url: `${req.headers.origin as string}/?success=true`,
         cancel_url: `${req.headers.origin as string}/?canceled=true`,

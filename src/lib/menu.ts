@@ -45,7 +45,7 @@ export function getMenuItemsFromCsv(text: string): DbMenuItem[] {
   })
 }
 
-export async function seedItems(items: DbMenuItem[]) {
+export async function createItemsInDatabase(items: DbMenuItem[]) {
   for (let i = 0; i < items.length; i++) {
     try {
       await prisma.menuItem.create({ data: items[i]! })
@@ -57,117 +57,9 @@ export async function seedItems(items: DbMenuItem[]) {
   await prisma.$disconnect()
 }
 
-export async function seedDatabase() {
-  await seedItems(getMenuItemsFromCsv(csvText))
+export async function csvToDatabase() {
+  await createItemsInDatabase(getMenuItemsFromCsv(csvText))
 }
-
-export const dummyItems: Omit<MenuItem, "id">[] = [
-  {
-    categoryName: "Drinks",
-    name: "Coca-Cola",
-    imageUrl: "/cocacola.png",
-    isAvailable: true,
-    price: 3,
-    description: "20oz bottle",
-  },
-  {
-    categoryName: "Drinks",
-    name: "Diet Coke",
-    imageUrl: "/dietcoke.jpeg",
-    isAvailable: true,
-    price: 3,
-    description: "20oz bottle",
-  },
-  {
-    categoryName: "Drinks",
-    name: "Sprite",
-    imageUrl: "/sprite.png",
-    isAvailable: true,
-    price: 3,
-    description: "20oz bottle",
-  },
-  {
-    categoryName: "Drinks",
-    name: "Dr. Pepper",
-    imageUrl: "/drpepper.png",
-    isAvailable: true,
-    price: 3,
-    description: "20oz bottle",
-  },
-  {
-    categoryName: "Drinks",
-    name: "Dasani Water",
-    imageUrl: "/dasani.png",
-    isAvailable: true,
-    price: 3,
-    description: "20oz bottle",
-  },
-  {
-    categoryName: "Drinks",
-    name: "Powerade Fruit Punch",
-    imageUrl: "/powerade.jpeg",
-    isAvailable: true,
-    price: 3,
-    description: "20oz bottle",
-  },
-  {
-    categoryName: "Candy",
-    name: "Snickers",
-    description: "This is the best thing ever",
-    imageUrl: "/snickers.png",
-    isAvailable: true,
-    price: 2.75,
-  },
-  {
-    categoryName: "Candy",
-    name: "Milky Way",
-    imageUrl: "/milkyway.png",
-    isAvailable: true,
-    price: 2.75,
-  },
-  {
-    categoryName: "Candy",
-    name: "Twix",
-    imageUrl: "/twix.png",
-    isAvailable: true,
-    price: 2.75,
-  },
-  {
-    categoryName: "Candy",
-    name: "Reese's Cup",
-    imageUrl: "/reeses.png",
-    isAvailable: true,
-    price: 2.75,
-  },
-  {
-    categoryName: "Chips",
-    name: "Lays Classic",
-    imageUrl: "/laysclassic.png",
-    isAvailable: true,
-    price: 2.75,
-  },
-  {
-    categoryName: "Chips",
-    name: "Lays Barbecue",
-    imageUrl: "/laysbbq.png",
-    isAvailable: true,
-    price: 2.75,
-  },
-  {
-    categoryName: "Chips",
-    name: "Lays Salt and Vinegar",
-    imageUrl: "/layssnv.png",
-    isAvailable: true,
-    price: 2.75,
-  },
-  {
-    categoryName: "Chips",
-    name: "Lays Sour Cream and Onion",
-    imageUrl: "/layssourcream.png",
-    isAvailable: true,
-    price: 2.75,
-  },
-]
 
 export function getMenuFromApiMenuItems(items: MenuItem[]): Menu {
   const categories: { [key: string]: MenuItem[] } = {}
