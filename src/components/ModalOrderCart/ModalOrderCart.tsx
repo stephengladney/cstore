@@ -78,6 +78,7 @@ export function ModalOrderCart({
                 style={{ marginTop: "10px" }}
               />
               <form action="/api/payment/checkout_sessions" method="POST">
+                <input name="items" value={JSON.stringify(cart.items)} hidden />
                 <CheckoutButton onClick={handleSubmitOrderClick} />
               </form>
             </CheckoutContainer>
