@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next"
-import { seedDatabase } from "../../lib/menu"
+import { csvToDatabase } from "../../lib/menu"
 
 export default async function handler(
   req: NextApiRequest,
@@ -7,7 +7,7 @@ export default async function handler(
 ) {
   if (req.method === "GET") {
     try {
-      await seedDatabase()
+      await csvToDatabase()
       res.send("SEED COMPLETED")
     } catch ({ message }) {
       res.status(500).json(message as string)
