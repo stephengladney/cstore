@@ -64,7 +64,12 @@ export function OrderCart({ cart, editCartItem }: OrderCartProps) {
               style={{ marginTop: "10px" }}
             />
             <form action="/api/payment/checkout_sessions" method="POST">
-              <input name="items" value={JSON.stringify(cart.items)} hidden />
+              <input
+                name="items"
+                value={JSON.stringify(cart.items)}
+                readOnly
+                hidden
+              />
               <CheckoutButton onClick={handleSubmitOrderClick} />
             </form>
           </CheckoutContainer>
