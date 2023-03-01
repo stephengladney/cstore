@@ -5,6 +5,7 @@ import { api } from "../../utils/api"
 import type { MenuItem } from "../../types/MenuItem"
 import type { CartItem } from "../../types/Cart"
 import { storeContext } from "../../contexts/storeContext"
+import { LoadingSpinner } from "../LoadingSpinner/LoadingSpinner"
 
 interface MenuProps {
   setSelectedItem: Dispatch<SetStateAction<MenuItem | CartItem | undefined>>
@@ -12,21 +13,31 @@ interface MenuProps {
 
 export function OrderingMenu({ setSelectedItem }: MenuProps) {
   const store = useContext(storeContext)
-  const { data: menu } = api.menu.getByStoreId.useQuery({ id: store.id })
+  const { data: menu, isLoading } = api.menu.getByStoreId.useQuery({
+    id: store.id,
+  })
 
-  return menu ? (
-    <MenuContainer>
-      {menu.categories!.map((category, i) => (
-        <Fragment key={`menu-category-${category.name}`}>
-          <MenuCategoryComponent
-            items={category.items}
-            name={category.name}
-            setSelectedItem={setSelectedItem}
-          />
-          {i !== menu.categories!.length - 1 && <CategoryDivider />}
-        </Fragment>
-      ))}
-      <div style={{ minHeight: "100px" }} />
-    </MenuContainer>
-  ) : null
+  if (isLoading)
+    return (
+      <div className="mt-[200px]">
+        <LoadingSpinner />
+      </div>
+    )
+  else if (menu)
+    return (
+      <MenuContainer>
+        {menu.categories!.map((category, i) => (
+          <Fragment key={`menu-category-${category.name}`}>
+            <MenuCategoryComponent
+              items={category.items}
+              name={category.name}
+              setSelectedItem={setSelectedItem}
+            />
+            {i !== menu.categories!.length - 1 && <CategoryDivider />}
+          </Fragment>
+        ))}
+        <div style={{ minHeight: "100px" }} />
+      </MenuContainer>
+    )
+  else return <div>Error</div>
 }
