@@ -13,10 +13,17 @@ import type { Store } from "../types/Store"
 import { PrismaClient } from "@prisma/client"
 import { StoreProvider } from "../contexts/storeContext"
 import { getCookie, hasCookie } from "cookies-next"
+import { pathToFileURL } from "url"
 
 const prisma = new PrismaClient()
 
-const StoreHome: NextPage<{ store: Store }> = ({ store }: { store: Store }) => {
+const StoreHome: NextPage<{ store: Store }> = ({
+  callback,
+  store,
+}: {
+  callback?: string
+  store: Store
+}) => {
   const [cartState, dispatch] = useReducer(reducer, initialCartState)
 
   useEffect(() => {
@@ -60,21 +67,26 @@ const StoreHome: NextPage<{ store: Store }> = ({ store }: { store: Store }) => {
 export default StoreHome
 
 export async function getServerSideProps({ req }: { req: NextRequest }) {
+  const propsToReturn = { props: { store: {}, callback: {} } }
   try {
-    const regExMatch = /\/([a-z]+)/.exec(req.url)
-    const pathSlug = regExMatch ? regExMatch[1] : ""
-    const store = await prisma.store.findFirst({
-      where: { slug: pathSlug || "" },
-    })
-    await prisma.$disconnect()
-    if (store) {
+    const regExMatch = /\/([a-z]+)(\?.+)?/.exec(req.url)
+    const pathSlug = regExMatch ? regExMatch[1] : null
+    const callback = regExMatch ? regExMatch[2]?.substring(1) : null
+
+    if (pathSlug) {
+      const store = await prisma.store.findFirst({
+        where: { slug: pathSlug || "" },
+      })
+      await prisma.$disconnect()
       const { id, color, name, address, slug } = store
-      return { props: { store: { id, color, name, address, slug } } }
-    } else {
-      return { props: {} }
+      propsToReturn.props.store = { id, color, name, address, slug } || {}
     }
+    if (callback) {
+      propsToReturn.props.callback = callback
+    }
+    return propsToReturn
   } catch (e) {
-    return { props: {} }
+    return propsToReturn
   }
 }
 
