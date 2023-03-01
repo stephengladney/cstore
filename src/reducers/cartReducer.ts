@@ -37,22 +37,22 @@ interface CartAction {
 export function reducer(state: CartState, action: CartAction): CartState {
   switch (action.type) {
     case ActionTypes.ADD_ITEM:
-      setCookie(
-        "swiftCart",
-        JSON.stringify({ items: [...state.items, action.payload as CartItem] })
-      )
-      return {
+      const newCartAfterAdd = {
         items: [...state.items, action.payload as CartItem],
       }
+      setCookie("swiftCart", JSON.stringify(newCartAfterAdd))
+      return newCartAfterAdd
 
     case ActionTypes.REMOVE_ITEM:
       const newItems = [...state.items]
       newItems.splice(Number(action.payload), 1)
+      setCookie("swiftCart", JSON.stringify({ items: newItems }))
       return { items: newItems }
     case ActionTypes.EDIT_CART_ITEM:
       const newItemsForEdit = [...state.items]
       const editItemPayload = action.payload as EditItemPayload
       newItemsForEdit[editItemPayload.index] = editItemPayload.newItem
+      setCookie("swiftCart", JSON.stringify({ items: newItemsForEdit }))
       return { items: newItemsForEdit }
     case ActionTypes.RESTORE_CART:
       const itemsParsed = (
