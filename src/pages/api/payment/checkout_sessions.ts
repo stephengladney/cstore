@@ -20,14 +20,21 @@ export default async function handler(
   res: NextApiResponse
 ) {
   if (req.method === "POST") {
-    const { items } = req.body as { items: string }
+    const { items, storeSlug } = req.body as {
+      items: string
+      storeSlug: string
+    }
     try {
       // Create Checkout Sessions from body params.
       const session = await stripe.checkout.sessions.create({
         line_items: getStripeItemPayload(items),
         mode: "payment",
-        success_url: `${req.headers.origin as string}/?success=true`,
-        cancel_url: `${req.headers.origin as string}/?canceled=true`,
+        success_url: `${
+          req.headers.origin as string
+        }/${storeSlug}/?success=true`,
+        cancel_url: `${
+          req.headers.origin as string
+        }/${storeSlug}/?canceled=true`,
         automatic_tax: { enabled: true },
       })
       res.redirect(303, session.url as string)

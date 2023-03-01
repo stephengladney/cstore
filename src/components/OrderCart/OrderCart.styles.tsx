@@ -38,7 +38,7 @@ export function CheckoutButton({ onClick }: { onClick: () => void }) {
       <button
         className={`bold w-[300px] rounded-full p-5 font-poppins font-bold text-slate-50`}
         style={{ backgroundColor: store.color }}
-        // onClick={onClick}
+        onClick={onClick}
         type="submit"
       >
         Checkout

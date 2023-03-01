@@ -61,8 +61,11 @@ export default StoreHome
 
 export async function getServerSideProps({ req }: { req: NextRequest }) {
   try {
-    const pathSlug = req.url.substring(1)
-    const store = await prisma.store.findFirst({ where: { slug: pathSlug } })
+    const regExMatch = /\/([a-z]+)/.exec(req.url)
+    const pathSlug = regExMatch ? regExMatch[1] : ""
+    const store = await prisma.store.findFirst({
+      where: { slug: pathSlug || "" },
+    })
     await prisma.$disconnect()
     if (store) {
       const { id, color, name, address, slug } = store

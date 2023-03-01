@@ -1,4 +1,4 @@
-import { Fragment } from "react"
+import { Fragment, useContext } from "react"
 import { loadStripe } from "@stripe/stripe-js"
 import { env } from "../../env/client.mjs"
 import {
@@ -10,11 +10,11 @@ import {
   CartContainer,
 } from "./OrderCart.styles"
 import { CartPricing } from "./CartPricing/CartPricing"
-import type { NextRequest } from "next/server"
 import { CartItemComponent } from "./CartItem/CartItem"
 import type { Cart } from "../../types/Cart"
 import { api } from "../../utils/api"
 import { getCheckoutPricingFromCart } from "../../lib/order"
+import { storeContext } from "../../contexts/storeContext"
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const stripeKeyToUse =
@@ -32,6 +32,7 @@ interface OrderCartProps {
 export function OrderCart({ cart, editCartItem }: OrderCartProps) {
   const { subtotal, tax, total } = getCheckoutPricingFromCart(cart)
   const { mutate: submitOrder } = api.order.create.useMutation()
+  const { slug } = useContext(storeContext)
 
   const handleSubmitOrderClick = () => {
     submitOrder({
@@ -74,6 +75,7 @@ export function OrderCart({ cart, editCartItem }: OrderCartProps) {
                 readOnly
                 hidden
               />
+              <input name="storeSlug" value={slug} readOnly hidden />
               <CheckoutButton onClick={handleSubmitOrderClick} />
             </form>
           </CheckoutContainer>
