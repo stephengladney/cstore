@@ -1,7 +1,6 @@
-import { Fragment, useEffect } from "react"
+import { Fragment } from "react"
 import { loadStripe } from "@stripe/stripe-js"
 import { env } from "../../env/client.mjs"
-
 import {
   CartHeader,
   CartItemsContainer,
@@ -11,14 +10,19 @@ import {
   CartContainer,
 } from "./OrderCart.styles"
 import { CartPricing } from "./CartPricing/CartPricing"
-
+import type { NextRequest } from "next/server"
 import { CartItemComponent } from "./CartItem/CartItem"
 import type { Cart } from "../../types/Cart"
 import { api } from "../../utils/api"
 import { getCheckoutPricingFromCart } from "../../lib/order"
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const stripePromise = loadStripe(env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
+const stripeKeyToUse =
+  env.NEXT_PUBLIC_DEV_MODE === "true"
+    ? env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY_TEST
+    : env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+
+const stripePromise = loadStripe(stripeKeyToUse)
 
 interface OrderCartProps {
   cart: Cart
