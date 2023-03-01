@@ -48,12 +48,14 @@ export function reducer(state: CartState, action: CartAction): CartState {
       newItems.splice(Number(action.payload), 1)
       setCookie("swiftCart", JSON.stringify({ items: newItems }))
       return { items: newItems }
+
     case ActionTypes.EDIT_CART_ITEM:
       const newItemsForEdit = [...state.items]
       const editItemPayload = action.payload as EditItemPayload
       newItemsForEdit[editItemPayload.index] = editItemPayload.newItem
       setCookie("swiftCart", JSON.stringify({ items: newItemsForEdit }))
       return { items: newItemsForEdit }
+
     case ActionTypes.RESTORE_CART:
       const itemsParsed = (
         JSON.parse(action.payload as RestoreCartPayload) as CartState
