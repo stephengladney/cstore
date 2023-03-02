@@ -33,21 +33,23 @@ export function CheckoutContainer({ children }: ReactComponents) {
 
 export function CheckoutButton({
   isDisabled,
+  isLoading,
   onClick,
 }: {
   isDisabled: boolean
+  isLoading: boolean
   onClick: () => void
 }) {
   const store = useContext(storeContext)
   return (
     <div className="mt-6 mb-2 flex w-full flex-row justify-center ">
       <button
-        className={`bold w-[300px] rounded-full p-5 font-poppins font-bold text-slate-50`}
+        className={`bold flex w-[300px] items-center justify-center rounded-full p-5 font-poppins font-bold text-slate-50`}
         style={{ backgroundColor: isDisabled ? "#ccc" : store.color }}
         onClick={!isDisabled ? onClick : () => null}
         type="submit"
       >
-        Checkout
+        {isLoading && <span className="loader-white mr-2"></span>}Checkout
       </button>
     </div>
   )

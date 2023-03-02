@@ -39,14 +39,17 @@ export function reducer(state: cart, action: CartAction): cart {
         items: [...state.items, action.payload as CartItem],
         slug: state.slug,
       }
-      setCookie(`swiftCart_${state.slug}`, JSON.stringify(newCartAfterAdd))
+      setCookie(
+        `swiftCart_${state.slug}`,
+        JSON.stringify({ items: newCartAfterAdd.items })
+      )
       return newCartAfterAdd
 
     case ActionTypes.REMOVE_ITEM:
       const newItems = [...state.items]
       newItems.splice(Number(action.payload), 1)
       setCookie(`swiftCart_${state.slug}`, JSON.stringify({ items: newItems }))
-      return { items: newItems, slug: "" }
+      return { items: newItems, slug: state.slug }
 
     case ActionTypes.EDIT_CART_ITEM:
       const newItemsEdit = [...state.items]
@@ -56,7 +59,7 @@ export function reducer(state: cart, action: CartAction): cart {
         `swiftCart_${state.slug}`,
         JSON.stringify({ items: newItemsEdit })
       )
-      return { items: newItemsEdit, slug: "" }
+      return { items: newItemsEdit, slug: state.slug }
 
     case ActionTypes.RESTORE_CART:
       const itemsParsed = (
@@ -64,7 +67,7 @@ export function reducer(state: cart, action: CartAction): cart {
       ).items
       return {
         items: itemsParsed,
-        slug: "",
+        slug: state.slug,
       }
   }
 }

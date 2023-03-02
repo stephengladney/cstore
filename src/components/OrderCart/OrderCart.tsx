@@ -68,6 +68,7 @@ export function OrderCart({ cart, editCartItem }: OrderCartProps) {
               <CheckoutButton
                 onClick={() => setIsRedirecting(true)}
                 isDisabled={isRedirecting}
+                isLoading={isRedirecting}
               />
             </form>
           </CheckoutContainer>
