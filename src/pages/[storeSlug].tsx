@@ -84,11 +84,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       propsToReturn.props.store = { id, color, name, address, slug }
     }
 
-    if (context.query.canceled) {
-      propsToReturn.props.callback = "canceled"
-    } else if (context.query.success) {
-      propsToReturn.props.callback = "success"
-    }
+    if (context.query.success) propsToReturn.props.callback = "success"
 
     return propsToReturn
   } catch (e) {
