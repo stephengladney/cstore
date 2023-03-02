@@ -1,11 +1,9 @@
 import type { CartItem } from "../types/Cart"
 import { setCookie } from "cookies-next"
-export const initialCartState: CartState = { items: [] } as {
-  items: CartItem[]
-}
 
 export interface CartState {
   items: CartItem[]
+  slug: string
 }
 
 export const ActionTypes = {
@@ -39,22 +37,26 @@ export function reducer(state: CartState, action: CartAction): CartState {
     case ActionTypes.ADD_ITEM:
       const newCartAfterAdd = {
         items: [...state.items, action.payload as CartItem],
+        slug: state.slug,
       }
-      setCookie("swiftCart", JSON.stringify(newCartAfterAdd))
+      setCookie(`swiftCart_${state.slug}`, JSON.stringify(newCartAfterAdd))
       return newCartAfterAdd
 
     case ActionTypes.REMOVE_ITEM:
       const newItems = [...state.items]
       newItems.splice(Number(action.payload), 1)
-      setCookie("swiftCart", JSON.stringify({ items: newItems }))
-      return { items: newItems }
+      setCookie(`swiftCart_${state.slug}`, JSON.stringify({ items: newItems }))
+      return { items: newItems, slug: "" }
 
     case ActionTypes.EDIT_CART_ITEM:
       const newItemsForEdit = [...state.items]
       const editItemPayload = action.payload as EditItemPayload
       newItemsForEdit[editItemPayload.index] = editItemPayload.newItem
-      setCookie("swiftCart", JSON.stringify({ items: newItemsForEdit }))
-      return { items: newItemsForEdit }
+      setCookie(
+        `swiftCart_${state.slug}`,
+        JSON.stringify({ items: newItemsForEdit })
+      )
+      return { items: newItemsForEdit, slug: "" }
 
     case ActionTypes.RESTORE_CART:
       const itemsParsed = (
@@ -62,6 +64,7 @@ export function reducer(state: CartState, action: CartAction): CartState {
       ).items
       return {
         items: itemsParsed,
+        slug: "",
       }
   }
 }
