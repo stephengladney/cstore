@@ -75,6 +75,7 @@ export function ModalOrderCart({
                 <CheckoutButton
                   onClick={() => setIsRedirecting(true)}
                   isDisabled={isRedirecting}
+                  isLoading={isRedirecting}
                 />
               </form>
             </CheckoutContainer>
