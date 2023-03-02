@@ -1,4 +1,4 @@
-import { type MutableRefObject, useContext } from "react"
+import { type MutableRefObject, useContext, useState } from "react"
 import type { PopupActions } from "reactjs-popup/dist/types"
 import Popup from "reactjs-popup"
 import type { Cart } from "../../types/Cart"
@@ -11,7 +11,6 @@ import { CartPricing } from "../OrderCart/CartPricing/CartPricing"
 import { CartItemComponent } from "../OrderCart/CartItem/CartItem"
 import { getCheckoutPricingFromCart } from "../../lib/order"
 import { storeContext } from "../../contexts/storeContext"
-import { api } from "../../utils/api"
 import {
   ModalContent,
   ModalWrapper,
@@ -28,19 +27,8 @@ export function ModalOrderCart({
   modalRef: MutableRefObject<PopupActions>
 }) {
   const { subtotal, tax, total } = getCheckoutPricingFromCart(cart)
-  const { mutate: submitOrder } = api.order.create.useMutation()
   const store = useContext(storeContext)
-
-  const handleSubmitOrderClick = () => {
-    submitOrder({
-      customerName: "Test",
-      customerPhone: "404-123-4567",
-      items: cart.items,
-      subtotal,
-      tax,
-      total,
-    })
-  }
+  const [isRedirecting, setIsRedirecting] = useState(false)
 
   return (
     <Popup ref={modalRef}>
@@ -84,7 +72,10 @@ export function ModalOrderCart({
                   readOnly
                   hidden
                 />
-                <CheckoutButton onClick={handleSubmitOrderClick} />
+                <CheckoutButton
+                  onClick={() => setIsRedirecting(true)}
+                  isDisabled={isRedirecting}
+                />
               </form>
             </CheckoutContainer>
           </CartItemsContainer>

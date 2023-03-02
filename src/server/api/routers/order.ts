@@ -24,17 +24,18 @@ export const orderRouter = createTRPCRouter({
         subtotal: z.number(),
         tax: z.number(),
         total: z.number(),
+        storeId: z.number(),
       })
     )
     .mutation(async ({ input, ctx }) => {
       try {
         const { id } = await ctx.prisma.order.create({ data: input })
-        await SendGrid.send({
-          to: "stephengladney@gmail.com",
-          from: "cstoreonlineorders@gmail.com",
-          subject: `Online Order #${id}`,
-          html: getEmailBodyFromCart(input),
-        })
+        // await SendGrid.send({
+        //   to: "stephengladney@gmail.com",
+        //   from: "cstoreonlineorders@gmail.com",
+        //   subject: `Online Order #${id}`,
+        //   html: getEmailBodyFromCart(input),
+        // })
       } catch (e) {
         return e
       }

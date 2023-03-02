@@ -1,4 +1,4 @@
-import { Fragment, useContext } from "react"
+import { Fragment, useContext, useState } from "react"
 import { loadStripe } from "@stripe/stripe-js"
 import { env } from "../../env/client.mjs"
 import {
@@ -12,7 +12,6 @@ import {
 import { CartPricing } from "./CartPricing/CartPricing"
 import { CartItemComponent } from "./CartItem/CartItem"
 import type { Cart } from "../../types/Cart"
-import { api } from "../../utils/api"
 import { getCheckoutPricingFromCart } from "../../lib/order"
 import { storeContext } from "../../contexts/storeContext"
 
@@ -31,19 +30,9 @@ interface OrderCartProps {
 
 export function OrderCart({ cart, editCartItem }: OrderCartProps) {
   const { subtotal, tax, total } = getCheckoutPricingFromCart(cart)
-  const { mutate: submitOrder } = api.order.create.useMutation()
   const { slug } = useContext(storeContext)
+  const [isRedirecting, setIsRedirecting] = useState(false)
 
-  const handleSubmitOrderClick = () => {
-    submitOrder({
-      customerName: "Test",
-      customerPhone: "404-123-4567",
-      items: cart.items,
-      subtotal,
-      tax,
-      total,
-    })
-  }
   return (
     <CartContainer>
       <CartHeader>Your Order</CartHeader>
@@ -76,7 +65,10 @@ export function OrderCart({ cart, editCartItem }: OrderCartProps) {
                 hidden
               />
               <input name="storeSlug" value={slug} readOnly hidden />
-              <CheckoutButton onClick={handleSubmitOrderClick} />
+              <CheckoutButton
+                onClick={() => setIsRedirecting(true)}
+                isDisabled={isRedirecting}
+              />
             </form>
           </CheckoutContainer>
         </Fragment>

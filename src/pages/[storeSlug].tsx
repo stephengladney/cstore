@@ -2,7 +2,7 @@ import type { GetServerSidePropsContext, NextPage } from "next"
 import Head from "next/head"
 // import { signIn, signOut, useSession } from "next-auth/react"
 import { useEffect, useReducer } from "react"
-import { initialCartState, reducer } from "../reducers/cartReducer"
+import { reducer } from "../reducers/cartReducer"
 import { CartProvider } from "../contexts/cartContext"
 
 import { Header } from "../components/Header/Header"
@@ -23,8 +23,7 @@ const StoreHome: NextPage<{ store: Store }> = ({
   callback?: string
   store: Store
 }) => {
-  console.log(store.slug)
-  const [cartState, dispatch] = useReducer(reducer, {
+  const [cart, dispatch] = useReducer(reducer, {
     items: [],
     slug: store.slug,
   })
@@ -33,16 +32,12 @@ const StoreHome: NextPage<{ store: Store }> = ({
     if (!store) {
       const win: Window = window
       win.location = "https://google.com"
-    }
-  }, [store])
-
-  useEffect(() => {
-    if (hasCookie(`swiftCart_${store.slug}`))
+    } else if (hasCookie(`swiftCart_${store.slug}`))
       dispatch({
         type: "RESTORE_CART",
         payload: getCookie(`swiftCart_${store.slug}`) as string,
       })
-  }, [])
+  }, [store])
 
   if (store) {
     return (
@@ -53,7 +48,7 @@ const StoreHome: NextPage<{ store: Store }> = ({
           <link rel="icon" href="/favicon.ico" />
         </Head>
         <StoreProvider value={store}>
-          <CartProvider value={{ cartState, dispatch }}>
+          <CartProvider value={{ cart, dispatch }}>
             <div className="flex h-screen flex-col">
               <Header store={store} />
               <Body>

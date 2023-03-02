@@ -31,10 +31,8 @@ export default async function handler(
         mode: "payment",
         success_url: `${
           req.headers.origin as string
-        }/${storeSlug}/?success=true`,
-        cancel_url: `${
-          req.headers.origin as string
-        }/${storeSlug}/?canceled=true`,
+        }/${storeSlug}?success=true`,
+        cancel_url: `${req.headers.origin as string}/${storeSlug}`,
         automatic_tax: { enabled: true },
       })
       res.redirect(303, session.url as string)

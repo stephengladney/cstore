@@ -1,7 +1,7 @@
 import type { CartItem } from "../types/Cart"
 import { setCookie } from "cookies-next"
 
-export interface CartState {
+export interface cart {
   items: CartItem[]
   slug: string
 }
@@ -32,7 +32,7 @@ interface CartAction {
   payload: PayloadTypes
 }
 
-export function reducer(state: CartState, action: CartAction): CartState {
+export function reducer(state: cart, action: CartAction): cart {
   switch (action.type) {
     case ActionTypes.ADD_ITEM:
       const newCartAfterAdd = {
@@ -49,18 +49,18 @@ export function reducer(state: CartState, action: CartAction): CartState {
       return { items: newItems, slug: "" }
 
     case ActionTypes.EDIT_CART_ITEM:
-      const newItemsForEdit = [...state.items]
+      const newItemsEdit = [...state.items]
       const editItemPayload = action.payload as EditItemPayload
-      newItemsForEdit[editItemPayload.index] = editItemPayload.newItem
+      newItemsEdit[editItemPayload.index] = editItemPayload.newItem
       setCookie(
         `swiftCart_${state.slug}`,
-        JSON.stringify({ items: newItemsForEdit })
+        JSON.stringify({ items: newItemsEdit })
       )
-      return { items: newItemsForEdit, slug: "" }
+      return { items: newItemsEdit, slug: "" }
 
     case ActionTypes.RESTORE_CART:
       const itemsParsed = (
-        JSON.parse(action.payload as RestoreCartPayload) as CartState
+        JSON.parse(action.payload as RestoreCartPayload) as cart
       ).items
       return {
         items: itemsParsed,
