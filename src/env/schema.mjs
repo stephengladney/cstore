@@ -53,7 +53,6 @@ export const clientSchema = z.object({
   // NEXT_PUBLIC_CLIENTVAR: z.string(),
   NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: z.string(),
   NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY_TEST: z.string(),
-  NEXT_PUBLIC_DEV_MODE: z.string(),
 })
 
 /**
@@ -68,5 +67,4 @@ export const clientEnv = {
     process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
   NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY_TEST:
     process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY_TEST,
-  NEXT_PUBLIC_DEV_MODE: process.env.NEXT_PUBLIC_DEV_MODE,
 }

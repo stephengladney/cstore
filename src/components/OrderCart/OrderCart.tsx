@@ -17,7 +17,7 @@ import { storeContext } from "../../contexts/storeContext"
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const stripeKeyToUse =
-  env.NEXT_PUBLIC_DEV_MODE === "true"
+  process.env.NODE_ENV === "development"
     ? env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY_TEST
     : env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
 
