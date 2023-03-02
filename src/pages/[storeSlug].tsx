@@ -32,11 +32,12 @@ const StoreHome: NextPage<{ store: Store }> = ({
     if (!store) {
       const win: Window = window
       win.location = "https://google.com"
-    } else if (hasCookie(`swiftCart_${store.slug}`))
+    } else if (hasCookie(`swiftCart_${store.slug}`)) {
       dispatch({
         type: "RESTORE_CART",
         payload: getCookie(`swiftCart_${store.slug}`) as string,
       })
+    }
   }, [store])
 
   if (store) {

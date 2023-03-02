@@ -1,8 +1,12 @@
 import { useContext, useEffect } from "react"
 import { cartContext } from "../../contexts/cartContext"
 import { storeContext } from "../../contexts/storeContext"
-import { getCheckoutPricingFromCart, money } from "../../lib/order"
+import { getCheckoutPricingFromCart } from "../../lib/order"
 import { api } from "../../utils/api"
+import { LineItem, PriceLineItem } from "./CallbackHandler.styles"
+import { PricingContainer } from "../OrderCart/CartPricing/CartPricing.styles"
+import { BsBagCheck } from "react-icons/bs"
+import { deleteCookie, hasCookie } from "cookies-next"
 
 interface CallbackHandlerProps {
   callback: string
@@ -14,7 +18,7 @@ export function CallbackHandler({ callback }: CallbackHandlerProps) {
   const store = useContext(storeContext)
 
   useEffect(() => {
-    if (callback === "success" && cart.items.length > 0) {
+    if (cart.items.length > 0) {
       submitOrder({
         customerName: "Test",
         customerPhone: "404-123-4567",
@@ -24,21 +28,37 @@ export function CallbackHandler({ callback }: CallbackHandlerProps) {
         tax,
         total,
       })
+      deleteCookie(`swiftCart_${store.slug}`)
+    } else if (!hasCookie(`swiftCart_${store.slug}`)) {
+      const win: Window = window
+      win.location = `/${store.slug}`
     }
   }, [cart])
   if (callback === "success")
-    return (
-      <div>
-        <h1>Your order from {store.name} has been placed.</h1>
-        {cart.items.map((item, i) => (
-          <div key={i}>
-            {item.quantity}x {item.name} {item.price}
+    if (cart.items.length > 0)
+      return (
+        <div className="flex h-full w-full flex-col items-center justify-center">
+          <div className="mt-[-200px]">
+            <h1 className="text-center text-2xl font-bold">
+              Your order has been placed!
+            </h1>
+            <div className="my-8 flex justify-center">
+              <BsBagCheck size={60} />
+            </div>
+            <div className="mt-8 grid grid-cols-[1fr,5fr,2fr] font-poppins">
+              {cart.items.map((item, i) => (
+                <LineItem key={i} item={item} />
+              ))}
+            </div>
+            <div className="mt-8 font-poppins">
+              <PricingContainer>
+                <PriceLineItem name="Subtotal" amount={subtotal} />
+                <PriceLineItem name="Tax" amount={tax} />
+                <PriceLineItem name="Total" amount={total} />
+              </PricingContainer>
+            </div>
           </div>
-        ))}
-        <div>Subtotal: {money(subtotal)}</div>
-        <div>Tax: {money(tax)}</div>
-        <div>TOTAL: {money(total)}</div>
-      </div>
-    )
-  else return null
+        </div>
+      )
+    else return null
 }
