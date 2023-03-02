@@ -34,31 +34,32 @@ export function CallbackHandler({ callback }: CallbackHandlerProps) {
       win.location = `/${store.slug}`
     }
   }, [cart])
-  if (callback === "success")
-    if (cart.items.length > 0)
-      return (
-        <div className="flex h-full w-full flex-col items-center justify-center">
-          <div className="mt-[-200px]">
-            <h1 className="text-center text-2xl font-bold">
-              Your order has been placed!
-            </h1>
-            <div className="my-8 flex justify-center">
-              <BsBagCheck size={60} />
-            </div>
-            <div className="mt-8 grid grid-cols-[1fr,5fr,2fr] font-poppins">
-              {cart.items.map((item, i) => (
-                <LineItem key={i} item={item} />
-              ))}
-            </div>
-            <div className="mt-8 font-poppins">
-              <PricingContainer>
-                <PriceLineItem name="Subtotal" amount={subtotal} />
-                <PriceLineItem name="Tax" amount={tax} />
-                <PriceLineItem name="Total" amount={total} />
-              </PricingContainer>
-            </div>
+  if (callback === "success" && cart.items.length > 0) {
+    return (
+      <div className="flex h-full w-full flex-col items-center justify-center">
+        <div className="mt-[-200px]">
+          <h1 className="text-center text-2xl font-bold">
+            Your order has been placed!
+          </h1>
+          <div className="my-8 flex justify-center">
+            <BsBagCheck size={60} />
+          </div>
+          <div className="mt-8 grid grid-cols-[1fr,5fr,2fr] font-poppins">
+            {cart.items.map((item, i) => (
+              <LineItem key={i} item={item} />
+            ))}
+          </div>
+          <div className="mt-8 font-poppins">
+            <PricingContainer>
+              <PriceLineItem name="Subtotal" amount={subtotal} />
+              <PriceLineItem name="Tax" amount={tax} />
+              <PriceLineItem name="Total" amount={total} />
+            </PricingContainer>
           </div>
         </div>
-      )
-    else return null
+      </div>
+    )
+  } else {
+    return null
+  }
 }
