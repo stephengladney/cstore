@@ -4,11 +4,14 @@ import type { GetServerSidePropsContext } from "next"
 import { PrismaClient } from "@prisma/client"
 import { api } from "../utils/api"
 import type { CartItem } from "../types/Cart"
+import { useState } from "react"
+import type { Order } from "@prisma/client"
 
 const prisma = new PrismaClient()
 
 const Orders: NextPage<{ store: Store }> = ({ store }: { store: Store }) => {
-  const { data: orders } = api.order.getByStoreId.useQuery(
+  const [orders, setOrders] = useState([] as Order[])
+  const { data: ordersPolled } = api.order.getByStoreId.useQuery(
     {
       id: store.id,
     },
@@ -19,9 +22,17 @@ const Orders: NextPage<{ store: Store }> = ({ store }: { store: Store }) => {
         if (data?.filter((order) => order.id === 208)) {
           console.log("208 found!")
         }
+        setOrders(ordersPolled ?? [])
       },
     }
   )
+
+  const updateOrderLocally = (orders: Order[], orderId: number) => {
+    const index = orders.findIndex((order) => order.id === orderId)
+    const newOrders = [...orders]
+    newOrders[index].status = true
+    setOrders(newOrders)
+  }
 
   return (
     <div className="grid w-screen grid-cols-[1fr,2fr]">
@@ -29,7 +40,10 @@ const Orders: NextPage<{ store: Store }> = ({ store }: { store: Store }) => {
         {orders?.map((order) => (
           <div
             key={order.id}
-            className="border-b-[1px] border-solid border-gray-300 p-4"
+            className={`border-b-[1px] border-solid border-gray-300 p-4 ${
+              !order.status ? "bg-green-300" : "bg-white"
+            }`}
+            onClick={() => updateOrderLocally(orders, order.id)}
           >
             <div className="mb-4 text-2xl font-bold">
               #{order.id} {order.customerName}
