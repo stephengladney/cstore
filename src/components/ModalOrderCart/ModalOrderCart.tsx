@@ -72,6 +72,7 @@ export function ModalOrderCart({
                   readOnly
                   hidden
                 />
+                <input name="storeSlug" value={store.slug} readOnly hidden />
                 <CheckoutButton
                   onClick={() => setIsRedirecting(true)}
                   isDisabled={isRedirecting}

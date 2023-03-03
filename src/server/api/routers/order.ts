@@ -2,6 +2,7 @@ import { number, z } from "zod"
 import { createTRPCRouter, publicProcedure } from "../trpc"
 import { env } from "../../../env/server.mjs"
 import SendGrid from "@sendgrid/mail"
+// import { getEmailBodyForOrder } from "../../../lib/order"
 
 SendGrid.setApiKey(env.SENDGRID_API_KEY)
 
@@ -29,14 +30,16 @@ export const orderRouter = createTRPCRouter({
     .mutation(async ({ input, ctx }) => {
       try {
         const { id } = await ctx.prisma.order.create({ data: input })
-        return id
-
-        // await SendGrid.send({
+        // SendGrid.send({ Not needed since built an orders screen
         //   to: "stephengladney@gmail.com",
         //   from: "cstoreonlineorders@gmail.com",
         //   subject: `Online Order #${id}`,
-        //   html: getEmailBodyForOrder(input),
+        //   html: getEmailBodyForOrder({ id, ...input }),
+        // }).catch(() => {
+        //   //NO-OP
         // })
+
+        return id
       } catch (e) {
         return e
       }
@@ -45,8 +48,11 @@ export const orderRouter = createTRPCRouter({
     .input(z.object({ id: z.number() }))
     .query(async ({ input, ctx }) => {
       const orders = await ctx.prisma.order.findMany({
-        where: { storeId: input.id },
         orderBy: { createdAt: "desc" },
+        where: {
+          storeId: input.id,
+          createdAt: { gte: new Date(new Date().toDateString()) },
+        },
       })
       return orders
     }),
