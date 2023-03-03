@@ -44,11 +44,11 @@ export function getEmailBodyForOrder(order: OrderForParsing): string {
 <tr>
   <td style="text-align: center; border-right: 1px solid gray">
     <div>Placed at</div>
-    <div>2:09 PM EST</div>
+    <div>${new Date().toLocaleTimeString()}</div>
   </td>
   <td style="text-align: center">
     <div>Pickup at</div>
-    <div>2:09 PM EST</div>
+    <div>${new Date().toLocaleTimeString()}</div>
   </td>
 </tr>
 </table>

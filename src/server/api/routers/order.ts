@@ -2,7 +2,6 @@ import { number, z } from "zod"
 import { createTRPCRouter, publicProcedure } from "../trpc"
 import { env } from "../../../env/server.mjs"
 import SendGrid from "@sendgrid/mail"
-import { getEmailBodyForOrder } from "../../../lib/order"
 
 SendGrid.setApiKey(env.SENDGRID_API_KEY)
 
