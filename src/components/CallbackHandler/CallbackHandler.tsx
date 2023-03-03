@@ -1,7 +1,7 @@
 import { useContext, useEffect } from "react"
 import { cartContext } from "../../contexts/cartContext"
 import { storeContext } from "../../contexts/storeContext"
-import { getCheckoutPricingFromCart } from "../../lib/order"
+import { getCheckoutPricingFromCartItems } from "../../lib/order"
 import { api } from "../../utils/api"
 import { LineItem, PriceLineItem } from "./CallbackHandler.styles"
 import { PricingContainer } from "../OrderCart/CartPricing/CartPricing.styles"
@@ -13,13 +13,13 @@ interface CallbackHandlerProps {
 }
 export function CallbackHandler({ callback }: CallbackHandlerProps) {
   const { cart } = useContext(cartContext)
-  const { subtotal, tax, total } = getCheckoutPricingFromCart(cart)
-  const { mutate: submitOrder } = api.order.create.useMutation()
+  const { subtotal, tax, total } = getCheckoutPricingFromCartItems(cart.items)
+  const { mutate, data } = api.order.create.useMutation()
   const store = useContext(storeContext)
 
   useEffect(() => {
     if (cart.items.length > 0) {
-      submitOrder({
+      mutate({
         customerName: "Test",
         customerPhone: "404-123-4567",
         items: cart.items,
@@ -44,6 +44,9 @@ export function CallbackHandler({ callback }: CallbackHandlerProps) {
           <div className="my-8 flex justify-center">
             <BsBagCheck size={60} />
           </div>
+          <h1 className="text-center font-bold">{`Order #${
+            (data || "...") as string
+          }`}</h1>
           <div className="mt-8 grid grid-cols-[1fr,5fr,2fr] font-poppins">
             {cart.items.map((item, i) => (
               <LineItem key={i} item={item} />

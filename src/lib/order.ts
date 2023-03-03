@@ -1,11 +1,22 @@
-import type { Cart } from "../types/Cart"
+import type { CartItem } from "../types/Cart"
 
-export function getCheckoutPricingFromCart(cart: Cart): {
+export interface OrderForParsing {
+  id: number
+  items: CartItem[]
+  customerName: string
+  customerPhone: string
+  subtotal: number
+  tax: number
+  total: number
+  storeId: number
+}
+
+export function getCheckoutPricingFromCartItems(items: CartItem[]): {
   subtotal: number
   tax: number
   total: number
 } {
-  const subtotal = cart.items.reduce((acc, item) => acc + Number(item.price), 0)
+  const subtotal = items.reduce((acc, item) => acc + Number(item.price), 0)
   const taxRate = 0.09
   const tax = subtotal * taxRate
   const total = subtotal + tax
@@ -17,17 +28,71 @@ export function money(n: number) {
   return `$ ${n.toFixed(2)}`
 }
 
-export function getEmailBodyFromCart(cart: Cart): string {
-  let result = "<table>"
-  const { subtotal, tax, total } = getCheckoutPricingFromCart(cart)
+export function getEmailBodyForOrder(order: OrderForParsing): string {
+  const { items, customerName, id } = order
+  let result = `<h1 style="font-size: 2em; font-family: Verdana, Geneva, Tahoma, sans-serif">
+  #${id} ${customerName}
+</h1>
+<div
+  style="
+    display: inline-block;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    width: 500px;
+  "
+>
+<table style="width: 100%; border: 1px solid gray; margin-bottom: 20px">
+<tr>
+  <td style="text-align: center; border-right: 1px solid gray">
+    <div>Placed at</div>
+    <div>2:09 PM EST</div>
+  </td>
+  <td style="text-align: center">
+    <div>Pickup at</div>
+    <div>2:09 PM EST</div>
+  </td>
+</tr>
+</table>
 
-  cart.items.forEach((item) => {
-    result += `<tr><td>${item.quantity} x</td><td style="width: 100px;">${
+<table
+style="
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: large;
+  width: 100%;
+"
+>
+`
+
+  items.forEach((item) => {
+    result += `<tr><td>${item.quantity} x</td><td">${
       item.name
-    }</td><td>$${Number(item.price).toFixed(2)}</td></tr>`
+    }</td><td style="text-align: right">$${Number(item.price).toFixed(
+      2
+    )}</td></tr>`
   })
-  result += `</table><br />Subtotal: $${Number(subtotal).toFixed(2)}`
-  result += `<br />Tax: $${Number(tax).toFixed(2)}`
-  result += `<br /><br />TOTAL: $${Number(total).toFixed(2)}`
+  result += `
+  </table>
+  <table
+    style="
+      font-family: Verdana, Geneva, Tahoma, sans-serif;
+      font-size: large;
+      margin-top: 40px;
+      width: 100%;
+    "
+  >
+    <tr>
+      <td>Subtotal</td>
+      <td style="text-align: right">$ ${Number(order.subtotal).toFixed(2)}</td>
+    </tr>
+    <tr>
+      <td>Tax</td>
+      <td style="text-align: right">$ ${Number(order.tax).toFixed(2)}</td>
+    </tr>
+    <tr>
+      <td>TOTAL</td>
+      <td style="text-align: right">$ ${Number(order.total).toFixed(2)}</td>
+    </tr>
+  </table>
+</div>
+  `
   return result
 }

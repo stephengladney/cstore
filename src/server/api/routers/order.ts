@@ -2,7 +2,7 @@ import { number, z } from "zod"
 import { createTRPCRouter, publicProcedure } from "../trpc"
 import { env } from "../../../env/server.mjs"
 import SendGrid from "@sendgrid/mail"
-import { getEmailBodyFromCart } from "../../../lib/order"
+import { getEmailBodyForOrder } from "../../../lib/order"
 
 SendGrid.setApiKey(env.SENDGRID_API_KEY)
 
@@ -30,11 +30,13 @@ export const orderRouter = createTRPCRouter({
     .mutation(async ({ input, ctx }) => {
       try {
         const { id } = await ctx.prisma.order.create({ data: input })
+        return id
+
         // await SendGrid.send({
         //   to: "stephengladney@gmail.com",
         //   from: "cstoreonlineorders@gmail.com",
         //   subject: `Online Order #${id}`,
-        //   html: getEmailBodyFromCart(input),
+        //   html: getEmailBodyForOrder(input),
         // })
       } catch (e) {
         return e

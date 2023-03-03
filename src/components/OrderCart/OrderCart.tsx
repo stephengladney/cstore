@@ -12,7 +12,7 @@ import {
 import { CartPricing } from "./CartPricing/CartPricing"
 import { CartItemComponent } from "./CartItem/CartItem"
 import type { Cart } from "../../types/Cart"
-import { getCheckoutPricingFromCart } from "../../lib/order"
+import { getCheckoutPricingFromCartItems } from "../../lib/order"
 import { storeContext } from "../../contexts/storeContext"
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -28,7 +28,7 @@ interface OrderCartProps {
 }
 
 export function OrderCart({ cart, editCartItem }: OrderCartProps) {
-  const { subtotal, tax, total } = getCheckoutPricingFromCart(cart)
+  const { subtotal, tax, total } = getCheckoutPricingFromCartItems(cart.items)
   const { slug } = useContext(storeContext)
   const [isRedirecting, setIsRedirecting] = useState(false)
 

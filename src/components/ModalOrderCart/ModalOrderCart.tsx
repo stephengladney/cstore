@@ -9,7 +9,7 @@ import {
 } from "../OrderCart/OrderCart.styles"
 import { CartPricing } from "../OrderCart/CartPricing/CartPricing"
 import { CartItemComponent } from "../OrderCart/CartItem/CartItem"
-import { getCheckoutPricingFromCart } from "../../lib/order"
+import { getCheckoutPricingFromCartItems } from "../../lib/order"
 import { storeContext } from "../../contexts/storeContext"
 import {
   ModalContent,
@@ -26,7 +26,7 @@ export function ModalOrderCart({
   closeModal: () => void
   modalRef: MutableRefObject<PopupActions>
 }) {
-  const { subtotal, tax, total } = getCheckoutPricingFromCart(cart)
+  const { subtotal, tax, total } = getCheckoutPricingFromCartItems(cart.items)
   const store = useContext(storeContext)
   const [isRedirecting, setIsRedirecting] = useState(false)
 
