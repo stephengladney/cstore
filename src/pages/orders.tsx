@@ -12,7 +12,15 @@ const Orders: NextPage<{ store: Store }> = ({ store }: { store: Store }) => {
     {
       id: store.id,
     },
-    { refetchInterval: 30000 }
+    {
+      refetchInterval: 10000,
+      refetchOnWindowFocus: false,
+      onSettled: (data) => {
+        if (data?.filter((order) => order.id === 208)) {
+          console.log("208 found!")
+        }
+      },
+    }
   )
 
   return (
