@@ -49,7 +49,7 @@ export function CheckoutButton({
         onClick={!isDisabled ? onClick : () => null}
         type="submit"
       >
-        {isLoading && <span className="loader-white mr-2"></span>}Checkout
+        {isLoading && <span className="button-loader mr-2"></span>}Checkout
       </button>
     </div>
   )
