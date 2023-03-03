@@ -27,10 +27,10 @@ export function OrderingContainer({}) {
     orderItemModalRef.current.close()
   }
   const openModal = () => orderItemModalRef.current.open()
-  const { cartState } = useContext(cartContext)
+  const { cart } = useContext(cartContext)
 
   const editCartItem = (itemIndex: number) => {
-    const itemToEdit = cartState.items[itemIndex]
+    const itemToEdit = cart.items[itemIndex]
     if (itemToEdit) {
       setSelectedCartItemIndex(itemIndex)
       setSelectedItem({
@@ -60,7 +60,7 @@ export function OrderingContainer({}) {
           selectedItem={selectedItem}
         />
       </div>
-      <OrderCart cart={cartState} editCartItem={editCartItem} />
+      <OrderCart cart={cart} editCartItem={editCartItem} />
     </>
   )
 }

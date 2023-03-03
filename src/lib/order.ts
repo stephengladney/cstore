@@ -13,6 +13,10 @@ export function getCheckoutPricingFromCart(cart: Cart): {
   return { subtotal, tax, total }
 }
 
+export function money(n: number) {
+  return `$ ${n.toFixed(2)}`
+}
+
 export function getEmailBodyFromCart(cart: Cart): string {
   let result = "<table>"
   const { subtotal, tax, total } = getCheckoutPricingFromCart(cart)

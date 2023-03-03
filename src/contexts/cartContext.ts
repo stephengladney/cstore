@@ -1,9 +1,5 @@
 import { createContext } from "react"
-import type {
-  ActionTypes,
-  CartState,
-  PayloadTypes,
-} from "../reducers/cartReducer"
+import type { ActionTypes, cart, PayloadTypes } from "../reducers/cartReducer"
 
 type DispatchPayload = {
   type: keyof typeof ActionTypes
@@ -14,7 +10,7 @@ export const cartContext = createContext({
   dispatch: (_: DispatchPayload) => {
     items: []
   },
-  cartState: {} as CartState,
+  cart: {} as cart,
 })
 
 export const CartProvider = cartContext.Provider

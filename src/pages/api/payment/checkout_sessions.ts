@@ -1,7 +1,11 @@
 import { env } from "../../../env/server.mjs"
 import Stripe from "stripe"
 import type { NextApiRequest, NextApiResponse } from "next"
-const stripe = new Stripe(env.STRIPE_PRIVATE_KEY, { apiVersion: "2022-11-15" })
+const isDevMode = process.env.NODE_ENV === "development"
+const stripe = new Stripe(
+  isDevMode ? env.STRIPE_PRIVATE_KEY_TEST : env.STRIPE_PRIVATE_KEY,
+  { apiVersion: "2022-11-15" }
+)
 import type { CartItem } from "../../../types/Cart.js"
 
 function getStripeItemPayload(itemsString: string) {
@@ -16,14 +20,19 @@ export default async function handler(
   res: NextApiResponse
 ) {
   if (req.method === "POST") {
-    const { items } = req.body as { items: string }
+    const { items, storeSlug } = req.body as {
+      items: string
+      storeSlug: string
+    }
     try {
       // Create Checkout Sessions from body params.
       const session = await stripe.checkout.sessions.create({
         line_items: getStripeItemPayload(items),
         mode: "payment",
-        success_url: `${req.headers.origin as string}/?success=true`,
-        cancel_url: `${req.headers.origin as string}/?canceled=true`,
+        success_url: `${
+          req.headers.origin as string
+        }/${storeSlug}?success=true`,
+        cancel_url: `${req.headers.origin as string}/${storeSlug}`,
         automatic_tax: { enabled: true },
       })
       res.redirect(303, session.url as string)

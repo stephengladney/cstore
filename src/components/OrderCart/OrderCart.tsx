@@ -1,7 +1,6 @@
-import { Fragment, useEffect } from "react"
+import { Fragment, useContext, useState } from "react"
 import { loadStripe } from "@stripe/stripe-js"
 import { env } from "../../env/client.mjs"
-
 import {
   CartHeader,
   CartItemsContainer,
@@ -11,14 +10,18 @@ import {
   CartContainer,
 } from "./OrderCart.styles"
 import { CartPricing } from "./CartPricing/CartPricing"
-
 import { CartItemComponent } from "./CartItem/CartItem"
 import type { Cart } from "../../types/Cart"
-import { api } from "../../utils/api"
 import { getCheckoutPricingFromCart } from "../../lib/order"
+import { storeContext } from "../../contexts/storeContext"
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const stripePromise = loadStripe(env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
+const stripeKeyToUse =
+  process.env.NODE_ENV === "development"
+    ? env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY_TEST
+    : env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+
+const stripePromise = loadStripe(stripeKeyToUse)
 
 interface OrderCartProps {
   cart: Cart
@@ -27,18 +30,9 @@ interface OrderCartProps {
 
 export function OrderCart({ cart, editCartItem }: OrderCartProps) {
   const { subtotal, tax, total } = getCheckoutPricingFromCart(cart)
-  const { mutate: submitOrder } = api.order.create.useMutation()
+  const { slug } = useContext(storeContext)
+  const [isRedirecting, setIsRedirecting] = useState(false)
 
-  const handleSubmitOrderClick = () => {
-    submitOrder({
-      customerName: "Test",
-      customerPhone: "404-123-4567",
-      items: cart.items,
-      subtotal,
-      tax,
-      total,
-    })
-  }
   return (
     <CartContainer>
       <CartHeader>Your Order</CartHeader>
@@ -70,7 +64,12 @@ export function OrderCart({ cart, editCartItem }: OrderCartProps) {
                 readOnly
                 hidden
               />
-              <CheckoutButton onClick={handleSubmitOrderClick} />
+              <input name="storeSlug" value={slug} readOnly hidden />
+              <CheckoutButton
+                onClick={() => setIsRedirecting(true)}
+                isDisabled={isRedirecting}
+                isLoading={isRedirecting}
+              />
             </form>
           </CheckoutContainer>
         </Fragment>

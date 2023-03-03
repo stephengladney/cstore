@@ -20,7 +20,7 @@ import type { PopupActions } from "reactjs-popup/dist/types"
 import { ModalOrderCart } from "../ModalOrderCart/ModalOrderCart"
 
 export function Header({ store }: { store: Store }) {
-  const { cartState } = useContext(cartContext)
+  const { cart } = useContext(cartContext)
 
   const modalOrderCartRef = useRef<PopupActions>({
     open: () => undefined,
@@ -28,7 +28,7 @@ export function Header({ store }: { store: Store }) {
     toggle: () => undefined,
   })
   const openCartModal = () => {
-    if (cartState.items.length > 0) {
+    if (cart.items.length > 0) {
       modalOrderCartRef.current.open()
     }
   }
@@ -51,16 +51,16 @@ export function Header({ store }: { store: Store }) {
           <IconContext.Provider value={{ color: "#eee" }}>
             <BsCart2 size="1.5em" onClick={openCartModal} />
           </IconContext.Provider>
-          {cartState.items.length > 0 && (
+          {cart.items.length > 0 && (
             <CartBadge
-              itemCount={getCartItemCount(cartState)}
+              itemCount={getCartItemCount(cart)}
               onClick={openCartModal}
             />
           )}
         </HeaderRightCell>
       </MaxWidthContainer>
       <ModalOrderCart
-        cart={cartState}
+        cart={cart}
         closeModal={closeCartModal}
         modalRef={modalOrderCartRef}
       />
