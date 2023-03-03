@@ -21,8 +21,7 @@ const stripeKeyToUse =
     ? env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY_TEST
     : env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
 
-const stripePromise = loadStripe(stripeKeyToUse)
-
+void loadStripe(stripeKeyToUse)
 interface OrderCartProps {
   cart: Cart
   editCartItem: (itemIndex: number) => void
