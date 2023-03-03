@@ -6,11 +6,13 @@ import { api } from "../utils/api"
 import type { CartItem } from "../types/Cart"
 import { useState } from "react"
 import type { Order } from "@prisma/client"
+import useSound from "use-sound"
 
 const prisma = new PrismaClient()
 
 const Orders: NextPage<{ store: Store }> = ({ store }: { store: Store }) => {
   const [orders, setOrders] = useState([] as Order[])
+  // const [play] = useSound("/ding.wav")
   const { data: ordersPolled } = api.order.getByStoreId.useQuery(
     {
       id: store.id,
@@ -20,7 +22,7 @@ const Orders: NextPage<{ store: Store }> = ({ store }: { store: Store }) => {
       refetchOnWindowFocus: false,
       onSettled: (data) => {
         if (data?.filter((order) => order.id === 208)) {
-          console.log("208 found!")
+          // play()
         }
         setOrders(ordersPolled ?? [])
       },
@@ -30,7 +32,7 @@ const Orders: NextPage<{ store: Store }> = ({ store }: { store: Store }) => {
   const updateOrderLocally = (orders: Order[], orderId: number) => {
     const index = orders.findIndex((order) => order.id === orderId)
     const newOrders = [...orders]
-    newOrders[index].status = true
+    newOrders[index]!.isAccepted = true
     setOrders(newOrders)
   }
 
@@ -41,7 +43,7 @@ const Orders: NextPage<{ store: Store }> = ({ store }: { store: Store }) => {
           <div
             key={order.id}
             className={`border-b-[1px] border-solid border-gray-300 p-4 ${
-              !order.status ? "bg-green-300" : "bg-white"
+              !order.isAccepted ? "bg-green-300" : "bg-white"
             }`}
             onClick={() => updateOrderLocally(orders, order.id)}
           >

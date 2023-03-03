@@ -46,6 +46,7 @@ export const orderRouter = createTRPCRouter({
     .query(async ({ input, ctx }) => {
       const orders = await ctx.prisma.order.findMany({
         where: { storeId: input.id },
+        orderBy: { createdAt: "desc" },
       })
       return orders
     }),
