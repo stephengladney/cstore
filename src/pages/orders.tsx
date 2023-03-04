@@ -4,7 +4,7 @@ import type { GetServerSidePropsContext } from "next"
 import { PrismaClient } from "@prisma/client"
 import { api } from "../utils/api"
 import type { CartItem } from "../types/Cart"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import type { Order } from "@prisma/client"
 import useSound from "use-sound"
 import { BiArrowBack } from "react-icons/bi"
@@ -19,22 +19,20 @@ const prisma = new PrismaClient()
 const Orders: NextPage<{ store: Store }> = ({ store }: { store: Store }) => {
   const [orders, setOrders] = useState([] as Order[])
   const [selectedOrder, setSelectedOrder] = useState<Order>()
-  const [play] = useSound("/bell.wav")
-  const { data: ordersPolled } = api.order.getByStoreId.useQuery(
-    {
-      id: store.id,
-    },
-    {
-      refetchInterval: 10000,
-      refetchIntervalInBackground: true,
-      refetchOnWindowFocus: false,
+  const [playAlert] = useSound("/bell.wav")
 
-      onSettled: (data) => {
-        if (data!.filter((order) => !order.isAccepted).length > 0) play()
-        setOrders(ordersPolled ?? [])
-      },
+  api.order.getByStoreId.useQuery(
+    { id: store.id },
+    {
+      refetchInterval: 30000,
+      refetchIntervalInBackground: true,
+      onSettled: (data) => setOrders(data ?? []),
     }
   )
+
+  useEffect(() => {
+    if (orders.filter((order) => !order.isAccepted).length > 0) playAlert()
+  }, [orders])
 
   const updateOrderLocally = (orders: Order[], orderId: number) => {
     const index = orders.findIndex((order) => order.id === orderId)
@@ -67,15 +65,11 @@ const Orders: NextPage<{ store: Store }> = ({ store }: { store: Store }) => {
           <div className="grid grid-cols-[1fr,1fr] rounded-xl border-[1px] border-solid border-slate-500">
             <div className="flex flex-col items-center border-r border-solid border-slate-500 p-2 text-2xl font-bold">
               <div>Placed at</div>
-              <div className="mt-2 font-normal">
-                {new Date().toLocaleTimeString()}
-              </div>
+              <div className="mt-2 font-normal">4:01 PM</div>
             </div>
             <div className="flex flex-col items-center border-r border-solid border-slate-500 p-2 text-2xl font-bold">
               <div>Pickup at</div>
-              <div className="mt-2 font-normal">
-                {new Date().toLocaleTimeString()}
-              </div>
+              <div className="mt-2 font-normal">4:16 PM</div>
             </div>
           </div>
           <div className="mt-8 grid grid-cols-[1fr,5fr,2fr] font-poppins">
@@ -95,6 +89,14 @@ const Orders: NextPage<{ store: Store }> = ({ store }: { store: Store }) => {
                 amount={Number(selectedOrder.total)}
               />
             </PricingContainer>
+          </div>
+          <div className="mt-16 flex flex-row justify-center">
+            <button
+              className="bold flex w-[300px] items-center justify-center rounded-full p-5 font-poppins font-bold text-slate-50"
+              style={{ backgroundColor: store.color }}
+            >
+              Complete Order
+            </button>
           </div>
         </div>
       </div>

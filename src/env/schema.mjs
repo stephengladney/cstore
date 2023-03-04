@@ -24,6 +24,7 @@ export const serverSchema = z.object({
   SENDGRID_API_KEY: z.string(),
   STRIPE_PRIVATE_KEY: z.string(),
   STRIPE_PRIVATE_KEY_TEST: z.string(),
+  STRIPE_CLIENT_ID: z.string(),
 })
 
 /**
@@ -42,6 +43,7 @@ export const serverEnv = {
   SENDGRID_API_KEY: process.env.SENDGRID_API_KEY,
   STRIPE_PRIVATE_KEY: process.env.STRIPE_PRIVATE_KEY,
   STRIPE_PRIVATE_KEY_TEST: process.env.STRIPE_PRIVATE_KEY_TEST,
+  STRIPE_CLIENT_ID: process.env.STRIPE_CLIENT_ID,
 }
 
 /**
