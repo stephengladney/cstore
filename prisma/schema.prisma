@@ -85,15 +85,17 @@ model Order {
 }
 
 model Store {
-    id        Int      @id @default(autoincrement())
-    name      String
-    address   String
-    slug      String
-    color     String   @default("#000")
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-    Menu      Menu[]
-    Order     Order[]
+    id                Int      @id @default(autoincrement())
+    name              String
+    address           String
+    slug              String
+    color             String   @default("#000")
+    stripeAccountId   String?
+    stripeAccessToken String?
+    createdAt         DateTime @default(now())
+    updatedAt         DateTime @updatedAt
+    Menu              Menu[]
+    Order             Order[]
 }
 
 model Session {

@@ -12,7 +12,11 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     try {
       res.redirect(
         303,
-        `https://connect.stripe.com/oauth/authorize?response_type=code&client_id=${env.STRIPE_CLIENT_ID}&scope=read_write&redirect_uri=http://localhost:3000/api/stripe/callback&state=${req.query.storeSlug}`
+        `https://connect.stripe.com/oauth/authorize?response_type=code&client_id=${
+          env.STRIPE_CLIENT_ID
+        }&scope=read_write&redirect_uri=http://localhost:3000/api/stripe/callback&state=${
+          req.query.id as string
+        }`
       )
     } catch ({ message }) {
       res.status(500).json(message as string)

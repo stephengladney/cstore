@@ -29,7 +29,7 @@ interface OrderCartProps {
 
 export function OrderCart({ cart, editCartItem }: OrderCartProps) {
   const { subtotal, tax, total } = getCheckoutPricingFromCartItems(cart.items)
-  const { slug } = useContext(storeContext)
+  const store = useContext(storeContext)
   const [isRedirecting, setIsRedirecting] = useState(false)
 
   return (
@@ -63,7 +63,13 @@ export function OrderCart({ cart, editCartItem }: OrderCartProps) {
                 readOnly
                 hidden
               />
-              <input name="storeSlug" value={slug} readOnly hidden />
+              <input name="storeSlug" value={store.slug} readOnly hidden />
+              <input
+                name="stripeAccountId"
+                value={store.stripeAccountId}
+                readOnly
+                hidden
+              />
               <CheckoutButton
                 onClick={() => setIsRedirecting(true)}
                 isDisabled={isRedirecting}
