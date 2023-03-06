@@ -31,7 +31,7 @@ const StoreHome: NextPage<{ store: Store }> = ({
   useEffect(() => {
     if (!store) {
       const win: Window = window
-      win.location = "https://google.com"
+      win.location = "/"
     } else if (hasCookie(`swiftCart_${store.slug}`)) {
       dispatch({
         type: "RESTORE_CART",
