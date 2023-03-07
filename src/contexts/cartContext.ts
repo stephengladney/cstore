@@ -11,6 +11,7 @@ export const cartContext = createContext({
     items: []
   },
   cart: {} as cart,
+  openCartModal: () => undefined as void,
 })
 
 export const CartProvider = cartContext.Provider

@@ -17,6 +17,8 @@ import {
   CloseButton,
 } from "./ModalOrderCart.styles"
 
+const FulfillmentMethods = { PICKUP: "PICKUP", DELIVERY: "DELIVERY" } as const
+
 export function ModalOrderCart({
   cart,
   closeModal,
@@ -29,6 +31,8 @@ export function ModalOrderCart({
   const { subtotal, tax, total } = getCheckoutPricingFromCartItems(cart.items)
   const store = useContext(storeContext)
   const [isRedirecting, setIsRedirecting] = useState(false)
+  const [fulfillmentMethod, setFulfillmentMethod] =
+    useState<keyof typeof FulfillmentMethods>("PICKUP")
 
   return (
     <Popup ref={modalRef}>
@@ -65,6 +69,36 @@ export function ModalOrderCart({
                 label="Total"
                 style={{ marginTop: "10px" }}
               />
+              <div className="py-12">
+                <ul className="flex flex-row justify-around">
+                  <li
+                    className={`text-slate- w-48 cursor-pointer
+                     rounded-full border-2 border-solid border-slate-400 p-3 text-center font-poppins font-bold text-slate-400`}
+                    onClick={() => setFulfillmentMethod("PICKUP")}
+                    style={
+                      fulfillmentMethod === "PICKUP"
+                        ? {
+                            borderColor: store.color,
+                            color: store.color,
+                          }
+                        : {}
+                    }
+                  >
+                    Pickup
+                  </li>
+                  <li
+                    className={`w-48 cursor-pointer rounded-full border-2 border-solid border-slate-400 p-3 text-center font-poppins font-bold text-slate-400`}
+                    onClick={() => setFulfillmentMethod("DELIVERY")}
+                    style={
+                      fulfillmentMethod === "DELIVERY"
+                        ? { borderColor: store.color, color: store.color }
+                        : {}
+                    }
+                  >
+                    Delivery
+                  </li>
+                </ul>
+              </div>
               <form action="/api/payment/checkout_sessions" method="POST">
                 <input
                   name="items"

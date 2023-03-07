@@ -12,13 +12,12 @@ const Home: NextPage = () => {
           Fared | Commission-free ordering and delivery for convenience stores
         </title>
       </Head>
-
       <div className="flex h-screen w-screen flex-col items-center justify-start bg-red-600 font-bold">
         <div className="sticky top-0 flex w-screen flex-row items-center bg-slate-100  p-6 lg:pr-10">
           <h3 className="font-poppins text-2xl font-bold text-red-600">
             Fared
           </h3>
-          <div className="text-md flex grow flex-row justify-end gap-x-8 font-poppins font-normal text-red-600 lg:gap-x-12">
+          <div className="text-md flex grow flex-row justify-end gap-x-8 font-poppins font-bold text-red-600 lg:gap-x-12">
             <Link href="/" className="hover:underline">
               Login
             </Link>
@@ -102,8 +101,8 @@ const Home: NextPage = () => {
             />
           </div>
         </div>
-        <div className="bg-slate-100 py-20 lg:py-24">
-          <h3 className="w-full bg-slate-100 pb-[50px] text-center font-poppins text-4xl font-bold text-slate-600">
+        <div className="w-full bg-slate-100 py-20 lg:py-24">
+          <h3 className="w-full pb-[50px] text-center font-poppins text-4xl font-bold text-slate-600">
             What our<span className="hidden lg:inline"> </span>
             <br className="lg:hidden" />
             customers say
