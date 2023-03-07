@@ -34,6 +34,9 @@ export function ModalOrderCart({
   const [fulfillmentMethod, setFulfillmentMethod] =
     useState<keyof typeof FulfillmentMethods>("PICKUP")
 
+  const isPickupSelected = fulfillmentMethod === "PICKUP"
+  const isDeliverySelected = fulfillmentMethod === "DELIVERY"
+
   return (
     <Popup ref={modalRef}>
       <ModalWrapper>
@@ -45,7 +48,7 @@ export function ModalOrderCart({
           >
             Your Cart
           </h1>
-          <CartItemsContainer>
+          <div className="xl:px-12">
             <CartItemsContainer>
               {cart.items.map((item, i) => (
                 <CartItemComponent
@@ -69,52 +72,110 @@ export function ModalOrderCart({
                 label="Total"
                 style={{ marginTop: "10px" }}
               />
-              <div className="py-12">
-                <ul className="flex flex-row justify-around">
-                  <li
-                    className={`text-slate- w-48 cursor-pointer
-                     rounded-full border-2 border-solid border-slate-400 p-3 text-center font-poppins font-bold text-slate-400`}
-                    onClick={() => setFulfillmentMethod("PICKUP")}
-                    style={
-                      fulfillmentMethod === "PICKUP"
-                        ? {
-                            borderColor: store.color,
-                            color: store.color,
-                          }
-                        : {}
-                    }
-                  >
-                    Pickup
-                  </li>
-                  <li
-                    className={`w-48 cursor-pointer rounded-full border-2 border-solid border-slate-400 p-3 text-center font-poppins font-bold text-slate-400`}
-                    onClick={() => setFulfillmentMethod("DELIVERY")}
-                    style={
-                      fulfillmentMethod === "DELIVERY"
-                        ? { borderColor: store.color, color: store.color }
-                        : {}
-                    }
-                  >
-                    Delivery
-                  </li>
-                </ul>
-              </div>
-              <form action="/api/payment/checkout_sessions" method="POST">
-                <input
-                  name="items"
-                  value={JSON.stringify(cart.items)}
-                  readOnly
-                  hidden
-                />
-                <input name="storeSlug" value={store.slug} readOnly hidden />
-                <CheckoutButton
-                  onClick={() => setIsRedirecting(true)}
-                  isDisabled={isRedirecting}
-                  isLoading={isRedirecting}
-                />
-              </form>
             </CheckoutContainer>
-          </CartItemsContainer>
+          </div>
+          <div className="py-10">
+            <ul className="flex flex-row justify-center gap-8">
+              <li
+                className={`text-slate- w-36 cursor-pointer
+                     rounded-full ${
+                       isPickupSelected ? "border-[3px]" : "border-2"
+                     } border-solid border-slate-400 p-3 text-center font-poppins font-bold text-slate-400`}
+                onClick={() => setFulfillmentMethod("PICKUP")}
+                style={
+                  isPickupSelected
+                    ? {
+                        borderColor: store.color,
+                        color: store.color,
+                      }
+                    : {}
+                }
+              >
+                Pickup
+              </li>
+              <li
+                className={`w-36 cursor-pointer rounded-full rounded-full ${
+                  isDeliverySelected ? "border-[3px]" : "border-2"
+                } border-solid border-slate-400 p-3 text-center font-poppins font-bold text-slate-400`}
+                onClick={() => setFulfillmentMethod("DELIVERY")}
+                style={
+                  isDeliverySelected
+                    ? { borderColor: store.color, color: store.color }
+                    : {}
+                }
+              >
+                Delivery
+              </li>
+            </ul>
+          </div>
+          <div
+            className={`grid grid-rows-[1fr,1fr${
+              isDeliverySelected ? ",1fr" : ""
+            }] gap-4 pb-4 lg:pb-8`}
+          >
+            <div>
+              <label className="mb-2 block font-poppins text-sm font-medium text-gray-900">
+                Your name
+              </label>
+              <input
+                type="text"
+                id="first_name"
+                className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 "
+                required
+              />
+            </div>
+            {isDeliverySelected && (
+              <div>
+                <label className="mb-2 block font-poppins text-sm font-medium text-gray-900">
+                  Delivery Address
+                </label>
+                <input
+                  type="text"
+                  id="first_name"
+                  className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 "
+                  required
+                />
+              </div>
+            )}
+            <div className="grid grid-cols-[1fr,1fr] gap-4">
+              <div>
+                <label className="mb-2 block font-poppins text-sm font-medium text-gray-900">
+                  Email
+                </label>
+                <input
+                  type="text"
+                  id="first_name"
+                  className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 "
+                  required
+                />
+              </div>
+              <div>
+                <label className="mb-2 block font-poppins text-sm font-medium text-gray-900">
+                  Phone number
+                </label>
+                <input
+                  type="text"
+                  id="first_name"
+                  className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 "
+                  required
+                />
+              </div>
+            </div>
+          </div>
+          <form action="/api/payment/checkout_sessions" method="POST">
+            <input
+              name="items"
+              value={JSON.stringify(cart.items)}
+              readOnly
+              hidden
+            />
+            <input name="storeSlug" value={store.slug} readOnly hidden />
+            <CheckoutButton
+              onClick={() => setIsRedirecting(true)}
+              isDisabled={isRedirecting}
+              isLoading={isRedirecting}
+            />
+          </form>
         </ModalContent>
       </ModalWrapper>
     </Popup>

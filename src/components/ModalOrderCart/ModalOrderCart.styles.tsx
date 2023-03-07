@@ -2,7 +2,7 @@ import type { ReactComponents } from "../../types/React"
 
 export function ModalWrapper({ children }: ReactComponents) {
   return (
-    <div className="flex h-screen w-screen flex-col justify-center overflow-y-scroll border border-solid border-gray-200 bg-white px-8 pb-8 shadow-sm md:rounded-xl lg:flex lg:h-[600px] lg:w-[600px] lg:flex-col lg:items-center">
+    <div className="flex h-screen w-screen flex-col justify-center overflow-y-scroll border border-solid border-gray-200 bg-white px-8 pb-8 shadow-sm md:rounded-xl lg:flex lg:h-auto lg:w-[600px] lg:flex-col lg:items-center lg:pt-16 lg:pb-8">
       {children}
     </div>
   )
