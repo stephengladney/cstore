@@ -2,7 +2,7 @@ import type { GetServerSidePropsContext, NextPage } from "next"
 import Head from "next/head"
 import type { PopupActions } from "reactjs-popup/dist/types"
 // import { signIn, signOut, useSession } from "next-auth/react"
-import { useContext, useEffect, useReducer, useRef, useState } from "react"
+import { useEffect, useReducer, useRef, useState } from "react"
 import { reducer } from "../reducers/cartReducer"
 import { CartProvider } from "../contexts/cartContext"
 
@@ -115,11 +115,16 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     await prisma.$disconnect()
 
     if (store) {
-      const { id, color, name, address, slug } = store
-      propsToReturn.props.store = { id, color, name, address, slug }
+      const { id, color, name, address, slug, stripeAccountId } = store as Store
+      propsToReturn.props.store = {
+        id,
+        color,
+        name,
+        address,
+        slug,
+        stripeAccountId,
+      }
     }
-
-    if (context.query.success) propsToReturn.props.callback = "success"
 
     return propsToReturn
   } catch (e) {

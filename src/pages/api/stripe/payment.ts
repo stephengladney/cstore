@@ -24,11 +24,10 @@ export default async function handler(
         payment_intent_data: { application_fee_amount: 0 },
         success_url: "http://localhost:3000/stephen",
         cancel_url: "http://localhost:3000/stephen",
-      },
-      { stripeAccount: "acct_1MhkKQIsuoejKTrG" }
+      }
+      // { stripeAccount: "acct_1MhkKQIsuoejKTrG" }
     )
     res.send(session.url)
-    console.log(session)
   } catch (e) {
     res.send("Error!")
     console.log(e)

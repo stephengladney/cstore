@@ -1,4 +1,4 @@
-import { Fragment, useContext } from "react"
+import { Fragment, useContext, useState } from "react"
 import { loadStripe } from "@stripe/stripe-js"
 import { env } from "../../env/client.mjs"
 import {
@@ -55,6 +55,7 @@ export function OrderCart({ cart, editCartItem }: OrderCartProps) {
               label="Total"
               style={{ marginTop: "10px" }}
             />
+
             <CheckoutButton
               onClick={openCartModal}
               isDisabled={false}

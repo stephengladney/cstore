@@ -1,4 +1,4 @@
-import { type MutableRefObject, useContext, useState } from "react"
+import { type MutableRefObject, useContext, useState, useEffect } from "react"
 import type { PopupActions } from "reactjs-popup/dist/types"
 import Popup from "reactjs-popup"
 import type { Cart } from "../../types/Cart"
@@ -16,6 +16,13 @@ import {
   ModalWrapper,
   CloseButton,
 } from "./ModalOrderCart.styles"
+import axios from "axios"
+import { Elements } from "@stripe/react-stripe-js"
+import { PaymentElement } from "@stripe/react-stripe-js"
+import { loadStripe } from "@stripe/stripe-js"
+import { env } from "../../env/client.mjs"
+
+const stripe = loadStripe(env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY_TEST)
 
 const FulfillmentMethods = { PICKUP: "PICKUP", DELIVERY: "DELIVERY" } as const
 
@@ -30,12 +37,25 @@ export function ModalOrderCart({
 }) {
   const { subtotal, tax, total } = getCheckoutPricingFromCartItems(cart.items)
   const store = useContext(storeContext)
-  const [isRedirecting, setIsRedirecting] = useState(false)
   const [fulfillmentMethod, setFulfillmentMethod] =
     useState<keyof typeof FulfillmentMethods>("PICKUP")
+  const [clientSecret, setClientSecret] = useState<string>()
 
   const isPickupSelected = fulfillmentMethod === "PICKUP"
   const isDeliverySelected = fulfillmentMethod === "DELIVERY"
+
+  useEffect(() => {
+    axios
+      .post("/api/payment/payment_intent", {
+        stripeAccountId: store.stripeAccountId,
+      })
+      .then(({ data }: { data: string }) => {
+        setClientSecret(data)
+      })
+      .catch((e) => {
+        //NO OP
+      })
+  }, [fulfillmentMethod, store.stripeAccountId])
 
   return (
     <Popup ref={modalRef}>
@@ -162,20 +182,13 @@ export function ModalOrderCart({
               </div>
             </div>
           </div>
-          <form action="/api/payment/checkout_sessions" method="POST">
-            <input
-              name="items"
-              value={JSON.stringify(cart.items)}
-              readOnly
-              hidden
-            />
-            <input name="storeSlug" value={store.slug} readOnly hidden />
-            <CheckoutButton
-              onClick={() => setIsRedirecting(true)}
-              isDisabled={isRedirecting}
-              isLoading={isRedirecting}
-            />
-          </form>
+          {clientSecret && (
+            <Elements stripe={stripe} options={{ clientSecret }}>
+              <form>
+                <PaymentElement />
+              </form>
+            </Elements>
+          )}
         </ModalContent>
       </ModalWrapper>
     </Popup>
