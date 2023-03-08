@@ -56,7 +56,7 @@ const StoreHome: NextPage<{ store: Store }> = ({
   useEffect(() => {
     if (!store) {
       const win: Window = window
-      win.location = "/"
+      win.location = win.location.origin
     } else if (hasCookie(`swiftCart_${store.slug}`)) {
       dispatch({
         type: "RESTORE_CART",
