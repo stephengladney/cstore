@@ -116,7 +116,7 @@ const MenuBuilder: NextPage = () => {
             value={menuStoreId}
           >
             <option value={0}>Select a store...</option>
-            {stores?.map((store: Store) => (
+            {stores?.map((store: Omit<Store, "stripeAccountId">) => (
               <option key={`menu-dropdown-${store.id}`} value={store.id}>
                 {store.name}
               </option>

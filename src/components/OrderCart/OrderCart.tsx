@@ -1,4 +1,4 @@
-import { Fragment, useContext, useState } from "react"
+import { Fragment, useContext } from "react"
 import { loadStripe } from "@stripe/stripe-js"
 import { env } from "../../env/client.mjs"
 import {
@@ -13,7 +13,7 @@ import { CartPricing } from "./CartPricing/CartPricing"
 import { CartItemComponent } from "./CartItem/CartItem"
 import type { Cart } from "../../types/Cart"
 import { getCheckoutPricingFromCartItems } from "../../lib/order"
-import { storeContext } from "../../contexts/storeContext"
+import { cartContext } from "../../contexts/cartContext"
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const stripeKeyToUse =
@@ -29,8 +29,7 @@ interface OrderCartProps {
 
 export function OrderCart({ cart, editCartItem }: OrderCartProps) {
   const { subtotal, tax, total } = getCheckoutPricingFromCartItems(cart.items)
-  const { slug } = useContext(storeContext)
-  const [isRedirecting, setIsRedirecting] = useState(false)
+  const { openCartModal } = useContext(cartContext)
 
   return (
     <CartContainer>
@@ -56,20 +55,12 @@ export function OrderCart({ cart, editCartItem }: OrderCartProps) {
               label="Total"
               style={{ marginTop: "10px" }}
             />
-            <form action="/api/payment/checkout_sessions" method="POST">
-              <input
-                name="items"
-                value={JSON.stringify(cart.items)}
-                readOnly
-                hidden
-              />
-              <input name="storeSlug" value={slug} readOnly hidden />
-              <CheckoutButton
-                onClick={() => setIsRedirecting(true)}
-                isDisabled={isRedirecting}
-                isLoading={isRedirecting}
-              />
-            </form>
+
+            <CheckoutButton
+              onClick={openCartModal}
+              isDisabled={false}
+              isLoading={false}
+            />
           </CheckoutContainer>
         </Fragment>
       ) : (

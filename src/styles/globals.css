@@ -33,6 +33,11 @@
   animation: rotation 1s linear infinite;
 }
 
+.no-scrollbar::-webkit-scrollbar {
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+
 @keyframes rotation {
   0% {
     transform: rotate(0deg);

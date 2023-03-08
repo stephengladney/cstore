@@ -1,4 +1,3 @@
-import { useRef } from "react"
 import {
   HeaderContainer,
   HeaderCenterCell,
@@ -16,26 +15,15 @@ import { useContext } from "react"
 import { cartContext } from "../../contexts/cartContext"
 import { getCartItemCount } from "../../lib/cart"
 import type { Store } from "../../types/Store"
-import type { PopupActions } from "reactjs-popup/dist/types"
-import { ModalOrderCart } from "../ModalOrderCart/ModalOrderCart"
 
-export function Header({ store }: { store: Store }) {
+interface HeaderProps {
+  callback: string
+  openCartModal: () => void
+  store: Store
+}
+
+export function Header({ callback, openCartModal, store }: HeaderProps) {
   const { cart } = useContext(cartContext)
-
-  const modalOrderCartRef = useRef<PopupActions>({
-    open: () => undefined,
-    close: () => undefined,
-    toggle: () => undefined,
-  })
-  const openCartModal = () => {
-    if (cart.items.length > 0) {
-      modalOrderCartRef.current.open()
-    }
-  }
-
-  const closeCartModal = () => {
-    modalOrderCartRef.current.close()
-  }
 
   return (
     <HeaderContainer>
@@ -48,22 +36,21 @@ export function Header({ store }: { store: Store }) {
           <HeaderSubTitle>{store.address}</HeaderSubTitle>
         </HeaderCenterCell>
         <HeaderRightCell>
-          <IconContext.Provider value={{ color: "#eee" }}>
-            <BsCart2 size="1.5em" onClick={openCartModal} />
-          </IconContext.Provider>
-          {cart.items.length > 0 && (
-            <CartBadge
-              itemCount={getCartItemCount(cart)}
-              onClick={openCartModal}
-            />
+          {callback !== "success" && (
+            <>
+              <IconContext.Provider value={{ color: "#eee" }}>
+                <BsCart2 size="1.5em" onClick={openCartModal} />
+              </IconContext.Provider>
+              {cart.items.length > 0 && (
+                <CartBadge
+                  itemCount={getCartItemCount(cart)}
+                  onClick={openCartModal}
+                />
+              )}
+            </>
           )}
         </HeaderRightCell>
       </MaxWidthContainer>
-      <ModalOrderCart
-        cart={cart}
-        closeModal={closeCartModal}
-        modalRef={modalOrderCartRef}
-      />
     </HeaderContainer>
   )
 }

@@ -7,6 +7,7 @@ export const storeContext = createContext({
   address: "",
   slug: "",
   color: "",
+  stripeAccountId: "",
 } as Store)
 
 export const StoreProvider = storeContext.Provider

@@ -1,4 +1,4 @@
-import type { ReactComponents } from "../../types/React"
+import type { ReactComponents } from "../types/React"
 
 export function Dimmer({
   children,
