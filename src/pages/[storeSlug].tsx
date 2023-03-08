@@ -30,7 +30,7 @@ const StoreHome: NextPage<{ store: Store }> = ({
 }) => {
   const [cart, dispatch] = useReducer(reducer, {
     items: [],
-    slug: store.slug,
+    slug: store?.slug,
   })
   const [isDimmed, setIsDimmed] = useState(false)
   const [isMobileCheckout, setIsMobileCheckout] = useState(false)
@@ -56,7 +56,7 @@ const StoreHome: NextPage<{ store: Store }> = ({
   useEffect(() => {
     if (!store) {
       const win: Window = window
-      win.location = "https://cstore-mvp.netlify.app"
+      win.location = win.location.origin
     } else if (hasCookie(`swiftCart_${store.slug}`)) {
       dispatch({
         type: "RESTORE_CART",
