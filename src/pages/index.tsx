@@ -2,22 +2,29 @@ import { type NextPage } from "next"
 import Link from "next/link"
 import Head from "next/head"
 import Image from "next/image"
-import { FaInstagram, FaTwitter, FaFacebook, FaTiktok } from "react-icons/fa"
+import {
+  FaInstagram,
+  FaTwitter,
+  FaFacebook,
+  FaTiktok,
+  FaFirstOrder,
+} from "react-icons/fa"
 
 const Home: NextPage = () => {
   return (
     <>
       <Head>
         <title>
-          Fared | Commission-free ordering and delivery for convenience stores
+          fared | Commission-free ordering and delivery for convenience stores
         </title>
       </Head>
-      <div className="flex h-screen w-screen flex-col items-center justify-start bg-red-600 font-bold">
-        <div className="sticky top-0 flex w-screen flex-row items-center bg-slate-100  p-6 lg:pr-10">
-          <h3 className="font-poppins text-2xl font-bold text-red-600">
-            Fared
+      <div className="flex h-screen w-screen flex-col items-center justify-start  bg-slate-100 font-bold">
+        <div className="sticky top-0 flex w-screen flex-row items-center border-b-[1px]  border-solid border-b-slate-500 bg-slate-100 p-6 lg:pr-10">
+          <h3 className="flex flex-row items-center font-poppins text-2xl font-bold text-red-600">
+            <FaFirstOrder className="mr-2" />
+            fared
           </h3>
-          <div className="text-md flex grow flex-row justify-end gap-x-8 font-poppins font-bold text-red-600 lg:gap-x-12">
+          <div className="text-md flex grow flex-row justify-end gap-x-8 font-poppins font-bold text-slate-600 lg:gap-x-12">
             <Link href="/" className="hover:underline">
               Home
             </Link>
@@ -36,15 +43,15 @@ const Home: NextPage = () => {
         <div className="w-screen items-center lg:grid lg:grid-cols-[1fr,0.93fr]">
           <div>
             <div className="px-12 py-12 text-center">
-              <h1 className="font-poppins text-4xl text-white lg:px-4 lg:py-0 lg:text-5xl lg:leading-normal">
+              <h1 className="font-poppins text-4xl text-red-600 lg:px-4 lg:py-0 lg:text-5xl lg:leading-normal">
                 Commission-free online ordering and delivery for independent
                 retailers.
               </h1>
-              <h2 className="mt-12 font-poppins text-3xl font-normal text-white">
+              <h2 className="mt-12 font-poppins text-3xl font-normal text-slate-700">
                 $99/month. No other fees. Period.
               </h2>
               <div>
-                <button className="mt-12 rounded-full border-2 border-solid border-white bg-white py-3 px-12 font-poppins font-normal uppercase text-black hover:border-slate-800 hover:bg-slate-800 hover:text-white">
+                <button className="mt-12 rounded-full border-2 border-solid border-red-600 bg-red-600 py-3 px-12 font-poppins font-normal uppercase text-white hover:border-slate-800 hover:bg-slate-800 hover:text-white">
                   Sign me up
                 </button>
               </div>
