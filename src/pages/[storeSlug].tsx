@@ -17,6 +17,7 @@ import { CallbackHandler } from "../components/CallbackHandler/CallbackHandler"
 import { ModalOrderCart } from "../components/ModalOrderCart/ModalOrderCart"
 import { DimmerProvider } from "../contexts/dimmerContext"
 import { Dimmer } from "../components/Dimmer"
+import { Checkout } from "../components/Checkout/Checkout"
 
 const prisma = new PrismaClient()
 
@@ -32,6 +33,7 @@ const StoreHome: NextPage<{ store: Store }> = ({
     slug: store.slug,
   })
   const [isDimmed, setIsDimmed] = useState(false)
+  const [isMobileCheckout, setIsMobileCheckout] = useState(false)
 
   const cartModalRef = useRef<PopupActions>({
     open: () => undefined,
@@ -75,20 +77,39 @@ const StoreHome: NextPage<{ store: Store }> = ({
         <DimmerProvider value={{ isDimmed, setIsDimmed }}>
           <StoreProvider value={store}>
             <CartProvider value={{ cart, dispatch, openCartModal }}>
-              <div className="flex h-screen flex-col">
-                <Header
-                  openCartModal={openCartModal}
-                  store={store}
-                  callback={callback ?? ""}
-                />
-                <Body>
-                  {callback ? (
-                    <CallbackHandler callback={callback} />
-                  ) : (
-                    <OrderingContainer />
-                  )}
-                </Body>
-              </div>
+              {isMobileCheckout && (
+                <div className="animate-fadein p-4 pt-6">
+                  <button
+                    className="absolute top-4 right-4 rounded-full bg-slate-700 px-2 text-lg text-white outline-none hover:bg-slate-800"
+                    onClick={() => setIsMobileCheckout(false)}
+                  >
+                    <div className="-mt-[2px]">&times;</div>
+                  </button>
+                  <h1
+                    className="block pb-4 text-center font-poppins text-3xl font-bold"
+                    style={{ color: store.color }}
+                  >
+                    Checkout
+                  </h1>
+                  <Checkout />
+                </div>
+              )}
+              {!isMobileCheckout && (
+                <div className="flex h-screen flex-col">
+                  <Header
+                    openCartModal={() => setIsMobileCheckout(true)}
+                    store={store}
+                    callback={callback ?? ""}
+                  />
+                  <Body>
+                    {callback ? (
+                      <CallbackHandler callback={callback} />
+                    ) : (
+                      <OrderingContainer />
+                    )}
+                  </Body>
+                </div>
+              )}
               <ModalOrderCart
                 cart={cart}
                 closeModal={closeCartModal}

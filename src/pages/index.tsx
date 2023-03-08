@@ -19,10 +19,17 @@ const Home: NextPage = () => {
           </h3>
           <div className="text-md flex grow flex-row justify-end gap-x-8 font-poppins font-bold text-red-600 lg:gap-x-12">
             <Link href="/" className="hover:underline">
-              Login
+              Home
             </Link>
             <Link href="/" className="hover:underline">
+              About
+            </Link>
+
+            <Link href="/" className="hover:underline">
               Contact Us
+            </Link>
+            <Link href="/" className="hover:underline">
+              Login
             </Link>
           </div>
         </div>

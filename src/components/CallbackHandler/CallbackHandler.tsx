@@ -20,8 +20,8 @@ export function CallbackHandler({ callback }: CallbackHandlerProps) {
   useEffect(() => {
     if (cart.items.length > 0) {
       mutate({
-        customerName: "Test",
-        customerPhone: "404-123-4567",
+        customerName: "",
+        customerPhone: "",
         items: cart.items,
         subtotal,
         storeId: store.id,
