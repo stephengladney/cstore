@@ -5,9 +5,5 @@ export function CategoryDivider() {
 }
 
 export function MenuContainer({ children }: ReactComponents) {
-  return (
-    <div className="my-4 box-border max-w-5xl overflow-y-scroll md:mt-10">
-      {children}
-    </div>
-  )
+  return <div className="my-4 box-border max-w-5xl md:mt-10">{children}</div>
 }

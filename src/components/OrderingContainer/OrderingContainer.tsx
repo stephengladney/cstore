@@ -51,7 +51,7 @@ export function OrderingContainer({}) {
 
   return (
     <>
-      <div className="flex grow justify-center overflow-y-scroll px-0 pb-32 lg:px-10">
+      <div className="flex grow justify-center overflow-y-scroll px-0 lg:px-10">
         <OrderingMenu setSelectedItem={setSelectedItem} />
         <OrderItemModal
           closeModal={closeModal}
