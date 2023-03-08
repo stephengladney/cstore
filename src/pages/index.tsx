@@ -77,7 +77,7 @@ const Home: NextPage = () => {
           </div>
           <div>
             <h2 className="mb-8 px-8 text-center font-poppins text-4xl font-light lg:text-left">
-              Straight-forward pricing.
+              Straight-forward pricing
             </h2>
             <p className="px-8 text-center font-poppins text-lg font-normal lg:text-left xl:w-[650px]">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
@@ -93,7 +93,7 @@ const Home: NextPage = () => {
         <div className="flex w-screen flex-col-reverse items-center gap-14 bg-red-600 pb-12 text-white md:p-12 lg:grid lg:grid-cols-[1fr,1fr] lg:py-16 lg:px-[100px] lg:pt-12 2xl:gap-8">
           <div>
             <h2 className="mb-8 px-8 text-center font-poppins text-4xl font-light lg:text-left">
-              We take care of the tech.
+              We take care of the tech
             </h2>
             <p className="px-8 text-center font-poppins text-lg font-normal lg:text-left xl:w-[650px]">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
