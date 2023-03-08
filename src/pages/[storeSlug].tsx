@@ -147,6 +147,8 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       }
     }
 
+    if (context.query.success) propsToReturn.props.callback = "success"
+
     return propsToReturn
   } catch (e) {
     return propsToReturn

@@ -1,4 +1,4 @@
-import { env } from "../../../env/server.mjs"
+import { env } from "../../../../env/server.mjs"
 import Stripe from "stripe"
 import type { NextApiRequest, NextApiResponse } from "next"
 const isDevMode = process.env.NODE_ENV === "development"
@@ -12,20 +12,30 @@ export default async function handler(
   res: NextApiResponse
 ) {
   if (req.method === "POST") {
-    const { stripeAccountId } = req.body as {
+    const { amount, stripeAccountId } = req.body as {
+      amount: number
       stripeAccountId: string
     }
     try {
-      // Create Checkout Sessions from body params.
+      const totalInCents = Number(Number(amount).toFixed(2)) * 100
       const paymentIntent = await stripe.paymentIntents.create({
-        amount: 1099,
+        amount: totalInCents,
         automatic_payment_methods: { enabled: true },
         currency: "usd",
-        on_behalf_of: stripeAccountId,
+        // on_behalf_of: stripeAccountId,
       })
-      res.send(paymentIntent.client_secret)
+      res.json({
+        id: paymentIntent.id,
+        clientSecret: paymentIntent.client_secret,
+      })
     } catch ({ message }) {
       res.status(500).json(message as string)
+    }
+  } else if (req.method === "PUTS") {
+    const { paymentIntentId, field, value } = req.body as {
+      paymentIntentId: string
+      field: string
+      value: string | number
     }
   } else {
     res.setHeader("Allow", "POST")

@@ -7,13 +7,13 @@ import { CartItemComponent } from "../OrderCart/CartItem/CartItem"
 
 import axios from "axios"
 import { Elements } from "@stripe/react-stripe-js"
-import { PaymentElement } from "@stripe/react-stripe-js"
 import { loadStripe } from "@stripe/stripe-js"
 import { env } from "../../env/client.mjs"
 import { useContext, useEffect, useState } from "react"
 import { cartContext } from "../../contexts/cartContext"
 import { getCheckoutPricingFromCartItems } from "../../lib/order"
 import { storeContext } from "../../contexts/storeContext"
+import { CheckoutForm } from "./CheckoutForm"
 
 const stripe = loadStripe(env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY_TEST)
 
@@ -25,6 +25,7 @@ export function Checkout() {
   const { subtotal, tax, total } = getCheckoutPricingFromCartItems(cart.items)
   const [fulfillmentMethod, setFulfillmentMethod] =
     useState<keyof typeof FulfillmentMethods>("PICKUP")
+  const [paymentIntentId, setPaymentIntentId] = useState<string>()
   const [clientSecret, setClientSecret] = useState<string>()
 
   const isPickupSelected = fulfillmentMethod === "PICKUP"
@@ -44,12 +45,15 @@ export function Checkout() {
   }
 
   useEffect(() => {
+    //TODO: change to update
     axios
       .post("/api/payment/payment_intent", {
+        amount: total,
         stripeAccountId: store.stripeAccountId,
       })
-      .then(({ data }: { data: string }) => {
-        setClientSecret(data)
+      .then(({ data: { id, clientSecret } }) => {
+        setClientSecret(clientSecret as string)
+        setPaymentIntentId(id as string)
       })
       .catch(() => {
         //NO OP
@@ -145,19 +149,9 @@ export function Checkout() {
       </div>
       {clientSecret && (
         <Elements stripe={stripe} options={stripeOptions}>
-          <form>
-            <PaymentElement />
-          </form>
+          <CheckoutForm />
         </Elements>
       )}
-      <div className="mt-6 flex w-full justify-center">
-        <button
-          className={`bold flex w-[200px] items-center justify-center rounded-full p-4 font-poppins font-bold text-slate-50`}
-          style={{ backgroundColor: store.color }}
-        >
-          Place Order
-        </button>
-      </div>
     </div>
   )
 }

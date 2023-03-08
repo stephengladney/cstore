@@ -1,8 +1,7 @@
-import { type MutableRefObject, useContext, useState, useEffect } from "react"
+import { type MutableRefObject, useContext } from "react"
 import type { PopupActions } from "reactjs-popup/dist/types"
 import Popup from "reactjs-popup"
 import type { Cart } from "../../types/Cart"
-import { getCheckoutPricingFromCartItems } from "../../lib/order"
 import { storeContext } from "../../contexts/storeContext"
 import {
   ModalContent,
@@ -12,7 +11,6 @@ import {
 import { Checkout } from "../Checkout/Checkout"
 
 export function ModalOrderCart({
-  cart,
   closeModal,
   modalRef,
 }: {
@@ -23,7 +21,7 @@ export function ModalOrderCart({
   const store = useContext(storeContext)
 
   return (
-    <Popup ref={modalRef}>
+    <Popup ref={modalRef} onClose={closeModal}>
       <ModalWrapper>
         <ModalContent>
           <CloseButton closeModal={closeModal} />
