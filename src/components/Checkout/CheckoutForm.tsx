@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react"
+import { useContext, useState } from "react"
 import { storeContext } from "../../contexts/storeContext"
 import { useElements, useStripe } from "@stripe/react-stripe-js"
 import { PaymentElement } from "@stripe/react-stripe-js"
@@ -8,13 +8,11 @@ export function CheckoutForm() {
   const store = useContext(storeContext)
   const stripe = useStripe()
   const elements = useElements() as StripeElements
-
-  useEffect(() => {
-    console.log(elements)
-  }, [elements])
+  const [isPending, setIsPending] = useState(false)
 
   const handlePlaceOrder = (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault()
+    setIsPending(true)
     stripe!
       .confirmPayment({
         elements,
@@ -23,7 +21,15 @@ export function CheckoutForm() {
             "http://localhost:3000/api/payment/payment_intent/success",
         },
       })
-      .catch((e) => console.log(e))
+      .then(({ error }) => {
+        if (error) {
+          console.log(error)
+          setIsPending(false)
+        }
+      })
+      .catch((e) => {
+        console.log(e)
+      })
   }
 
   return (
@@ -33,9 +39,10 @@ export function CheckoutForm() {
         <button
           className={`bold flex w-[200px] items-center justify-center rounded-full p-4 font-poppins font-bold text-slate-50`}
           disabled={!stripe}
-          style={{ backgroundColor: store.color }}
-          onClick={handlePlaceOrder}
+          style={{ backgroundColor: isPending ? "#ccc" : store.color }}
+          onClick={isPending ? () => null : handlePlaceOrder}
         >
+          {isPending && <span className="button-loader mr-2"></span>}
           Place Order
         </button>
       </div>

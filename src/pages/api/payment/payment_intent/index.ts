@@ -17,12 +17,12 @@ export default async function handler(
       stripeAccountId: string
     }
     try {
-      const totalInCents = Number(Number(amount).toFixed(2)) * 100
+      const totalInCents = Math.floor(Number(Number(amount).toFixed(2)) * 100)
       const paymentIntent = await stripe.paymentIntents.create({
         amount: totalInCents,
         automatic_payment_methods: { enabled: true },
         currency: "usd",
-        // on_behalf_of: stripeAccountId,
+        on_behalf_of: stripeAccountId,
       })
       res.json({
         id: paymentIntent.id,
@@ -30,6 +30,7 @@ export default async function handler(
       })
     } catch ({ message }) {
       res.status(500).json(message as string)
+      console.log(message)
     }
   } else if (req.method === "PUTS") {
     const { paymentIntentId, field, value } = req.body as {

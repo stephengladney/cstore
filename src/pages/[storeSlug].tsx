@@ -85,10 +85,7 @@ const StoreHome: NextPage<{ store: Store }> = ({
                   >
                     <div className="-mt-[2px]">&times;</div>
                   </button>
-                  <h1
-                    className="block pb-4 text-center font-poppins text-3xl font-bold"
-                    style={{ color: store.color }}
-                  >
+                  <h1 className="block pb-4 text-center font-poppins text-3xl font-bold text-slate-700">
                     Checkout
                   </h1>
                   <Checkout />

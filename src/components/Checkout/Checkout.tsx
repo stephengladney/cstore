@@ -62,7 +62,7 @@ export function Checkout() {
 
   return (
     <div>
-      <CartItemsContainer>
+      {/* <CartItemsContainer>
         {cart.items.map((item, i) => (
           <CartItemComponent
             index={i}
@@ -85,7 +85,13 @@ export function Checkout() {
           label="Total"
           style={{ marginTop: "10px" }}
         />
-      </CheckoutContainer>
+      </CheckoutContainer> */}
+      <h1
+        className="w-full py-4 text-center font-poppins text-5xl font-bold"
+        style={{ color: store.color }}
+      >
+        ${Number(total).toFixed(2)}
+      </h1>
 
       <div className="py-5">
         <ul className="flex flex-row justify-center gap-8">
