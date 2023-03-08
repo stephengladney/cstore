@@ -15,23 +15,16 @@ const Home: NextPage = () => {
     <>
       <Head>
         <title>
-          fared | Commission-free ordering and delivery for convenience stores
+          farely | Commission-free ordering and delivery for convenience stores
         </title>
       </Head>
-      <div className="flex h-screen w-screen flex-col items-center justify-start  bg-slate-100 font-bold">
+      <div className="flex h-screen w-[screen] flex-col items-center justify-start  bg-slate-100 p-0 font-bold">
         <div className="sticky top-0 flex w-screen flex-row items-center border-b-[1px]  border-solid border-b-slate-500 bg-slate-100 p-6 lg:pr-10">
           <h3 className="flex flex-row items-center font-poppins text-2xl font-bold text-red-600">
             <FaFirstOrder className="mr-2" />
-            fared
+            farely
           </h3>
           <div className="text-md flex grow flex-row justify-end gap-x-8 font-poppins font-bold text-slate-600 lg:gap-x-12">
-            <Link href="/" className="hover:underline">
-              Home
-            </Link>
-            <Link href="/" className="hover:underline">
-              About
-            </Link>
-
             <Link href="/" className="hover:underline">
               Contact Us
             </Link>
@@ -42,15 +35,17 @@ const Home: NextPage = () => {
         </div>
         <div className="w-screen items-center lg:grid lg:grid-cols-[1fr,0.93fr]">
           <div>
-            <div className="px-12 py-12 text-center">
+            <div className="px-8 py-12 text-center lg:px-16 lg:text-left">
               <h1 className="font-poppins text-4xl text-red-600 lg:px-4 lg:py-0 lg:text-5xl lg:leading-normal">
                 Commission-free online ordering and delivery for independent
                 retailers.
               </h1>
-              <h2 className="mt-12 font-poppins text-3xl font-normal text-slate-700">
-                $99/month. No other fees. Period.
+              <h2 className="mt-12 font-poppins text-3xl font-normal text-slate-700 lg:px-4">
+                $99/month.
+                <br className="lg:hidden" />
+                No other fees. Period.
               </h2>
-              <div>
+              <div className="lg:px-4">
                 <button className="mt-12 rounded-full border-2 border-solid border-red-600 bg-red-600 py-3 px-12 font-poppins font-normal uppercase text-white hover:border-slate-800 hover:bg-slate-800 hover:text-white">
                   Sign me up
                 </button>
@@ -126,10 +121,10 @@ const Home: NextPage = () => {
               <h2 className="font-poppins text-xl font-light ">
                 {'"We\'ve done over $1,000 in revenue last month."'}
               </h2>
-              <h3 className="mt-4 text-center font-poppins text-sm font-bold text-red-600 lg:text-right">
+              <h3 className="text-md mt-4 text-center font-poppins font-bold text-red-600 lg:text-right">
                 Vik Patel
               </h3>
-              <h3 className="text-center font-poppins text-sm font-bold font-normal text-slate-600 lg:text-right">
+              <h3 className="text-md text-center font-poppins font-bold  text-slate-600 lg:text-right">
                 Owner, Kirkwood Neighborhood Market
               </h3>
             </div>
@@ -137,10 +132,10 @@ const Home: NextPage = () => {
               <h2 className="font-poppins text-xl font-light ">
                 {'"We\'ve done over $1,000 in revenue last month."'}
               </h2>
-              <h3 className="mt-4 text-center font-poppins text-sm font-bold text-red-600 lg:text-right">
+              <h3 className="text-md mt-4 text-center font-poppins font-bold text-red-600 lg:text-right">
                 Vik Patel
               </h3>
-              <h3 className="text-center font-poppins text-sm font-bold font-normal text-slate-600 lg:text-right">
+              <h3 className="text-md text-center font-poppins font-bold text-slate-600 lg:text-right">
                 Owner, Kirkwood Neighborhood Market
               </h3>
             </div>
@@ -148,17 +143,17 @@ const Home: NextPage = () => {
               <h2 className="font-poppins text-xl font-light ">
                 {'"We\'ve done over $1,000 in revenue last month."'}
               </h2>
-              <h3 className="mt-4 text-center font-poppins text-sm font-bold text-red-600 lg:text-right">
+              <h3 className="text-md mt-4 text-center font-poppins font-bold text-red-600 lg:text-right">
                 Vik Patel
               </h3>
-              <h3 className="text-center font-poppins text-sm font-bold font-normal text-slate-600 lg:text-right">
+              <h3 className="text-md text-center font-poppins font-bold text-slate-600 lg:text-right">
                 Owner, Kirkwood Neighborhood Market
               </h3>
             </div>
           </div>
         </div>
         <div className="flex w-screen flex-row items-center bg-slate-800  p-6 lg:pr-10">
-          <h3 className="font-poppins text-xl font-bold text-white">Fared</h3>
+          <h3 className="font-poppins text-xl font-bold text-white">farely</h3>
           <div className="text-md flex grow flex-row justify-end gap-x-8 text-white">
             <Link className="cursor-pointer hover:text-red-600" href="/">
               <FaInstagram size={18} />
