@@ -16,6 +16,10 @@ import { storeContext } from "../../contexts/storeContext"
 import { CheckoutForm } from "./CheckoutForm"
 import PhoneInput from "react-phone-input-2"
 import "react-phone-input-2/lib/style.css"
+import PlacesAutocomplete, {
+  geocodeByAddress,
+  getLatLng,
+} from "react-places-autocomplete"
 
 const stripe = loadStripe(env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY_TEST)
 
@@ -163,7 +167,7 @@ export function Checkout() {
             <input
               type="text"
               id="first_name"
-              className="block w-full rounded-lg border border-gray-300 p-2.5 text-inherit text-[#30313D]"
+              className="block w-full rounded-lg border border-gray-300 p-2.5 font-poppins text-inherit text-[#30313D]"
               onChange={(e: ChangeEvent<HTMLInputElement>) =>
                 setCustomerInfo({ ...customerInfo, name: e.target.value })
               }
@@ -188,22 +192,81 @@ export function Checkout() {
               countryCodeEditable={false}
               disableDropdown
               value={customerInfo.phone}
-              onChange={(phone) => setCustomerInfo({ ...customerInfo, phone })}
+              onChange={(phone) =>
+                setCustomerInfo({ ...customerInfo, phone: `+${phone}` })
+              }
               inputClass={
                 "block w-full rounded-lg border border-gray-300 p-2.5 text-inherit text-[#30313D] font-poppins"
               }
               containerClass={"rounded-lg"}
               containerStyle={{ minHeight: "46px" }}
-              inputStyle={{ minHeight: "46px" }}
+              inputStyle={{ minHeight: "46px", maxWidth: "216px" }}
             />
           </div>
         </div>
         {isDeliverySelected && (
-          <div className="mt-1">
+          <div className="relative mt-1">
             <label className="mb-2 block font-poppins text-[14.88px] font-medium text-[#30313D]">
               Address
             </label>
-            <input
+            <PlacesAutocomplete
+              value={customerInfo.address}
+              onChange={(address) =>
+                setCustomerInfo({ ...customerInfo, address })
+              }
+              // onSelect={this.handleSelect}
+            >
+              {({
+                getInputProps,
+                suggestions,
+                getSuggestionItemProps,
+                loading,
+              }) => (
+                <div>
+                  <input
+                    {...getInputProps({
+                      placeholder: "Search Places ...",
+                      className:
+                        "location-search-input w-full rounded-lg p-2.5 font-poppins border-gray-300 border-solid border-[1px]",
+                    })}
+                  />
+                  <div
+                    className={`autocomplete-dropdown-container absolute top-[100%] z-20 ${
+                      suggestions.length > 4 ? "border-2 border-solid" : ""
+                    } border-slate-200 bg-white py-2 px-4`}
+                  >
+                    {loading && <div>Loading...</div>}
+                    {suggestions.map((suggestion) => {
+                      const className = suggestion.active
+                        ? "suggestion-item--active py-2"
+                        : "suggestion-item py-2"
+                      // inline style for demonstration purpose
+                      const style = suggestion.active
+                        ? {
+                            backgroundColor: "#fafafa",
+                            cursor: "pointer",
+                          }
+                        : {
+                            backgroundColor: "#ffffff",
+                            cursor: "pointer",
+                          }
+                      return (
+                        <div
+                          {...getSuggestionItemProps(suggestion, {
+                            className,
+                            style,
+                          })}
+                        >
+                          <span>{suggestion.description}</span>
+                        </div>
+                      )
+                    })}
+                  </div>
+                </div>
+              )}
+            </PlacesAutocomplete>
+            {/* <input
+              name="address"
               type="text"
               id="address"
               className="block w-full rounded-lg border border-gray-300 p-2.5 text-inherit text-[#30313D] "
@@ -211,7 +274,7 @@ export function Checkout() {
                 setCustomerInfo({ ...customerInfo, address: e.target.value })
               }
               value={customerInfo.address}
-            />
+            /> */}
           </div>
         )}
       </div>
