@@ -236,7 +236,7 @@ export function Checkout() {
                     } border-slate-200 bg-white py-2 px-4`}
                   >
                     {loading && <div>Loading...</div>}
-                    {suggestions.map((suggestion) => {
+                    {suggestions.map((suggestion, i) => {
                       const className = suggestion.active
                         ? "suggestion-item--active py-2"
                         : "suggestion-item py-2"
@@ -256,6 +256,7 @@ export function Checkout() {
                             className,
                             style,
                           })}
+                          key={i}
                         >
                           <span>{suggestion.description}</span>
                         </div>
