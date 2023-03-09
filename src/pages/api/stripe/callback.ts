@@ -2,14 +2,10 @@ import type { NextApiRequest, NextApiResponse } from "next"
 import { env } from "../../../env/server.mjs"
 import Stripe from "stripe"
 import { PrismaClient } from "@prisma/client"
-const isDevMode = process.env.NODE_ENV === "development"
 
-const stripe = new Stripe(
-  isDevMode ? env.STRIPE_PRIVATE_KEY_TEST : env.STRIPE_PRIVATE_KEY,
-  {
-    apiVersion: "2022-11-15",
-  }
-)
+const stripe = new Stripe(env.STRIPE_PRIVATE_KEY, {
+  apiVersion: "2022-11-15",
+})
 
 const prisma = new PrismaClient()
 
