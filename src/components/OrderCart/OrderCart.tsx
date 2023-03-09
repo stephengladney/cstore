@@ -15,13 +15,7 @@ import type { Cart } from "../../types/Cart"
 import { getCheckoutPricingFromCartItems } from "../../lib/order"
 import { cartContext } from "../../contexts/cartContext"
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const stripeKeyToUse =
-  process.env.NODE_ENV === "development"
-    ? env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY_TEST
-    : env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
-
-void loadStripe(stripeKeyToUse)
+void loadStripe(env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
 interface OrderCartProps {
   cart: Cart
   editCartItem: (itemIndex: number) => void
