@@ -25,6 +25,9 @@ export const serverSchema = z.object({
   STRIPE_PRIVATE_KEY: z.string(),
   STRIPE_PRIVATE_KEY_TEST: z.string(),
   STRIPE_CLIENT_ID: z.string(),
+  DOORDASH_DEVELOPER_ID: z.string(),
+  DOORDASH_KEY_ID: z.string(),
+  DOORDASH_SIGNING_SECRET: z.string(),
 })
 
 /**
@@ -44,6 +47,9 @@ export const serverEnv = {
   STRIPE_PRIVATE_KEY: process.env.STRIPE_PRIVATE_KEY,
   STRIPE_PRIVATE_KEY_TEST: process.env.STRIPE_PRIVATE_KEY_TEST,
   STRIPE_CLIENT_ID: process.env.STRIPE_CLIENT_ID,
+  DOORDASH_DEVELOPER_ID: process.env.DOORDASH_DEVELOPER_ID,
+  DOORDASH_KEY_ID: process.env.DOORDASH_KEY_ID,
+  DOORDASH_SIGNING_SECRET: process.env.DOORDASH_SIGNING_SECRET,
 }
 
 /**
