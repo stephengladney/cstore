@@ -23,7 +23,6 @@ export const serverSchema = z.object({
   DISCORD_CLIENT_SECRET: z.string(),
   SENDGRID_API_KEY: z.string(),
   STRIPE_PRIVATE_KEY: z.string(),
-  STRIPE_PRIVATE_KEY_TEST: z.string(),
   STRIPE_CLIENT_ID: z.string(),
   DOORDASH_DEVELOPER_ID: z.string(),
   DOORDASH_KEY_ID: z.string(),
@@ -45,7 +44,6 @@ export const serverEnv = {
   DISCORD_CLIENT_SECRET: process.env.DISCORD_CLIENT_SECRET,
   SENDGRID_API_KEY: process.env.SENDGRID_API_KEY,
   STRIPE_PRIVATE_KEY: process.env.STRIPE_PRIVATE_KEY,
-  STRIPE_PRIVATE_KEY_TEST: process.env.STRIPE_PRIVATE_KEY_TEST,
   STRIPE_CLIENT_ID: process.env.STRIPE_CLIENT_ID,
   DOORDASH_DEVELOPER_ID: process.env.DOORDASH_DEVELOPER_ID,
   DOORDASH_KEY_ID: process.env.DOORDASH_KEY_ID,
@@ -60,7 +58,6 @@ export const serverEnv = {
 export const clientSchema = z.object({
   // NEXT_PUBLIC_CLIENTVAR: z.string(),
   NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: z.string(),
-  NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY_TEST: z.string(),
   NEXT_PUBLIC_GOOGLE_MAPS_API_KEY: z.string(),
 })
 
@@ -74,7 +71,5 @@ export const clientEnv = {
   // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY:
     process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
-  NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY_TEST:
-    process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY_TEST,
   NEXT_PUBLIC_GOOGLE_MAPS_API_KEY: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
 }

@@ -21,7 +21,7 @@ import PlacesAutocomplete, {
   getLatLng,
 } from "react-places-autocomplete"
 
-const stripe = loadStripe(env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY_TEST)
+const stripe = loadStripe(env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
 
 const FulfillmentMethods = { PICKUP: "PICKUP", DELIVERY: "DELIVERY" } as const
 
