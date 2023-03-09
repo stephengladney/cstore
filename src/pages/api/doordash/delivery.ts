@@ -38,7 +38,7 @@ export default async function handler(
       res.send(response.data)
     } catch (e) {
       console.log(e)
-      res.status(500).end("derp")
+      res.status(500).end(e)
     }
   } else {
     res.setHeader("Allow", "POST")

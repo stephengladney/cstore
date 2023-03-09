@@ -32,12 +32,19 @@ export default async function handler(
       res.status(500).json(message as string)
       console.log(message)
     }
-  } else if (req.method === "PUTS") {
+  } else if (req.method === "PUT") {
     const { paymentIntentId, field, value } = req.body as {
       paymentIntentId: string
       field: string
       value: string | number
     }
+    await stripe.paymentIntents.update(paymentIntentId, {
+      [field]:
+        field === "amount"
+          ? Math.floor(Number(Number(value).toFixed(2)) * 100)
+          : value,
+    })
+    res.status(200).end()
   } else {
     res.setHeader("Allow", "POST")
     res.status(405).end("Method Not Allowed")
