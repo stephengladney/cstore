@@ -29,8 +29,7 @@ export default async function handler(
         clientSecret: paymentIntent.client_secret,
       })
     } catch ({ message }) {
-      res.status(500).json(message as string)
-      console.log(message)
+      res.status(500).end(message as string)
     }
   } else if (req.method === "PUTS") {
     const { paymentIntentId, field, value } = req.body as {
