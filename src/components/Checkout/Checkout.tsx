@@ -225,7 +225,7 @@ export function Checkout() {
                 <div>
                   <input
                     {...getInputProps({
-                      placeholder: "Search Places ...",
+                      placeholder: "Type your address...",
                       className:
                         "location-search-input w-full rounded-lg p-2.5 font-poppins border-gray-300 border-solid border-[1px]",
                     })}
