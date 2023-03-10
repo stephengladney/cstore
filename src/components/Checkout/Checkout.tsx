@@ -16,10 +16,7 @@ import { storeContext } from "../../contexts/storeContext"
 import { CheckoutForm } from "./CheckoutForm"
 import PhoneInput from "react-phone-input-2"
 import "react-phone-input-2/lib/style.css"
-import PlacesAutocomplete, {
-  geocodeByAddress,
-  getLatLng,
-} from "react-places-autocomplete"
+import PlacesAutocomplete from "react-places-autocomplete"
 
 const stripe = loadStripe(env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY_TEST)
 
