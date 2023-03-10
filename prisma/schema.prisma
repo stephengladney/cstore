@@ -111,6 +111,7 @@ model User {
     email         String?   @unique
     emailVerified DateTime?
     image         String?
+    stores        Int[]     @default([])
     accounts      Account[]
     sessions      Session[]
 }

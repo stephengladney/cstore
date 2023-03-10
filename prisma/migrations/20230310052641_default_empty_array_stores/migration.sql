@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "User" ALTER COLUMN "stores" SET DEFAULT ARRAY[]::INTEGER[];

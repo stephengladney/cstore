@@ -36,7 +36,6 @@ export default async function handler(
         { stripeAccount: stripeAccountId }
       )
       res.redirect(303, session.url as string)
-      console.log(session.id)
     } catch ({ message }) {
       res.status(500).json(message as string)
     }
