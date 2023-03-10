@@ -1,13 +1,8 @@
 import { env } from "../../../env/server.mjs"
-// import Stripe from "stripe"
 import type { NextApiRequest, NextApiResponse } from "next"
-// const isDevMode = process.env.NODE_ENV === "development"
-// const stripe = new Stripe(
-//   isDevMode ? env.STRIPE_PRIVATE_KEY_TEST : env.STRIPE_PRIVATE_KEY,
-//   { apiVersion: "2022-11-15" }
-// )
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
+  console.log(req.headers)
   if (req.method === "POST") {
     try {
       res.redirect(
@@ -15,9 +10,8 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
         `https://connect.stripe.com/oauth/authorize?response_type=code&client_id=${
           env.STRIPE_CLIENT_ID
           // State includes Store ID so the callback updates the stripe ID in the database
-        }&scope=read_write&redirect_uri=http://localhost:3000/api/stripe/callback&state=${
-          req.query.id as string
-        }`
+        }&scope=read_write&redirect_uri=${req.headers
+          .origin!}/api/stripe/callback&state=${req.query.id as string}`
       )
     } catch ({ message }) {
       res.status(500).json(message as string)

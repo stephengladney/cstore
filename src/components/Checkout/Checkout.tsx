@@ -18,7 +18,7 @@ import PhoneInput from "react-phone-input-2"
 import "react-phone-input-2/lib/style.css"
 import PlacesAutocomplete from "react-places-autocomplete"
 
-const stripe = loadStripe(env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY_TEST)
+const stripe = loadStripe(env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
 
 const FulfillmentMethods = { PICKUP: "PICKUP", DELIVERY: "DELIVERY" } as const
 
