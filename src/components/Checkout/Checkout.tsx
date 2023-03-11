@@ -232,7 +232,7 @@ export function Checkout({ closeModal, setIsMobileCheckout }: CheckoutProps) {
         </div>
         {isDeliverySelected && (
           <div className="relative">
-            <label className="mb-2 block font-poppins text-[14.88px] font-medium text-[#30313D]">
+            <label className="block py-2 font-poppins text-[14.88px] font-medium text-[#30313D]">
               Address
             </label>
             <PlacesAutocomplete
