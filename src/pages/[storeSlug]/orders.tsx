@@ -1,9 +1,9 @@
 import { type NextPage } from "next"
-import type { Store } from "../types/Store"
+import type { Store } from "../../types/Store"
 import type { GetServerSidePropsContext } from "next"
 import { PrismaClient } from "@prisma/client"
-import { api } from "../utils/api"
-import type { CartItem } from "../types/Cart"
+import { api } from "../../utils/api"
+import type { CartItem } from "../../types/Cart"
 import { useEffect, useState } from "react"
 import type { Order } from "@prisma/client"
 import useSound from "use-sound"
@@ -11,8 +11,8 @@ import { BiArrowBack } from "react-icons/bi"
 import {
   LineItem,
   PriceLineItem,
-} from "../components/CallbackHandler/CallbackHandler.styles"
-import { PricingContainer } from "../components/OrderCart/CartPricing/CartPricing.styles"
+} from "../../components/CallbackHandler/CallbackHandler.styles"
+import { PricingContainer } from "../../components/OrderCart/CartPricing/CartPricing.styles"
 import { useSession } from "next-auth/react"
 
 const prisma = new PrismaClient()
@@ -171,7 +171,7 @@ export default Orders
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   try {
     const store = await prisma.store.findFirst({
-      where: { slug: context.query.store as string },
+      where: { slug: context.query.storeSlug as string },
     })
     await prisma.$disconnect()
 
