@@ -31,7 +31,7 @@ const FulfillmentMethods = { PICKUP: "PICKUP", DELIVERY: "DELIVERY" } as const
 
 interface CheckoutProps {
   closeModal: () => void
-  setIsMobileCheckout: Dispatch<SetStateAction<boolean>>
+  setIsMobileCheckout?: Dispatch<SetStateAction<boolean>>
 }
 
 export function Checkout({ closeModal, setIsMobileCheckout }: CheckoutProps) {

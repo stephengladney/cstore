@@ -12,7 +12,7 @@ type CreateOrderResponse = {
 interface CheckoutFormProps {
   createOrder: () => Promise<any>
   closeModal: () => void
-  setIsMobileCheckout: Dispatch<SetStateAction<boolean>>
+  setIsMobileCheckout?: Dispatch<SetStateAction<boolean>>
 }
 export function CheckoutForm({
   closeModal,
@@ -49,7 +49,7 @@ export function CheckoutForm({
               .then(() => {
                 setIsPending(false)
                 closeModal()
-                setIsMobileCheckout(false)
+                setIsMobileCheckout && setIsMobileCheckout(false)
               })
               .catch((e) => {
                 setIsPending(false)
