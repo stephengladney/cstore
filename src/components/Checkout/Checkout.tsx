@@ -22,10 +22,10 @@ const stripe = loadStripe(env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
 
 const FulfillmentMethods = { PICKUP: "PICKUP", DELIVERY: "DELIVERY" } as const
 
-export function Checkout() {
+export function Checkout({ closeModal }: { closeModal: () => void }) {
   const { cart } = useContext(cartContext)
   const store = useContext(storeContext)
-  const { total } = getCheckoutPricingFromCartItems(cart.items)
+  const { subtotal, tax, total } = getCheckoutPricingFromCartItems(cart.items)
   const [fulfillmentMethod, setFulfillmentMethod] =
     useState<keyof typeof FulfillmentMethods>("PICKUP")
   const [paymentIntentId, setPaymentIntentId] = useState<string>()
@@ -52,6 +52,21 @@ export function Checkout() {
       theme: "stripe",
       variables: { borderRadius: "8px", fontFamily: "Poppins" },
     } as { theme: "stripe" },
+  }
+
+  const createOrder = () => {
+    return axios.post("/api/order", {
+      customerAddress: customerInfo.address,
+      customerName: customerInfo.name,
+      customerPhone: customerInfo.phone,
+      items: cart.items,
+      subtotal,
+      storeAddress: store.address,
+      storeId: store.id,
+      tax,
+      total,
+      type: isDeliverySelected ? "delivery" : "pickup",
+    })
   }
 
   useEffect(() => {
@@ -152,11 +167,13 @@ export function Checkout() {
         </ul>
       </div>
       <div
-        className={`py-4 lg:pb-8 ${
-          isDeliverySelected ? "grid grid-rows-[1fr,1fr]" : ""
+        className={`py-1 lg:py-4 lg:pb-8 ${
+          isDeliverySelected
+            ? "grid grid-rows-[2fr,1fr] lg:grid-rows-[1fr,1fr]"
+            : ""
         }`}
       >
-        <div className="grid grid-cols-[1fr,1fr] gap-4">
+        <div className="grid grid-rows-[1fr,1fr] lg:grid-cols-[1fr,1fr] lg:grid-rows-none lg:gap-4">
           <div>
             <label className="mb-2 block font-poppins text-[14.88px] font-medium text-[#30313D]">
               Name
@@ -193,7 +210,7 @@ export function Checkout() {
                 setCustomerInfo({ ...customerInfo, phone: `+${phone}` })
               }
               inputClass={
-                "block w-full rounded-lg border border-gray-300 p-2.5 text-inherit text-[#30313D] font-poppins"
+                "block rounded-lg border border-gray-300 p-2.5 text-inherit text-[#30313D] font-poppins min-w-full"
               }
               containerClass={"rounded-lg"}
               containerStyle={{ minHeight: "46px" }}
@@ -202,7 +219,7 @@ export function Checkout() {
           </div>
         </div>
         {isDeliverySelected && (
-          <div className="relative mt-1">
+          <div className="relative">
             <label className="mb-2 block font-poppins text-[14.88px] font-medium text-[#30313D]">
               Address
             </label>
@@ -228,8 +245,8 @@ export function Checkout() {
                     })}
                   />
                   <div
-                    className={`autocomplete-dropdown-container absolute top-[100%] z-20 ${
-                      suggestions.length > 4 ? "border-2 border-solid" : ""
+                    className={`autocomplete-dropdown-container absolute top-[100%] z-[99] ${
+                      suggestions.length > 0 ? "border-2 border-solid" : ""
                     } border-slate-200 bg-white py-2 px-4`}
                   >
                     {loading && <div>Loading...</div>}
@@ -278,7 +295,7 @@ export function Checkout() {
       </div>
       {clientSecret && (
         <Elements stripe={stripe} options={stripeOptions}>
-          <CheckoutForm />
+          <CheckoutForm createOrder={createOrder} closeModal={closeModal} />
         </Elements>
       )}
     </div>

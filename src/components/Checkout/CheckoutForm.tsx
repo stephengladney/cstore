@@ -1,14 +1,23 @@
 import { useContext, useState } from "react"
 import { storeContext } from "../../contexts/storeContext"
 import { useElements, useStripe } from "@stripe/react-stripe-js"
-import { AddressElement, PaymentElement } from "@stripe/react-stripe-js"
+import { PaymentElement } from "@stripe/react-stripe-js"
 import type { StripeElements } from "@stripe/stripe-js/types/stripe-js"
+import { useRouter } from "next/router"
 
-export function CheckoutForm() {
+type CreateOrderResponse = {
+  data: { order: { id: number }; delivery: { id: string } }
+}
+interface CheckoutFormProps {
+  createOrder: () => Promise<any>
+  closeModal: () => void
+}
+export function CheckoutForm({ closeModal, createOrder }: CheckoutFormProps) {
   const store = useContext(storeContext)
   const stripe = useStripe()
   const elements = useElements() as StripeElements
   const [isPending, setIsPending] = useState(false)
+  const router = useRouter()
 
   const handlePlaceOrder = (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault()
@@ -16,25 +25,44 @@ export function CheckoutForm() {
     stripe!
       .confirmPayment({
         elements,
+        redirect: "if_required",
         confirmParams: {
           return_url:
             "http://localhost:3000/api/payment/payment_intent/success",
         },
       })
-      .then(({ error }) => {
-        if (error) {
-          console.log(error)
-          setIsPending(false)
-        }
+      .then(() => {
+        createOrder()
+          .then(({ data }: CreateOrderResponse) => {
+            router
+              .push(
+                `/${store.slug}?success=true&orderId=${data.order.id}${
+                  data.delivery?.id ? `&deliveryId=${data.delivery.id}` : ""
+                }`
+              )
+              .then(() => {
+                setIsPending(false)
+                closeModal()
+              })
+              .catch((e) => {
+                setIsPending(false)
+                alert(e)
+              })
+          })
+          .catch((e) => {
+            setIsPending(false)
+            alert(e)
+          })
       })
       .catch((e) => {
         console.log(e)
+        setIsPending(false)
       })
   }
 
   return (
-    <form action="/api/payment/payment_intent/confirm" method="POST">
-      <PaymentElement />
+    <>
+      <PaymentElement className="mt-4 lg:mt-0" />
       <div className="mt-6 flex w-full justify-center">
         <button
           className={`bold flex w-[250px] items-center justify-center rounded-full p-4 font-poppins font-bold text-slate-50 lg:mt-4`}
@@ -46,6 +74,6 @@ export function CheckoutForm() {
           Place Order
         </button>
       </div>
-    </form>
+    </>
   )
 }

@@ -40,7 +40,6 @@ export function getMenuItemsFromCsv(text: string): DbMenuItem[] {
       description: itemProperties[3] || "",
       isAvailable: itemProperties[4] === "TRUE",
       imageUrl: itemProperties[5] || "",
-      stripeId: itemProperties[6] || "",
     }
   })
 }
@@ -75,7 +74,6 @@ export function getMenuFromApiMenuItems(items: MenuItem[]): Menu {
     imageUrl: item.imageUrl,
     isAvailable: item.isAvailable,
     price: item.price,
-    stripeId: item.stripeId,
   })
 
   items.forEach((item) => {

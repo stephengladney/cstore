@@ -2,11 +2,13 @@ import { useContext, useEffect } from "react"
 import { cartContext } from "../../contexts/cartContext"
 import { storeContext } from "../../contexts/storeContext"
 import { getCheckoutPricingFromCartItems } from "../../lib/order"
-import { api } from "../../utils/api"
 import { LineItem, PriceLineItem } from "./CallbackHandler.styles"
 import { PricingContainer } from "../OrderCart/CartPricing/CartPricing.styles"
 import { BsBagCheck } from "react-icons/bs"
 import { deleteCookie, hasCookie } from "cookies-next"
+import { useRouter } from "next/router"
+import { api } from "../../utils/api"
+import Image from "next/image"
 
 interface CallbackHandlerProps {
   callback: string
@@ -14,26 +16,23 @@ interface CallbackHandlerProps {
 export function CallbackHandler({ callback }: CallbackHandlerProps) {
   const { cart } = useContext(cartContext)
   const { subtotal, tax, total } = getCheckoutPricingFromCartItems(cart.items)
-  const { mutate, data } = api.order.create.useMutation()
   const store = useContext(storeContext)
+  const router = useRouter()
+  const { data: delivery } = api.delivery.get.useQuery(
+    {
+      id: router.query.deliveryId as string,
+    },
+    { enabled: !!router.query.deliveryId }
+  )
 
   useEffect(() => {
-    if (cart.items.length > 0) {
-      mutate({
-        customerName: "",
-        customerPhone: "",
-        items: cart.items,
-        subtotal,
-        storeId: store.id,
-        tax,
-        total,
-      })
-      deleteCookie(`swiftCart_${store.slug}`)
-    } else if (!hasCookie(`swiftCart_${store.slug}`)) {
+    if (cart.items.length > 0) deleteCookie(`swiftCart_${store.slug}`)
+    else if (!hasCookie(`swiftCart_${store.slug}`)) {
       const win: Window = window
       win.location = `/${store.slug}`
     }
   }, [cart])
+
   if (callback === "success" && cart.items.length > 0) {
     return (
       <div className="flex h-full w-full flex-col items-center justify-center">
@@ -45,7 +44,7 @@ export function CallbackHandler({ callback }: CallbackHandlerProps) {
             <BsBagCheck size={60} />
           </div>
           <h1 className="text-center font-bold">{`Order #${
-            (data || "...") as string
+            (router.query.orderId || "...") as string
           }`}</h1>
           <div className="mt-8 grid grid-cols-[1fr,5fr,2fr] font-poppins">
             {cart.items.map((item, i) => (
@@ -59,6 +58,25 @@ export function CallbackHandler({ callback }: CallbackHandlerProps) {
               <PriceLineItem name="Total" amount={total} />
             </PricingContainer>
           </div>
+          {delivery && (
+            <div className="flex flex-col items-center pt-8">
+              <div className="flex flex-row items-center justify-center">
+                <span className="mr-2 font-poppins">Delivery provided by</span>
+                <Image
+                  src="/doordash.png"
+                  height={100}
+                  width={100}
+                  alt="Doordash logo"
+                />
+              </div>
+              <a
+                href={delivery.trackingUrl as string}
+                className="text-blue-600 underline"
+              >
+                Click here to track your delivery
+              </a>
+            </div>
+          )}
         </div>
       </div>
     )
