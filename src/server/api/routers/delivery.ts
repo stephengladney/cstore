@@ -7,4 +7,9 @@ export const deliveryRouter = createTRPCRouter({
     .query(({ input, ctx }) => {
       return ctx.prisma.delivery.findFirst({ where: input })
     }),
+  getByOrderId: publicProcedure
+    .input(z.object({ orderId: z.number() }))
+    .query(({ input, ctx }) => {
+      return ctx.prisma.delivery.findFirst({ where: input })
+    }),
 })

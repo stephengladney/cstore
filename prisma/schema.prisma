@@ -76,6 +76,7 @@ model Order {
     total         Decimal    @db.Decimal(10, 2)
     customerName  String
     customerPhone String
+    type          String     @default("pickup")
     store         Store      @relation(fields: [storeId], references: [id], onDelete: Cascade)
     storeId       Int        @default(1)
     isAccepted    Boolean    @default(false)

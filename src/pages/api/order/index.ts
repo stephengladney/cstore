@@ -55,6 +55,7 @@ export default async function handler(
           storeId,
           tax,
           total,
+          type,
         },
       })
       if (isDelivery) {
