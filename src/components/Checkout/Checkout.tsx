@@ -9,7 +9,14 @@ import axios from "axios"
 import { Elements } from "@stripe/react-stripe-js"
 import { loadStripe } from "@stripe/stripe-js"
 import { env } from "../../env/client.mjs"
-import { ChangeEvent, useContext, useEffect, useState } from "react"
+import {
+  ChangeEvent,
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useState,
+} from "react"
 import { cartContext } from "../../contexts/cartContext"
 import { getCheckoutPricingFromCartItems } from "../../lib/order"
 import { storeContext } from "../../contexts/storeContext"
@@ -22,7 +29,12 @@ const stripe = loadStripe(env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
 
 const FulfillmentMethods = { PICKUP: "PICKUP", DELIVERY: "DELIVERY" } as const
 
-export function Checkout({ closeModal }: { closeModal: () => void }) {
+interface CheckoutProps {
+  closeModal: () => void
+  setIsMobileCheckout: Dispatch<SetStateAction<boolean>>
+}
+
+export function Checkout({ closeModal, setIsMobileCheckout }: CheckoutProps) {
   const { cart } = useContext(cartContext)
   const store = useContext(storeContext)
   const { subtotal, tax, total } = getCheckoutPricingFromCartItems(cart.items)
@@ -295,7 +307,11 @@ export function Checkout({ closeModal }: { closeModal: () => void }) {
       </div>
       {clientSecret && (
         <Elements stripe={stripe} options={stripeOptions}>
-          <CheckoutForm createOrder={createOrder} closeModal={closeModal} />
+          <CheckoutForm
+            createOrder={createOrder}
+            closeModal={closeModal}
+            setIsMobileCheckout={setIsMobileCheckout}
+          />
         </Elements>
       )}
     </div>

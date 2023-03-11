@@ -88,7 +88,10 @@ const StoreHome: NextPage<{ store: Store }> = ({
                   <h1 className="block pb-4 text-center font-poppins text-3xl font-bold text-slate-700">
                     Checkout
                   </h1>
-                  <Checkout closeModal={closeCartModal} />
+                  <Checkout
+                    closeModal={closeCartModal}
+                    setIsMobileCheckout={setIsMobileCheckout}
+                  />
                 </div>
               )}
               {!isMobileCheckout && (

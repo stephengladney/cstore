@@ -4,6 +4,7 @@ import { useElements, useStripe } from "@stripe/react-stripe-js"
 import { PaymentElement } from "@stripe/react-stripe-js"
 import type { StripeElements } from "@stripe/stripe-js/types/stripe-js"
 import { useRouter } from "next/router"
+import type { Dispatch, SetStateAction } from "react"
 
 type CreateOrderResponse = {
   data: { order: { id: number }; delivery: { id: string } }
@@ -11,8 +12,13 @@ type CreateOrderResponse = {
 interface CheckoutFormProps {
   createOrder: () => Promise<any>
   closeModal: () => void
+  setIsMobileCheckout: Dispatch<SetStateAction<boolean>>
 }
-export function CheckoutForm({ closeModal, createOrder }: CheckoutFormProps) {
+export function CheckoutForm({
+  closeModal,
+  createOrder,
+  setIsMobileCheckout,
+}: CheckoutFormProps) {
   const store = useContext(storeContext)
   const stripe = useStripe()
   const elements = useElements() as StripeElements
@@ -43,6 +49,7 @@ export function CheckoutForm({ closeModal, createOrder }: CheckoutFormProps) {
               .then(() => {
                 setIsPending(false)
                 closeModal()
+                setIsMobileCheckout(false)
               })
               .catch((e) => {
                 setIsPending(false)
