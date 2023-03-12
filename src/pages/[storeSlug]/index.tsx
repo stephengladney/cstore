@@ -1,7 +1,6 @@
 import type { GetServerSidePropsContext, NextPage } from "next"
 import Head from "next/head"
 import type { PopupActions } from "reactjs-popup/dist/types"
-// import { signIn, signOut, useSession } from "next-auth/react"
 import { useEffect, useReducer, useRef, useState } from "react"
 import { reducer } from "../../reducers/cartReducer"
 import { CartProvider } from "../../contexts/cartContext"
