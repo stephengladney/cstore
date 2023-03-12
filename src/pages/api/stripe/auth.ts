@@ -2,7 +2,6 @@ import { env } from "../../../env/server.mjs"
 import type { NextApiRequest, NextApiResponse } from "next"
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
-  console.log(req.headers)
   if (req.method === "POST") {
     try {
       res.redirect(

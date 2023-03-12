@@ -1,9 +1,9 @@
 import { type NextPage } from "next"
-import type { Store } from "../types/Store"
+import type { Store } from "../../types/Store"
 import type { GetServerSidePropsContext } from "next"
 import { PrismaClient } from "@prisma/client"
-import { api } from "../utils/api"
-import type { CartItem } from "../types/Cart"
+import { api } from "../../utils/api"
+import type { CartItem } from "../../types/Cart"
 import { useEffect, useState } from "react"
 import type { Order } from "@prisma/client"
 import useSound from "use-sound"
@@ -11,28 +11,47 @@ import { BiArrowBack } from "react-icons/bi"
 import {
   LineItem,
   PriceLineItem,
-} from "../components/CallbackHandler/CallbackHandler.styles"
-import { PricingContainer } from "../components/OrderCart/CartPricing/CartPricing.styles"
+} from "../../components/CallbackHandler/CallbackHandler.styles"
+import { PricingContainer } from "../../components/OrderCart/CartPricing/CartPricing.styles"
+import { useSession } from "next-auth/react"
 
 const prisma = new PrismaClient()
 
+function capitalizeFirstLetter(str: string) {
+  return str.charAt(0).toUpperCase() + str.substring(1)
+}
+
 const Orders: NextPage<{ store: Store }> = ({ store }: { store: Store }) => {
+  const { data: session } = useSession({ required: true })
   const [orders, setOrders] = useState([] as Order[])
   const [selectedOrder, setSelectedOrder] = useState<Order>()
   const [playAlert] = useSound("/bell.wav")
 
+  const { data: user, isLoading } = api.user.getByEmail.useQuery(
+    { email: session?.user.email as string },
+    { enabled: !!session }
+  )
+
+  const isUserHasAccess = !!user && user.stores.includes(store.id)
+
   api.order.getByStoreId.useQuery(
     { id: store.id },
     {
+      enabled: !!session && isUserHasAccess,
       refetchInterval: 30000,
       refetchIntervalInBackground: true,
       onSettled: (data) => setOrders(data ?? []),
     }
   )
 
+  const { data: delivery } = api.delivery.getByOrderId.useQuery(
+    { orderId: selectedOrder?.id as number },
+    { enabled: !!selectedOrder }
+  )
+
   useEffect(() => {
     if (orders.filter((order) => !order.isAccepted).length > 0) playAlert()
-  }, [orders])
+  }, [orders, playAlert])
 
   const updateOrderLocally = (orders: Order[], orderId: number) => {
     const index = orders.findIndex((order) => order.id === orderId)
@@ -47,6 +66,8 @@ const Orders: NextPage<{ store: Store }> = ({ store }: { store: Store }) => {
 
   const handleBackClick = () => setSelectedOrder(undefined)
 
+  if (isLoading) return <div>Loading...</div>
+  if (!isLoading && !isUserHasAccess) return <div>Not Allowed</div>
   if (selectedOrder)
     return (
       <div>
@@ -61,6 +82,18 @@ const Orders: NextPage<{ store: Store }> = ({ store }: { store: Store }) => {
         <h1 className="mt-12 mb-4 text-center font-poppins text-6xl font-bold">
           #{selectedOrder.id} {selectedOrder.customerName}
         </h1>
+        <h3
+          className="py-4 text-center font-poppins text-3xl font-bold"
+          style={{ color: store.color }}
+        >
+          {capitalizeFirstLetter(selectedOrder.type as string)}
+        </h3>
+        {selectedOrder.type === "delivery" && (
+          <h4 className="text-center font-poppins text-lg">
+            Doordash Support Reference
+            <br />#{delivery?.supportReference ?? ""}
+          </h4>
+        )}
         <div className="p-12 font-poppins text-3xl">
           <div className="grid grid-cols-[1fr,1fr] rounded-xl border-[1px] border-solid border-slate-500">
             <div className="flex flex-col items-center border-r border-solid border-slate-500 p-2 text-2xl font-bold">
@@ -118,10 +151,13 @@ const Orders: NextPage<{ store: Store }> = ({ store }: { store: Store }) => {
               }`}
               onClick={() => handleOrderClick(order)}
             >
-              <div className="grid grid-cols-[1fr,1fr] text-xl font-bold">
+              <div className="grid grid-cols-[1fr,1fr,1fr] text-xl font-bold">
                 <div>
                   #{order.id} {order.customerName}
                 </div>
+                <div className="text-center">{`${(order.type as string)
+                  .charAt(0)
+                  .toUpperCase()}${(order.type as string).substring(1)}`}</div>
                 <div className="text-right">
                   {order.items.length} item{s}
                 </div>
@@ -138,14 +174,14 @@ export default Orders
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   try {
     const store = await prisma.store.findFirst({
-      where: { slug: context.query.store as string },
+      where: { slug: context.query.storeSlug as string },
     })
     await prisma.$disconnect()
 
     if (store) {
       const { id, color, name, address, slug } = store
       return { props: { store: { id, color, name, address, slug } } }
-    }
+    } else return { redirect: { destination: "/" } }
   } catch (e) {
     return { props: {} }
   }

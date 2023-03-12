@@ -1,23 +1,22 @@
 import type { GetServerSidePropsContext, NextPage } from "next"
 import Head from "next/head"
 import type { PopupActions } from "reactjs-popup/dist/types"
-// import { signIn, signOut, useSession } from "next-auth/react"
 import { useEffect, useReducer, useRef, useState } from "react"
-import { reducer } from "../reducers/cartReducer"
-import { CartProvider } from "../contexts/cartContext"
+import { reducer } from "../../reducers/cartReducer"
+import { CartProvider } from "../../contexts/cartContext"
 
-import { Header } from "../components/Header/Header"
-import { Body } from "../components/Body/Body"
-import { OrderingContainer } from "../components/OrderingContainer/OrderingContainer"
-import type { Store } from "../types/Store"
+import { Header } from "../../components/Header/Header"
+import { Body } from "../../components/Body/Body"
+import { OrderingContainer } from "../../components/OrderingContainer/OrderingContainer"
+import type { Store } from "../../types/Store"
 import { PrismaClient } from "@prisma/client"
-import { StoreProvider } from "../contexts/storeContext"
+import { StoreProvider } from "../../contexts/storeContext"
 import { getCookie, hasCookie } from "cookies-next"
-import { CallbackHandler } from "../components/CallbackHandler/CallbackHandler"
-import { ModalOrderCart } from "../components/ModalOrderCart/ModalOrderCart"
-import { DimmerProvider } from "../contexts/dimmerContext"
-import { Dimmer } from "../components/Dimmer"
-import { Checkout } from "../components/Checkout/Checkout"
+import { CallbackHandler } from "../../components/CallbackHandler/CallbackHandler"
+import { ModalOrderCart } from "../../components/ModalOrderCart/ModalOrderCart"
+import { DimmerProvider } from "../../contexts/dimmerContext"
+import { Dimmer } from "../../components/Dimmer"
+import { Checkout } from "../../components/Checkout/Checkout"
 
 const prisma = new PrismaClient()
 
@@ -54,10 +53,7 @@ const StoreHome: NextPage<{ store: Store }> = ({
   }
 
   useEffect(() => {
-    if (!store) {
-      const win: Window = window
-      win.location = win.location.origin
-    } else if (hasCookie(`swiftCart_${store.slug}`)) {
+    if (!!store && hasCookie(`swiftCart_${store.slug}`)) {
       dispatch({
         type: "RESTORE_CART",
         payload: getCookie(`swiftCart_${store.slug}`) as string,
@@ -88,7 +84,10 @@ const StoreHome: NextPage<{ store: Store }> = ({
                   <h1 className="block pb-4 text-center font-poppins text-3xl font-bold text-slate-700">
                     Checkout
                   </h1>
-                  <Checkout />
+                  <Checkout
+                    closeModal={closeCartModal}
+                    setIsMobileCheckout={setIsMobileCheckout}
+                  />
                 </div>
               )}
               {!isMobileCheckout && (
@@ -142,6 +141,8 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
         slug,
         stripeAccountId,
       }
+    } else {
+      return { redirect: { destination: "/" } }
     }
 
     if (context.query.success) propsToReturn.props.callback = "success"
@@ -151,27 +152,3 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     return propsToReturn
   }
 }
-
-// const AuthShowcase: React.FC = () => {
-//   const { data: sessionData } = useSession()
-
-//   const { data: secretMessage } = api.example.getSecretMessage.useQuery(
-//     undefined, // no input
-//     { enabled: sessionData?.user !== undefined }
-//   )
-
-//   return (
-//     <div className="flex flex-col items-center justify-center gap-4">
-//       <p className="text-center text-2xl text-white">
-//         {sessionData && <span>Logged in as {sessionData.user?.name}</span>}
-//         {secretMessage && <span> - {secretMessage}</span>}
-//       </p>
-//       <button
-//         className="rounded-full bg-white/10 px-10 py-3 font-semibold text-white no-underline transition hover:bg-white/20"
-//         onClick={sessionData ? () => void signOut() : () => void signIn()}
-//       >
-//         {sessionData ? "Sign out" : "Sign in"}
-//       </button>
-//     </div>
-//   )
-// }

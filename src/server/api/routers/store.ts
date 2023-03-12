@@ -13,10 +13,22 @@ export const storeRouter = createTRPCRouter({
     .mutation(({ input, ctx }) => {
       return ctx.prisma.store.create({ data: input })
     }),
-  get: publicProcedure
+  getBySlug: publicProcedure
     .input(z.object({ slug: z.string() }))
     .query(({ input, ctx }) => {
       return ctx.prisma.store.findFirst({ where: input })
+    }),
+  getById: publicProcedure
+    .input(z.object({ id: z.number() }))
+    .query(({ input, ctx }) => {
+      return ctx.prisma.store.findFirst({ where: input })
+    }),
+  getByIds: publicProcedure
+    .input(z.object({ ids: z.array(z.number()) }))
+    .query(({ input, ctx }) => {
+      return ctx.prisma.store.findMany({
+        where: { OR: input.ids.map((id) => ({ id })) },
+      })
     }),
   getAll: publicProcedure.query(({ ctx }) => {
     return ctx.prisma.store.findMany()

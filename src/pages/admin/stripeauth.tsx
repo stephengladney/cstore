@@ -1,6 +1,6 @@
 import { type NextPage } from "next"
 
-const StripAuth: NextPage = () => {
+const StripeAuth: NextPage = () => {
   return (
     <div className="flex h-screen w-full flex-col items-center justify-center">
       <h1 className="mb-12 font-poppins text-2xl font-bold">
@@ -15,4 +15,4 @@ const StripAuth: NextPage = () => {
   )
 }
 
-export default StripAuth
+export default StripeAuth

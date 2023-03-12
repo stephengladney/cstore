@@ -69,18 +69,20 @@ model MenuOption {
 }
 
 model Order {
-    id            Int      @id @default(autoincrement())
+    id            Int        @id @default(autoincrement())
     items         Json[]
-    subtotal      Decimal  @db.Decimal(10, 2)
-    tax           Decimal  @db.Decimal(10, 2)
-    total         Decimal  @db.Decimal(10, 2)
+    subtotal      Decimal    @db.Decimal(10, 2)
+    tax           Decimal    @db.Decimal(10, 2)
+    total         Decimal    @db.Decimal(10, 2)
     customerName  String
     customerPhone String
-    store         Store    @relation(fields: [storeId], references: [id], onDelete: Cascade)
-    storeId       Int      @default(1)
-    isAccepted    Boolean  @default(false)
-    createdAt     DateTime @default(now())
-    updatedAt     DateTime @updatedAt
+    type          String     @default("pickup")
+    store         Store      @relation(fields: [storeId], references: [id], onDelete: Cascade)
+    storeId       Int        @default(1)
+    isAccepted    Boolean    @default(false)
+    createdAt     DateTime   @default(now())
+    updatedAt     DateTime   @updatedAt
+    Delivery      Delivery[]
 }
 
 model Store {
@@ -111,6 +113,7 @@ model User {
     email         String?   @unique
     emailVerified DateTime?
     image         String?
+    stores        Int[]     @default([])
     accounts      Account[]
     sessions      Session[]
 }
@@ -121,4 +124,17 @@ model VerificationToken {
     expires    DateTime
 
     @@unique([identifier, token])
+}
+
+model Delivery {
+    id               String   @id @default(cuid())
+    status           String?
+    pickupTime       String?
+    dropoffTime      String?
+    trackingUrl      String?
+    supportReference String?
+    order            Order?   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+    orderId          Int?     @unique
+    createdAt        DateTime @default(now())
+    updatedAt        DateTime @updatedAt
 }

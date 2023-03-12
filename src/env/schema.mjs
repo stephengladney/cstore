@@ -25,6 +25,9 @@ export const serverSchema = z.object({
   DOORDASH_DEVELOPER_ID: z.string(),
   DOORDASH_KEY_ID: z.string(),
   DOORDASH_SIGNING_SECRET: z.string(),
+  GOOGLE_CLIENT_ID: z.string(),
+  GOOGLE_CLIENT_SECRET: z.string(),
+  JWT_SECRET: z.string(),
 })
 
 /**
@@ -44,6 +47,9 @@ export const serverEnv = {
   DOORDASH_DEVELOPER_ID: process.env.DOORDASH_DEVELOPER_ID,
   DOORDASH_KEY_ID: process.env.DOORDASH_KEY_ID,
   DOORDASH_SIGNING_SECRET: process.env.DOORDASH_SIGNING_SECRET,
+  GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
+  GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
+  JWT_SECRET: process.env.JWT_SECRET,
 }
 
 /**

@@ -28,7 +28,7 @@ export function ModalOrderCart({
           <h1 className="block pb-4 text-center font-poppins text-3xl font-bold text-slate-700">
             Checkout
           </h1>
-          <Checkout />
+          <Checkout closeModal={closeModal} />
         </ModalContent>
       </ModalWrapper>
     </Popup>
