@@ -1,8 +1,8 @@
-import type { MenuItem } from "./MenuItemType"
+import type { MenuItemType } from "./MenuItemType"
 
 export type MenuCategory = {
   name: string
-  items: MenuItem[]
+  items: MenuItemType[]
 }
 
 export type ApiMenuCategory = {
