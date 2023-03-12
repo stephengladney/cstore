@@ -151,10 +151,13 @@ const Orders: NextPage<{ store: Store }> = ({ store }: { store: Store }) => {
               }`}
               onClick={() => handleOrderClick(order)}
             >
-              <div className="grid grid-cols-[1fr,1fr] text-xl font-bold">
+              <div className="grid grid-cols-[1fr,1fr,1fr] text-xl font-bold">
                 <div>
                   #{order.id} {order.customerName}
                 </div>
+                <div className="text-center">{`${(order.type as string)
+                  .charAt(0)
+                  .toUpperCase()}${(order.type as string).substring(1)}`}</div>
                 <div className="text-right">
                   {order.items.length} item{s}
                 </div>

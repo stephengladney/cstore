@@ -34,10 +34,10 @@ export function ItemImage({ alt, src }: { alt: string; src?: string }) {
   return (
     <Image
       alt={alt}
-      height={75}
+      height={150}
       src={src || "/noimage.png"}
-      width={75}
-      className="md:h-24 md:w-24"
+      width={150}
+      // className="md:h-24 md:w-24"
     />
   )
 }

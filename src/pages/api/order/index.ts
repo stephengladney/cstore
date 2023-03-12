@@ -1,11 +1,9 @@
 import { env } from "../../../env/server.mjs"
 import type { NextApiRequest, NextApiResponse } from "next"
-import Stripe from "stripe"
 import * as DoorDashClient from "@doordash/sdk"
 import { PrismaClient } from "@prisma/client"
 import { CartItem } from "../../../types/Cart.js"
 
-const stripe = new Stripe(env.STRIPE_PRIVATE_KEY, { apiVersion: "2022-11-15" })
 const prisma = new PrismaClient()
 const doordash = new DoorDashClient.DoorDashClient({
   developer_id: env.DOORDASH_DEVELOPER_ID,
@@ -25,6 +23,7 @@ export default async function handler(
       items,
       storeAddress,
       storeId,
+      storeName,
       storePhone,
       subtotal,
       tax,
@@ -37,6 +36,7 @@ export default async function handler(
       items: CartItem[]
       storeAddress: string
       storeId: number
+      storeName: string
       storePhone: string
       subtotal: number
       tax: number
@@ -45,33 +45,40 @@ export default async function handler(
     }
     try {
       const isDelivery = type === "delivery"
+      let order = null
       let delivery = null
-      const order = await prisma.order.create({
-        data: {
-          customerName,
-          customerPhone,
-          items,
-          subtotal,
-          storeId,
-          tax,
-          total,
-          type,
-        },
-      })
+
       if (isDelivery) {
-        delivery = await prisma.delivery.create({
-          data: { orderId: order.id },
-        })
-        console.log(customerName)
+        delivery = await prisma.delivery.create({ data: {} })
+
         const totalInCents = Math.floor(Number(Number(total).toFixed(2)) * 100)
         const doordashDelivery = await doordash.createDelivery({
           external_delivery_id: delivery.id,
           pickup_address: storeAddress,
           pickup_phone_number: storePhone,
+          pickup_business_name: storeName,
           dropoff_address: customerAddress,
           dropoff_phone_number: customerPhone,
           order_value: totalInCents,
           dropoff_contact_given_name: customerName,
+        })
+
+        order = await prisma.order.create({
+          data: {
+            customerName,
+            customerPhone,
+            items,
+            subtotal,
+            storeId,
+            tax,
+            total,
+            type,
+          },
+        })
+
+        await prisma.delivery.update({
+          where: { id: delivery.id },
+          data: { orderId: order.id },
         })
 
         await prisma.delivery.update({
@@ -84,12 +91,24 @@ export default async function handler(
             supportReference: doordashDelivery.data.support_reference,
           },
         })
+      } else {
+        order = await prisma.order.create({
+          data: {
+            customerName,
+            customerPhone,
+            items,
+            subtotal,
+            storeId,
+            tax,
+            total,
+            type,
+          },
+        })
       }
 
       res.status(200).json({ order, delivery })
     } catch (e) {
-      console.log(e)
-      res.status(500).end(e)
+      res.status(405).json(e)
     }
   } else {
     res.setHeader("Allow", "POST")

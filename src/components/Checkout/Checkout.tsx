@@ -42,6 +42,7 @@ export function Checkout({ closeModal, setIsMobileCheckout }: CheckoutProps) {
     useState<keyof typeof FulfillmentMethods>("PICKUP")
   const [paymentIntentId, setPaymentIntentId] = useState<string>()
   const [clientSecret, setClientSecret] = useState<string>()
+  const [isAddressError, setIsAddressError] = useState(false)
 
   const isPickupSelected = fulfillmentMethod === "PICKUP"
   const isDeliverySelected = fulfillmentMethod === "DELIVERY"
@@ -75,6 +76,7 @@ export function Checkout({ closeModal, setIsMobileCheckout }: CheckoutProps) {
       subtotal,
       storeAddress: store.address,
       storeId: store.id,
+      storeName: store.name,
       tax,
       total,
       type: isDeliverySelected ? "delivery" : "pickup",
@@ -232,14 +234,19 @@ export function Checkout({ closeModal, setIsMobileCheckout }: CheckoutProps) {
         </div>
         {isDeliverySelected && (
           <div className="relative">
-            <label className="block py-2 font-poppins text-[14.88px] font-medium text-[#30313D]">
-              Address
+            <label
+              className={`block py-2 font-poppins text-[14.88px] font-medium ${
+                isAddressError ? "text-red-600" : "text-[#30313D]"
+              }`}
+            >
+              {isAddressError ? "Please enter a valid address." : "Address"}
             </label>
             <PlacesAutocomplete
               value={customerInfo.address}
-              onChange={(address) =>
+              onChange={(address) => {
                 setCustomerInfo({ ...customerInfo, address })
-              }
+                if (isAddressError) setIsAddressError(false)
+              }}
               // onSelect={this.handleSelect}
             >
               {({
@@ -252,8 +259,9 @@ export function Checkout({ closeModal, setIsMobileCheckout }: CheckoutProps) {
                   <input
                     {...getInputProps({
                       placeholder: "Type your address...",
-                      className:
-                        "location-search-input w-full rounded-lg p-2.5 font-poppins border-gray-300 border-solid border-[1px]",
+                      className: `location-search-input w-full rounded-lg p-2.5 font-poppins border-solid border-[1px] ${
+                        isAddressError ? "border-red-600" : "border-gray-300"
+                      }`,
                     })}
                   />
                   <div
@@ -311,6 +319,7 @@ export function Checkout({ closeModal, setIsMobileCheckout }: CheckoutProps) {
             createOrder={createOrder}
             closeModal={closeModal}
             setIsMobileCheckout={setIsMobileCheckout}
+            setIsAddressError={setIsAddressError}
           />
         </Elements>
       )}
