@@ -141,7 +141,7 @@ const Orders: NextPage<{ store: Store }> = ({ store }: { store: Store }) => {
         <h1 className="bg-slate-800 p-3 font-poppins text-4xl font-bold text-white">
           Orders
         </h1>
-        {orders?.map((order) => {
+        {orders?.map((order: Order) => {
           const s = order.items.length > 1 ? "s" : ""
           return (
             <div
@@ -155,9 +155,9 @@ const Orders: NextPage<{ store: Store }> = ({ store }: { store: Store }) => {
                 <div>
                   #{order.id} {order.customerName}
                 </div>
-                <div className="text-center">{`${order.type
-                  .charAt(0)
-                  .toUpperCase()}${order.type.substring(1)}`}</div>
+                <div className="text-center">
+                  {capitalizeFirstLetter(order.type)}
+                </div>
                 <div className="text-right">
                   {order.items.length} item{s}
                 </div>
