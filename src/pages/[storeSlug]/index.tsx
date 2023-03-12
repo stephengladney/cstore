@@ -8,7 +8,6 @@ import { CartProvider } from "../../contexts/cartContext"
 import { Header } from "../../components/Header/Header"
 import { Body } from "../../components/Body/Body"
 import { OrderingContainer } from "../../components/OrderingContainer/OrderingContainer"
-import type { Store } from "@prisma/client"
 import { PrismaClient } from "@prisma/client"
 import { StoreProvider } from "../../contexts/storeContext"
 import { getCookie, hasCookie } from "cookies-next"
@@ -17,12 +16,9 @@ import { ModalOrderCart } from "../../components/ModalOrderCart/ModalOrderCart"
 import { DimmerProvider } from "../../contexts/dimmerContext"
 import { Dimmer } from "../../components/Dimmer"
 import { Checkout } from "../../components/Checkout/Checkout"
+import type { StoreComponent } from "../../types/StoreComponent"
 
 const prisma = new PrismaClient()
-type StoreComponent = Omit<
-  Store,
-  "createdAt" | "updatedAt" | "stripeAccessToken"
->
 
 const StoreHome: NextPage<{
   store: StoreComponent

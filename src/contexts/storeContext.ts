@@ -1,5 +1,5 @@
 import { createContext } from "react"
-import type { Store } from "@prisma/client"
+import type { StoreComponent } from "../types/StoreComponent"
 
 export const storeContext = createContext({
   id: 0,
@@ -8,6 +8,6 @@ export const storeContext = createContext({
   slug: "",
   color: "",
   stripeAccountId: "",
-} as Store)
+} as StoreComponent)
 
 export const StoreProvider = storeContext.Provider
