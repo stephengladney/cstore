@@ -8,7 +8,7 @@ import { CartProvider } from "../../contexts/cartContext"
 import { Header } from "../../components/Header/Header"
 import { Body } from "../../components/Body/Body"
 import { OrderingContainer } from "../../components/OrderingContainer/OrderingContainer"
-import type { Store } from "../../types/Store"
+import type { Store } from "@prisma/client"
 import { PrismaClient } from "@prisma/client"
 import { StoreProvider } from "../../contexts/storeContext"
 import { getCookie, hasCookie } from "cookies-next"
@@ -19,14 +19,14 @@ import { Dimmer } from "../../components/Dimmer"
 import { Checkout } from "../../components/Checkout/Checkout"
 
 const prisma = new PrismaClient()
+type StoreComponent = Omit<
+  Store,
+  "createdAt" | "updatedAt" | "stripeAccessToken"
+>
 
-const StoreHome: NextPage<{ store: Store }> = ({
-  callback,
-  store,
-}: {
-  callback?: string
-  store: Store
-}) => {
+const StoreHome: NextPage<{
+  store: StoreComponent
+}> = ({ callback, store }: { callback?: string; store: StoreComponent }) => {
   const [cart, dispatch] = useReducer(reducer, {
     items: [],
     slug: store?.slug,
@@ -123,7 +123,10 @@ export default StoreHome
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const propsToReturn: {
-    props: { store: Store | null; callback: string | null }
+    props: {
+      store: StoreComponent | null
+      callback: string | null
+    }
   } = { props: { store: null, callback: null } }
   try {
     const store = await prisma.store.findFirst({
@@ -132,7 +135,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     await prisma.$disconnect()
 
     if (store) {
-      const { id, color, name, address, slug, stripeAccountId } = store as Store
+      const { id, color, name, address, slug, stripeAccountId } = store
       propsToReturn.props.store = {
         id,
         color,

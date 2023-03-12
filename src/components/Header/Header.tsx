@@ -14,7 +14,7 @@ import { BsCart2 } from "react-icons/bs"
 import { useContext } from "react"
 import { cartContext } from "../../contexts/cartContext"
 import { getCartItemCount } from "../../lib/cart"
-import type { Store } from "../../types/Store"
+import type { Store } from "@prisma/client"
 
 interface HeaderProps {
   callback: string

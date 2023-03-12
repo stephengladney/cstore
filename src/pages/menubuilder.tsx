@@ -4,7 +4,7 @@ import { api } from "../utils/api"
 import type { Menu } from "../types/Menu"
 import type { ApiMenuCategory } from "../types/MenuCategory"
 import type { MenuItem } from "../types/MenuItem"
-import type { Store } from "../types/Store"
+import type { Store } from "@prisma/client"
 
 function getUiMenu(menu: Menu) {
   const { categories } = menu

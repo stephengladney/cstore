@@ -1,5 +1,5 @@
 import { type NextPage } from "next"
-import type { Store } from "../../types/Store"
+import type { Store } from "@prisma/client"
 import type { GetServerSidePropsContext } from "next"
 import { PrismaClient } from "@prisma/client"
 import { api } from "../../utils/api"

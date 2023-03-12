@@ -1,5 +1,5 @@
 import { createContext } from "react"
-import type { Store } from "../types/Store"
+import type { Store } from "@prisma/client"
 
 export const storeContext = createContext({
   id: 0,
