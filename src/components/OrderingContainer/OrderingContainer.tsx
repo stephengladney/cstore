@@ -4,14 +4,14 @@ import { useState } from "react"
 import { OrderItemModal } from "../OrderingMenu/OrderItemModal/OrderItemModal"
 import { cartContext } from "../../contexts/cartContext"
 import type { PopupActions } from "reactjs-popup/dist/types"
-import type { MenuItem } from "../../types/MenuItemType"
+import type { MenuItemType } from "../../types/MenuItemType"
 import type { CartItem } from "../../types/Cart"
 import { OrderCart } from "../OrderCart/OrderCart"
 import { dimmerContext } from "../../contexts/dimmerContext"
 
 export function OrderingContainer({}) {
   const [selectedItem, setSelectedItem] = useState<
-    MenuItem | CartItem | undefined
+    MenuItemType | CartItem | undefined
   >()
   const [selectedCartItemIndex, setSelectedCartItemIndex] = useState<number>()
   const { setIsDimmed } = useContext(dimmerContext)
