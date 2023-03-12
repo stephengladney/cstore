@@ -2,13 +2,13 @@ import { type Dispatch, Fragment, type SetStateAction, useContext } from "react"
 import { MenuCategoryComponent } from "./MenuCategory/MenuCategoryComponent"
 import { CategoryDivider, MenuContainer } from "./OrderingMenu.styles"
 import { api } from "../../utils/api"
-import type { MenuItem } from "../../types/MenuItem"
+import type { MenuItemType } from "../../types/MenuItemType"
 import type { CartItem } from "../../types/Cart"
 import { storeContext } from "../../contexts/storeContext"
 import { LoadingSpinner } from "../LoadingSpinner/LoadingSpinner"
 
 interface MenuProps {
-  setSelectedItem: Dispatch<SetStateAction<MenuItem | CartItem | undefined>>
+  setSelectedItem: Dispatch<SetStateAction<MenuItemType | CartItem | undefined>>
 }
 
 export function OrderingMenu({ setSelectedItem }: MenuProps) {

@@ -1,5 +1,5 @@
 import { createContext } from "react"
-import type { StoreComponent } from "../types/StoreComponent"
+import type { StoreType } from "../types/StoreType"
 
 export const storeContext = createContext({
   id: 0,
@@ -8,6 +8,6 @@ export const storeContext = createContext({
   slug: "",
   color: "",
   stripeAccountId: "",
-} as StoreComponent)
+} as StoreType)
 
 export const StoreProvider = storeContext.Provider

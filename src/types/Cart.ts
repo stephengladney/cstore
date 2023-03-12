@@ -1,4 +1,4 @@
-import type { MenuItem } from "./MenuItem"
+import type { MenuItem } from "./MenuItemType"
 import type { MenuOption } from "./MenuOption"
 
 export type Cart = {

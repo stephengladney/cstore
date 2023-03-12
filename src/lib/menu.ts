@@ -1,4 +1,4 @@
-import type { MenuItem } from "../types/MenuItem"
+import type { MenuItem } from "../types/MenuItemType"
 import type { MenuCategory } from "../types/MenuCategory"
 import type { Menu } from "../types/Menu"
 import { PrismaClient } from "@prisma/client"

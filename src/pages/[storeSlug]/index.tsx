@@ -16,13 +16,13 @@ import { ModalOrderCart } from "../../components/ModalOrderCart/ModalOrderCart"
 import { DimmerProvider } from "../../contexts/dimmerContext"
 import { Dimmer } from "../../components/Dimmer"
 import { Checkout } from "../../components/Checkout/Checkout"
-import type { StoreComponent } from "../../types/StoreComponent"
+import type { StoreType } from "../../types/StoreType"
 
 const prisma = new PrismaClient()
 
 const StoreHome: NextPage<{
-  store: StoreComponent
-}> = ({ callback, store }: { callback?: string; store: StoreComponent }) => {
+  store: StoreType
+}> = ({ callback, store }: { callback?: string; store: StoreType }) => {
   const [cart, dispatch] = useReducer(reducer, {
     items: [],
     slug: store?.slug,
@@ -120,7 +120,7 @@ export default StoreHome
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const propsToReturn: {
     props: {
-      store: StoreComponent | null
+      store: StoreType | null
       callback: string | null
     }
   } = { props: { store: null, callback: null } }

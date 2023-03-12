@@ -1,4 +1,4 @@
-import type { MenuItem } from "./MenuItem"
+import type { MenuItem } from "./MenuItemType"
 
 export type MenuCategory = {
   name: string

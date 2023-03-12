@@ -6,14 +6,14 @@ import {
   ItemsContainer,
 } from "./MenuCategoryComponent.styles"
 import { MenuItemComponent } from "../MenuItem/MenuItemComponent"
-import type { MenuItem } from "../../../types/MenuItem"
+import type { MenuItemType } from "../../../types/MenuItemType"
 import type { CartItem } from "../../../types/Cart"
 
 interface CategoryProps {
-  items: MenuItem[]
+  items: MenuItemType[]
   name: string
   setSelectedItem: React.Dispatch<
-    SetStateAction<MenuItem | CartItem | undefined>
+    SetStateAction<MenuItemType | CartItem | undefined>
   >
 }
 

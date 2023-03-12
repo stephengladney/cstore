@@ -14,12 +14,12 @@ import { BsCart2 } from "react-icons/bs"
 import { useContext } from "react"
 import { cartContext } from "../../contexts/cartContext"
 import { getCartItemCount } from "../../lib/cart"
-import type { StoreComponent } from "../../types/StoreComponent"
+import type { StoreType } from "../../types/StoreType"
 
 interface HeaderProps {
   callback: string
   openCartModal: () => void
-  store: StoreComponent
+  store: StoreType
 }
 
 export function Header({ callback, openCartModal, store }: HeaderProps) {

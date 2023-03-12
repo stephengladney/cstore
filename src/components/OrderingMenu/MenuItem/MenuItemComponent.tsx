@@ -1,5 +1,5 @@
 import { type Dispatch, type SetStateAction } from "react"
-import type { MenuItem } from "../../../types/MenuItem"
+import type { MenuItemType } from "../../../types/MenuItemType"
 import type { CartItem } from "../../../types/Cart"
 import {
   MenuItemContainer,
@@ -16,8 +16,8 @@ import {
 } from "./MenuItemComponent.styles"
 
 interface MenuItemProps {
-  item: MenuItem
-  setSelectedItem: Dispatch<SetStateAction<MenuItem | CartItem | undefined>>
+  item: MenuItemType
+  setSelectedItem: Dispatch<SetStateAction<MenuItemType | CartItem | undefined>>
 }
 
 export function MenuItemComponent({ item, setSelectedItem }: MenuItemProps) {
@@ -32,7 +32,7 @@ export function MenuItemComponent({ item, setSelectedItem }: MenuItemProps) {
       }}
     >
       <MenuItemPrimaryContainer>
-        <MenuItemPhoto src={item.imageUrl} />
+        <MenuItemPhoto src={item.imageUrl ?? ""} />
       </MenuItemPrimaryContainer>
       <MenuItemSecondaryContainer>
         <MenuItemHeader>

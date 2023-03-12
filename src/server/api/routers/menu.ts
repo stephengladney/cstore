@@ -1,7 +1,7 @@
 import { z } from "zod"
 
 import { createTRPCRouter, publicProcedure } from "../trpc"
-import type { MenuItem } from "../../../types/MenuItem"
+import type { MenuItem } from "../../../types/MenuItemType"
 import { getMenuFromApiMenuItems } from "../../../lib/menu"
 
 export const menuRouter = createTRPCRouter({

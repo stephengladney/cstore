@@ -17,7 +17,7 @@ import {
   ButtonsContainer,
 } from "./OrderItemModal.styles"
 
-import type { MenuItem } from "../../../types/MenuItem"
+import type { MenuItem } from "../../../types/MenuItemType"
 import type { CartItem } from "../../../types/Cart"
 import { QuantitySelector } from "../QuantitySelector/QuantitySelector"
 import type { PopupActions } from "reactjs-popup/dist/types"
