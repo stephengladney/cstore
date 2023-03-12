@@ -1,7 +1,7 @@
 import { z } from "zod"
 
 import { createTRPCRouter, publicProcedure } from "../trpc"
-import type { MenuItem } from "../../../types/MenuItemType"
+import type { MenuItemType } from "../../../types/MenuItemType"
 import { getMenuFromApiMenuItems } from "../../../lib/menu"
 
 export const menuRouter = createTRPCRouter({
@@ -27,7 +27,7 @@ INNER JOIN public."MenuItem"
 ON public."MenuItem"."categoryId" = public."MenuCategory".id
 ORDER BY "menuId","categoryId";
       `
-      return getMenuFromApiMenuItems(rawItems as MenuItem[])
+      return getMenuFromApiMenuItems(rawItems as MenuItemType[])
     }),
   getAll: publicProcedure.query(({ ctx }) => {
     return ctx.prisma.menu.findMany()
@@ -48,7 +48,7 @@ ORDER BY "menuId","categoryId";
   ON public."MenuItem"."categoryId" = public."MenuCategory".id
   ORDER BY "menuId","categoryId","createdAt";
         `
-        return getMenuFromApiMenuItems(rawItems as MenuItem[])
+        return getMenuFromApiMenuItems(rawItems as MenuItemType[])
       } else return null
     }),
 })
