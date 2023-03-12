@@ -86,7 +86,7 @@ const Orders: NextPage<{ store: Store }> = ({ store }: { store: Store }) => {
           className="py-4 text-center font-poppins text-3xl font-bold"
           style={{ color: store.color }}
         >
-          {capitalizeFirstLetter(selectedOrder.type as string)}
+          {capitalizeFirstLetter(selectedOrder.type)}
         </h3>
         {selectedOrder.type === "delivery" && (
           <h4 className="text-center font-poppins text-lg">
@@ -155,9 +155,9 @@ const Orders: NextPage<{ store: Store }> = ({ store }: { store: Store }) => {
                 <div>
                   #{order.id} {order.customerName}
                 </div>
-                <div className="text-center">{`${(order.type as string)
+                <div className="text-center">{`${order.type
                   .charAt(0)
-                  .toUpperCase()}${(order.type as string).substring(1)}`}</div>
+                  .toUpperCase()}${order.type.substring(1)}`}</div>
                 <div className="text-right">
                   {order.items.length} item{s}
                 </div>
