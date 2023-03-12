@@ -17,7 +17,7 @@ import {
   ButtonsContainer,
 } from "./OrderItemModal.styles"
 
-import type { MenuItem } from "../../../types/MenuItemType"
+import type { MenuItemType } from "../../../types/MenuItemType"
 import type { CartItem } from "../../../types/Cart"
 import { QuantitySelector } from "../QuantitySelector/QuantitySelector"
 import type { PopupActions } from "reactjs-popup/dist/types"
@@ -26,7 +26,7 @@ interface OrderItemModalProps {
   cartItemIndex?: number
   closeModal: () => void
   modalRef: MutableRefObject<PopupActions>
-  selectedItem?: MenuItem | CartItem
+  selectedItem?: MenuItemType | CartItem
   selectedCartItemIndex?: number
 }
 
@@ -54,7 +54,7 @@ export function OrderItemModal({
         payload: {
           index: selectedCartItemIndex as number,
           newItem: {
-            ...(selectedItem as MenuItem),
+            ...(selectedItem as MenuItemType),
             quantity,
             price: Number(Number(selectedItem?.price) * quantity),
           },
@@ -91,8 +91,8 @@ export function OrderItemModal({
           <ItemInfo>
             <LeftContainer>
               <ItemImage
-                alt={`${selectedItem?.name || "No"} image`}
-                src={selectedItem?.imageUrl}
+                alt={`${selectedItem?.name ?? "No"} image`}
+                src={selectedItem?.imageUrl ?? ""}
               />
             </LeftContainer>
             <RightContainer>
