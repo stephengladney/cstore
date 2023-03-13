@@ -1,6 +1,6 @@
 import type { MenuItemType } from "../types/MenuItemType"
-import type { MenuCategoryType } from "../types/MenuCategory"
-import type { Menu } from "../types/Menu"
+import type { MenuCategoryType } from "../types/MenuCategoryType"
+import type { MenuType } from "../types/MenuType"
 import { Prisma, PrismaClient } from "@prisma/client"
 import type { Decimal } from "@prisma/client/runtime"
 
@@ -61,7 +61,7 @@ export async function csvToDatabase() {
   await createItemsInDatabase(getMenuItemsFromCsv(csvText))
 }
 
-export function getMenuFromApiMenuItems(items: MenuItemType[]): Menu {
+export function getMenuFromApiMenuItems(items: MenuItemType[]): MenuType {
   const categories: { [key: string]: MenuItemType[] } = {}
   const categoriesWithItems: MenuCategoryType[] = []
   const name = items[0]?.menuName as string
