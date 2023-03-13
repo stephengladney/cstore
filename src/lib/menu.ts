@@ -1,5 +1,5 @@
 import type { MenuItemType } from "../types/MenuItemType"
-import type { MenuCategory } from "../types/MenuCategory"
+import type { MenuCategoryType } from "../types/MenuCategory"
 import type { Menu } from "../types/Menu"
 import { Prisma, PrismaClient } from "@prisma/client"
 import type { Decimal } from "@prisma/client/runtime"
@@ -63,7 +63,7 @@ export async function csvToDatabase() {
 
 export function getMenuFromApiMenuItems(items: MenuItemType[]): Menu {
   const categories: { [key: string]: MenuItemType[] } = {}
-  const categoriesWithItems: MenuCategory[] = []
+  const categoriesWithItems: MenuCategoryType[] = []
   const name = items[0]?.menuName as string
   const id = items[0]?.menuId as number
 

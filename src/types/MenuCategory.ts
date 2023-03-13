@@ -1,6 +1,6 @@
 import type { MenuItemType } from "./MenuItemType"
 
-export type MenuCategory = {
+export type MenuCategoryType = {
   name: string
   items: MenuItemType[]
 }
