@@ -37,7 +37,7 @@ export function getMenuItemsFromCsv(text: string): DbMenuItem[] {
     return {
       name: itemProperties[0] || "Untitled",
       categoryId: getCategoryIdFromName(itemProperties[1] as string),
-      price: new Prisma.Decimal(itemProperties[2]!) || 0,
+      price: new Prisma.Decimal(itemProperties[2] || 0),
       description: itemProperties[3] || "",
       isAvailable: itemProperties[4] === "TRUE",
       imageUrl: itemProperties[5] || "",

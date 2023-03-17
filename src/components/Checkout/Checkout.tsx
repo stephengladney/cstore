@@ -77,6 +77,7 @@ export function Checkout({ closeModal, setIsMobileCheckout }: CheckoutProps) {
       storeAddress: store.address,
       storeId: store.id,
       storeName: store.name,
+      storePhone: store.phone,
       tax,
       total,
       type: isDeliverySelected ? "delivery" : "pickup",

@@ -1,7 +1,7 @@
 import { env } from "../../../env/server.mjs"
 import type { NextApiRequest, NextApiResponse } from "next"
 import * as DoorDashClient from "@doordash/sdk"
-import { PrismaClient } from "@prisma/client"
+import { Prisma, PrismaClient } from "@prisma/client"
 import { CartItem } from "../../../types/Cart.js"
 
 const prisma = new PrismaClient()
@@ -50,7 +50,6 @@ export default async function handler(
 
       if (isDelivery) {
         delivery = await prisma.delivery.create({ data: {} })
-
         const totalInCents = Math.floor(Number(Number(total).toFixed(2)) * 100)
         const doordashDelivery = await doordash.createDelivery({
           external_delivery_id: delivery.id,
@@ -61,6 +60,7 @@ export default async function handler(
           dropoff_phone_number: customerPhone,
           order_value: totalInCents,
           dropoff_contact_given_name: customerName,
+          tip: 2,
         })
 
         order = await prisma.order.create({
@@ -78,12 +78,8 @@ export default async function handler(
 
         await prisma.delivery.update({
           where: { id: delivery.id },
-          data: { orderId: order.id },
-        })
-
-        await prisma.delivery.update({
-          where: { id: delivery.id },
           data: {
+            orderId: order.id,
             status: doordashDelivery.data.delivery_status,
             pickupTime: doordashDelivery.data.pickup_time_estimated,
             dropoffTime: doordashDelivery.data.dropoff_time_estimated,
@@ -99,7 +95,7 @@ export default async function handler(
             items,
             subtotal,
             storeId,
-            tax,
+            tax: new Prisma.Decimal(tax),
             total,
             type,
           },
@@ -108,6 +104,7 @@ export default async function handler(
 
       res.status(200).json({ order, delivery })
     } catch (e) {
+      console.log(e)
       res.status(405).json(e)
     }
   } else {

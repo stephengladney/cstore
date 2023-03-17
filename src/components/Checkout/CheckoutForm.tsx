@@ -65,15 +65,14 @@ export function CheckoutForm({
             }
 
             if (
-              error.fieldErrors[0].field === "dropoff_address" &&
-              error.fieldErrors[0].error ===
+              error?.fieldErrors &&
+              error?.fieldErrors[0].field === "dropoff_address" &&
+              error?.fieldErrors[0].error ===
                 "Could not resolve to a valid address"
             ) {
               setIsAddressError(true)
             } else {
-              alert(
-                `There was a problem with the delivery: ${error.fieldErrors[0].error}`
-              )
+              alert(`There was a problem: ${String(e)}`)
             }
           })
       })

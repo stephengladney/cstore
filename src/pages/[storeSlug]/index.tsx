@@ -131,12 +131,13 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     await prisma.$disconnect()
 
     if (store) {
-      const { id, color, name, address, slug, stripeAccountId } = store
+      const { id, color, name, phone, address, slug, stripeAccountId } = store
       propsToReturn.props.store = {
         id,
         color,
         name,
         address,
+        phone,
         slug,
         stripeAccountId,
       }

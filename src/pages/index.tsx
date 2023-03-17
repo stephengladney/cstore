@@ -9,6 +9,7 @@ import {
   FaTiktok,
   FaFirstOrder,
 } from "react-icons/fa"
+import { BsFillBagCheckFill } from "react-icons/bs"
 
 const Home: NextPage = () => {
   return (
@@ -21,7 +22,7 @@ const Home: NextPage = () => {
       <div className="flex h-screen w-[screen] flex-col items-center justify-start  bg-slate-100 p-0 font-bold">
         <div className="sticky top-0 flex w-screen flex-row items-center border-b-[1px]  border-solid border-b-slate-500 bg-slate-100 p-6 lg:pr-10">
           <h3 className="flex flex-row items-center font-poppins text-2xl font-bold text-red-600">
-            <FaFirstOrder className="mr-2" />
+            <BsFillBagCheckFill className="mr-2" />
             farely
           </h3>
           <div className="text-md flex grow flex-row justify-end gap-x-8 font-poppins font-bold text-slate-600 lg:gap-x-12">
