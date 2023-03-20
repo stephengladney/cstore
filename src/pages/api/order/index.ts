@@ -60,7 +60,7 @@ export default async function handler(
           dropoff_phone_number: customerPhone,
           order_value: totalInCents,
           dropoff_contact_given_name: customerName,
-          tip: 2,
+          tip: 200,
         })
 
         order = await prisma.order.create({
