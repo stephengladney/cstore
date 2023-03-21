@@ -36,7 +36,7 @@ export function OrderItemModal({
   selectedCartItemIndex,
   selectedItem,
 }: OrderItemModalProps) {
-  // const [specialInstructions, setSpecialInstructions] = useState("")
+  // const [deliveryInstructions, setDeliveryInstructions] = useState("")
   const [quantity, setQuantity] = useState(1)
 
   const increaseQuantity = () => setQuantity((quantity) => quantity + 1)
@@ -105,8 +105,8 @@ export function OrderItemModal({
           {/* <br />
           <InputLabel>Special Instructions</InputLabel>
           <SpecialIntructionsInput
-            value={specialInstructions}
-            onChange={(e) => setSpecialInstructions(e.target.value)}
+            value={deliveryInstructions}
+            onChange={(e) => setDeliveryInstructions(e.target.value)}
           />
           <br />
           <br /> */}

@@ -46,7 +46,9 @@ export function Checkout({ closeModal, setIsMobileCheckout }: CheckoutProps) {
 
   const isPickupSelected = fulfillmentMethod === "PICKUP"
   const isDeliverySelected = fulfillmentMethod === "DELIVERY"
-  const totalWithDelivery = Number(Number(total) + 7).toFixed(2)
+  const [tip, setTip] = useState(0)
+  const [deliveryInstructions, setDeliveryInstructions] = useState("")
+  const totalWithDelivery = Number(Number(total) + 7 + Number(tip)).toFixed(2)
 
   const [customerInfo, setCustomerInfo] = useState({
     name: "",
@@ -73,12 +75,14 @@ export function Checkout({ closeModal, setIsMobileCheckout }: CheckoutProps) {
       customerName: customerInfo.name,
       customerPhone: customerInfo.phone,
       items: cart.items,
+      deliveryInstructions,
       subtotal,
       storeAddress: store.address,
       storeId: store.id,
       storeName: store.name,
       storePhone: store.phone,
       tax,
+      tip,
       total,
       type: isDeliverySelected ? "delivery" : "pickup",
     })
@@ -316,7 +320,12 @@ export function Checkout({ closeModal, setIsMobileCheckout }: CheckoutProps) {
                 <label className="block pt-3 pb-2 font-poppins text-[14.88px] font-medium text-[#30313D]">
                   Delivery instructions
                 </label>
-                <input className="w-full rounded-lg border-[1px] border-solid border-gray-300 p-2.5 font-poppins" />
+                <input
+                  className="w-full rounded-lg border-[1px] border-solid border-gray-300 p-2.5 font-poppins"
+                  onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                    setDeliveryInstructions(e.target.value)
+                  }}
+                />
               </div>
               <div className="flex flex-row justify-end">
                 <div>
@@ -324,7 +333,14 @@ export function Checkout({ closeModal, setIsMobileCheckout }: CheckoutProps) {
                     Driver Tip
                   </label>
                   ${" "}
-                  <input className="w-20 rounded-lg border-[1px] border-solid border-gray-300 p-2.5 font-poppins" />
+                  <input
+                    className="w-20 rounded-lg border-[1px] border-solid border-gray-300 p-2.5 font-poppins"
+                    value={tip}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                      setTip(Number(e.target.value))
+                    }}
+                    type="number"
+                  />
                 </div>
               </div>
             </div>

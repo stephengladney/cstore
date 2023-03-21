@@ -23,6 +23,7 @@ export default async function handler(
       customerName,
       customerPhone,
       items,
+      deliveryInstructions,
       storeAddress,
       storeId,
       storeName,
@@ -37,6 +38,7 @@ export default async function handler(
       customerName: string
       customerPhone: string
       items: CartItem[]
+      deliveryInstructions: string
       storeAddress: string
       storeId: number
       storeName: string
@@ -60,6 +62,7 @@ export default async function handler(
           pickup_phone_number: storePhone,
           pickup_business_name: storeName,
           dropoff_address: customerAddress,
+          dropoff_instructions: deliveryInstructions,
           dropoff_phone_number: customerPhone,
           order_value: convertToCents(total),
           dropoff_contact_given_name: customerName,
