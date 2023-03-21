@@ -46,7 +46,7 @@ export function Checkout({ closeModal, setIsMobileCheckout }: CheckoutProps) {
 
   const isPickupSelected = fulfillmentMethod === "PICKUP"
   const isDeliverySelected = fulfillmentMethod === "DELIVERY"
-  const [tip, setTip] = useState(0)
+  const [tip, setTip] = useState(Number(total * 0.15).toFixed(2))
   const [deliveryInstructions, setDeliveryInstructions] = useState("")
   const totalWithDelivery = Number(Number(total) + 7 + Number(tip)).toFixed(2)
 
@@ -337,9 +337,12 @@ export function Checkout({ closeModal, setIsMobileCheckout }: CheckoutProps) {
                     className="w-20 rounded-lg border-[1px] border-solid border-gray-300 p-2.5 font-poppins"
                     value={tip}
                     onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                      setTip(Number(e.target.value))
+                      setTip(e.target.value)
                     }}
                     type="number"
+                    onBlur={(e: ChangeEvent<HTMLInputElement>) => {
+                      setTip(Number(e.target.value).toFixed(2))
+                    }}
                   />
                 </div>
               </div>
