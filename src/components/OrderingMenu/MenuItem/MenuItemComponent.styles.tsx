@@ -91,7 +91,7 @@ export function MenuItemPriceContainer({ children }: ReactComponents) {
 
 export function UnavailablePill() {
   return (
-    <div className="ml-2 rounded-3xl bg-gray-300 px-2 py-1 font-poppins text-xs">
+    <div className="mx-2 rounded-3xl bg-gray-300 px-2 py-1 font-poppins text-xs">
       Unavailable
     </div>
   )
