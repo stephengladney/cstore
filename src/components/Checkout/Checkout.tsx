@@ -1,10 +1,3 @@
-import {
-  CartItemsContainer,
-  CheckoutContainer,
-} from "../OrderCart/OrderCart.styles"
-import { CartPricing } from "../OrderCart/CartPricing/CartPricing"
-import { CartItemComponent } from "../OrderCart/CartItem/CartItem"
-
 import axios from "axios"
 import { Elements } from "@stripe/react-stripe-js"
 import { loadStripe } from "@stripe/stripe-js"
@@ -26,7 +19,6 @@ import "react-phone-input-2/lib/style.css"
 import PlacesAutocomplete from "react-places-autocomplete"
 
 const stripe = loadStripe(env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
-
 const FulfillmentMethods = { PICKUP: "PICKUP", DELIVERY: "DELIVERY" } as const
 
 interface CheckoutProps {

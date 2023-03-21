@@ -11,7 +11,7 @@ const doordash = new DoorDashClient.DoorDashClient({
   signing_secret: env.DOORDASH_SIGNING_SECRET,
 })
 
-const convertToCents = (n: number) => Math.floor(n * 100)
+const convertToCents = (n: number | string) => Math.floor(Number(n) * 100)
 
 export default async function handler(
   req: NextApiRequest,
@@ -45,7 +45,7 @@ export default async function handler(
       storePhone: string
       subtotal: number
       tax: number
-      tip: number
+      tip: string
       total: number
       type: "pickup" | "delivery"
     }

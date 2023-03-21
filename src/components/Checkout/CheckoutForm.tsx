@@ -5,13 +5,13 @@ import { PaymentElement } from "@stripe/react-stripe-js"
 import type { StripeElements } from "@stripe/stripe-js/types/stripe-js"
 import { useRouter } from "next/router"
 import type { Dispatch, SetStateAction } from "react"
-import { AxiosError } from "axios"
+import type { AxiosError } from "axios"
 
 type CreateOrderResponse = {
   data: { order: { id: number }; delivery: { id: string } }
 }
 interface CheckoutFormProps {
-  createOrder: () => Promise<any>
+  createOrder: () => Promise<CreateOrderResponse>
   closeModal: () => void
   setIsMobileCheckout?: Dispatch<SetStateAction<boolean>>
   setIsAddressError: Dispatch<SetStateAction<boolean>>
