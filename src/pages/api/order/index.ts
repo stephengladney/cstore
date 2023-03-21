@@ -11,6 +11,8 @@ const doordash = new DoorDashClient.DoorDashClient({
   signing_secret: env.DOORDASH_SIGNING_SECRET,
 })
 
+const convertToCents = (n: number) => Math.floor(n * 100)
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
@@ -27,6 +29,7 @@ export default async function handler(
       storePhone,
       subtotal,
       tax,
+      tip,
       total,
       type,
     } = req.body as {
@@ -40,6 +43,7 @@ export default async function handler(
       storePhone: string
       subtotal: number
       tax: number
+      tip: number
       total: number
       type: "pickup" | "delivery"
     }
@@ -50,7 +54,6 @@ export default async function handler(
 
       if (isDelivery) {
         delivery = await prisma.delivery.create({ data: {} })
-        const totalInCents = Math.floor(Number(Number(total).toFixed(2)) * 100)
         const doordashDelivery = await doordash.createDelivery({
           external_delivery_id: delivery.id,
           pickup_address: storeAddress,
@@ -58,9 +61,9 @@ export default async function handler(
           pickup_business_name: storeName,
           dropoff_address: customerAddress,
           dropoff_phone_number: customerPhone,
-          order_value: totalInCents,
+          order_value: convertToCents(total),
           dropoff_contact_given_name: customerName,
-          tip: 200,
+          tip: convertToCents(tip),
         })
 
         order = await prisma.order.create({

@@ -46,7 +46,7 @@ export function Checkout({ closeModal, setIsMobileCheckout }: CheckoutProps) {
 
   const isPickupSelected = fulfillmentMethod === "PICKUP"
   const isDeliverySelected = fulfillmentMethod === "DELIVERY"
-  const totalWithDelivery = Number(Number(total) + 9.75).toFixed(2)
+  const totalWithDelivery = Number(Number(total) + 7).toFixed(2)
 
   const [customerInfo, setCustomerInfo] = useState({
     name: "",
@@ -141,7 +141,7 @@ export function Checkout({ closeModal, setIsMobileCheckout }: CheckoutProps) {
         />
       </CheckoutContainer> */}
       <h1
-        className="w-full py-4 text-center font-poppins text-5xl font-bold"
+        className="w-full py-2 text-center font-poppins text-5xl font-bold"
         style={{ color: store.color }}
       >
         ${isDeliverySelected ? totalWithDelivery : Number(total).toFixed(2)}
@@ -182,9 +182,9 @@ export function Checkout({ closeModal, setIsMobileCheckout }: CheckoutProps) {
         </ul>
       </div>
       <div
-        className={`py-1 lg:py-4 lg:pb-8 ${
+        className={`py-1 lg:py-2 lg:pb-6 ${
           isDeliverySelected
-            ? "grid grid-rows-[2fr,1fr] lg:grid-rows-[1fr,1fr]"
+            ? "grid grid-rows-[auto,auto] lg:grid-rows-[1fr,2fr]"
             : ""
         }`}
       >
@@ -204,7 +204,7 @@ export function Checkout({ closeModal, setIsMobileCheckout }: CheckoutProps) {
             />
           </div>
           <div>
-            <label className="mb-2 block font-poppins text-[14.88px] font-medium text-[#30313D]">
+            <label className="mb-2 block pt-1 font-poppins text-[14.88px] font-medium text-[#30313D] lg:pt-0">
               Phone number
             </label>
             {/* <input
@@ -236,7 +236,7 @@ export function Checkout({ closeModal, setIsMobileCheckout }: CheckoutProps) {
         {isDeliverySelected && (
           <div className="relative">
             <label
-              className={`block py-2 font-poppins text-[14.88px] font-medium ${
+              className={`block pt-3 pb-2 font-poppins text-[14.88px] font-medium ${
                 isAddressError ? "text-red-600" : "text-[#30313D]"
               }`}
             >
@@ -311,6 +311,23 @@ export function Checkout({ closeModal, setIsMobileCheckout }: CheckoutProps) {
               }
               value={customerInfo.address}
             /> */}
+            <div className="grid grid-cols-[2.5fr,1fr] lg:grid-cols-[3fr,1fr]">
+              <div>
+                <label className="block pt-3 pb-2 font-poppins text-[14.88px] font-medium text-[#30313D]">
+                  Delivery instructions
+                </label>
+                <input className="w-full rounded-lg border-[1px] border-solid border-gray-300 p-2.5 font-poppins" />
+              </div>
+              <div className="flex flex-row justify-end">
+                <div>
+                  <label className="block pt-3 pb-2 pl-4 font-poppins text-[14.88px] font-medium text-[#30313D]">
+                    Driver Tip
+                  </label>
+                  ${" "}
+                  <input className="w-20 rounded-lg border-[1px] border-solid border-gray-300 p-2.5 font-poppins" />
+                </div>
+              </div>
+            </div>
           </div>
         )}
       </div>
