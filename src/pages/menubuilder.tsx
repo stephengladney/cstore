@@ -1,17 +1,17 @@
 import { useState } from "react"
 import { type NextPage } from "next"
 import { api } from "../utils/api"
-import type { Menu } from "../types/Menu"
-import type { ApiMenuCategory } from "../types/MenuCategory"
-import type { MenuItem } from "../types/MenuItem"
-import type { Store } from "../types/Store"
+import type { MenuType } from "../types/MenuType"
+import type { ApiMenuCategory } from "../types/MenuCategoryType"
+import type { MenuItemType } from "../types/MenuItemType"
+import type { Store } from "@prisma/client"
 
-function getUiMenu(menu: Menu) {
+function getUiMenu(menu: MenuType) {
   const { categories } = menu
   return categories?.map((category, i) => (
     <div key={i} className="mb-4 max-w-xs">
       <h1 className="text-sm font-bold">{category.name}</h1>
-      {category.items?.map((item: MenuItem) => (
+      {category.items?.map((item: MenuItemType) => (
         <div
           className="m-1 grid cursor-pointer grid-cols-2 border border-solid p-2"
           key={`menu-item-${item.id}`}
@@ -148,7 +148,7 @@ const MenuBuilder: NextPage = () => {
             value={categoryMenuId}
           >
             <option value={0}>Select a menu...</option>
-            {menus?.map((menu: Menu) => (
+            {menus?.map((menu: MenuType) => (
               <option key={`menu-dropdown-${menu.id}`} value={menu.id}>
                 {menu.name}
               </option>

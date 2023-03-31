@@ -1,7 +1,8 @@
-import type { MenuItem } from "../types/MenuItem"
-import type { MenuCategory } from "../types/MenuCategory"
-import type { Menu } from "../types/Menu"
-import { PrismaClient } from "@prisma/client"
+import type { MenuItemType } from "../types/MenuItemType"
+import type { MenuCategoryType } from "../types/MenuCategoryType"
+import type { MenuType } from "../types/MenuType"
+import { Prisma, PrismaClient } from "@prisma/client"
+import type { Decimal } from "@prisma/client/runtime"
 
 const prisma = new PrismaClient()
 
@@ -17,7 +18,7 @@ function getCategoryIdFromName(name: string): number {
 type DbMenuItem = {
   name: string
   categoryId: number
-  price: number
+  price: Decimal
   description: string
   isAvailable: boolean
   imageUrl: string
@@ -36,7 +37,7 @@ export function getMenuItemsFromCsv(text: string): DbMenuItem[] {
     return {
       name: itemProperties[0] || "Untitled",
       categoryId: getCategoryIdFromName(itemProperties[1] as string),
-      price: Number(itemProperties[2]) || 0,
+      price: new Prisma.Decimal(itemProperties[2] || 0),
       description: itemProperties[3] || "",
       isAvailable: itemProperties[4] === "TRUE",
       imageUrl: itemProperties[5] || "",
@@ -60,13 +61,13 @@ export async function csvToDatabase() {
   await createItemsInDatabase(getMenuItemsFromCsv(csvText))
 }
 
-export function getMenuFromApiMenuItems(items: MenuItem[]): Menu {
-  const categories: { [key: string]: MenuItem[] } = {}
-  const categoriesWithItems: MenuCategory[] = []
+export function getMenuFromApiMenuItems(items: MenuItemType[]): MenuType {
+  const categories: { [key: string]: MenuItemType[] } = {}
+  const categoriesWithItems: MenuCategoryType[] = []
   const name = items[0]?.menuName as string
   const id = items[0]?.menuId as number
 
-  const convertApiMenuItemToMenuItem = (item: MenuItem): MenuItem => ({
+  const convertApiMenuItemToMenuItem = (item: MenuItemType): MenuItemType => ({
     id: item.id,
     name: item.name,
     description: item.description,

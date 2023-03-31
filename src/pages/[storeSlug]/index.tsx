@@ -8,7 +8,6 @@ import { CartProvider } from "../../contexts/cartContext"
 import { Header } from "../../components/Header/Header"
 import { Body } from "../../components/Body/Body"
 import { OrderingContainer } from "../../components/OrderingContainer/OrderingContainer"
-import type { Store } from "../../types/Store"
 import { PrismaClient } from "@prisma/client"
 import { StoreProvider } from "../../contexts/storeContext"
 import { getCookie, hasCookie } from "cookies-next"
@@ -17,16 +16,13 @@ import { ModalOrderCart } from "../../components/ModalOrderCart/ModalOrderCart"
 import { DimmerProvider } from "../../contexts/dimmerContext"
 import { Dimmer } from "../../components/Dimmer"
 import { Checkout } from "../../components/Checkout/Checkout"
+import type { StoreType } from "../../types/StoreType"
 
 const prisma = new PrismaClient()
 
-const StoreHome: NextPage<{ store: Store }> = ({
-  callback,
-  store,
-}: {
-  callback?: string
-  store: Store
-}) => {
+const StoreHome: NextPage<{
+  store: StoreType
+}> = ({ callback, store }: { callback?: string; store: StoreType }) => {
   const [cart, dispatch] = useReducer(reducer, {
     items: [],
     slug: store?.slug,
@@ -123,7 +119,10 @@ export default StoreHome
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const propsToReturn: {
-    props: { store: Store | null; callback: string | null }
+    props: {
+      store: StoreType | null
+      callback: string | null
+    }
   } = { props: { store: null, callback: null } }
   try {
     const store = await prisma.store.findFirst({
@@ -132,12 +131,13 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     await prisma.$disconnect()
 
     if (store) {
-      const { id, color, name, address, slug, stripeAccountId } = store as Store
+      const { id, color, name, phone, address, slug, stripeAccountId } = store
       propsToReturn.props.store = {
         id,
         color,
         name,
         address,
+        phone,
         slug,
         stripeAccountId,
       }

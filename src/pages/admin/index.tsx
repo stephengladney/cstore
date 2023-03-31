@@ -4,7 +4,7 @@ import type { ReactComponents } from "../../types/React"
 import Link from "next/link"
 import { useEffect, useState } from "react"
 import { api } from "../../utils/api"
-import type { Store } from "../../types/Store"
+import type { Store } from "@prisma/client"
 
 const SectionHeader = ({ children }: ReactComponents) => {
   return <h3 className="pb-6 text-2xl font-bold text-slate-700">{children}</h3>

@@ -5,13 +5,13 @@ import { PaymentElement } from "@stripe/react-stripe-js"
 import type { StripeElements } from "@stripe/stripe-js/types/stripe-js"
 import { useRouter } from "next/router"
 import type { Dispatch, SetStateAction } from "react"
-import { AxiosError } from "axios"
+import type { AxiosError } from "axios"
 
 type CreateOrderResponse = {
   data: { order: { id: number }; delivery: { id: string } }
 }
 interface CheckoutFormProps {
-  createOrder: () => Promise<any>
+  createOrder: () => Promise<CreateOrderResponse>
   closeModal: () => void
   setIsMobileCheckout?: Dispatch<SetStateAction<boolean>>
   setIsAddressError: Dispatch<SetStateAction<boolean>>
@@ -65,15 +65,14 @@ export function CheckoutForm({
             }
 
             if (
-              error.fieldErrors[0].field === "dropoff_address" &&
-              error.fieldErrors[0].error ===
+              error?.fieldErrors &&
+              error?.fieldErrors[0].field === "dropoff_address" &&
+              error?.fieldErrors[0].error ===
                 "Could not resolve to a valid address"
             ) {
               setIsAddressError(true)
             } else {
-              alert(
-                `There was a problem with the delivery: ${error.fieldErrors[0].error}`
-              )
+              alert(`There was a problem: ${String(e)}`)
             }
           })
       })

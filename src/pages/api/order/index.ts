@@ -1,7 +1,7 @@
 import { env } from "../../../env/server.mjs"
 import type { NextApiRequest, NextApiResponse } from "next"
 import * as DoorDashClient from "@doordash/sdk"
-import { PrismaClient } from "@prisma/client"
+import { Prisma, PrismaClient } from "@prisma/client"
 import { CartItem } from "../../../types/Cart.js"
 
 const prisma = new PrismaClient()
@@ -10,6 +10,8 @@ const doordash = new DoorDashClient.DoorDashClient({
   key_id: env.DOORDASH_KEY_ID,
   signing_secret: env.DOORDASH_SIGNING_SECRET,
 })
+
+const convertToCents = (n: number | string) => Math.floor(Number(n) * 100)
 
 export default async function handler(
   req: NextApiRequest,
@@ -21,12 +23,14 @@ export default async function handler(
       customerName,
       customerPhone,
       items,
+      deliveryInstructions,
       storeAddress,
       storeId,
       storeName,
       storePhone,
       subtotal,
       tax,
+      tip,
       total,
       type,
     } = req.body as {
@@ -34,12 +38,14 @@ export default async function handler(
       customerName: string
       customerPhone: string
       items: CartItem[]
+      deliveryInstructions: string
       storeAddress: string
       storeId: number
       storeName: string
       storePhone: string
       subtotal: number
       tax: number
+      tip: string
       total: number
       type: "pickup" | "delivery"
     }
@@ -50,17 +56,17 @@ export default async function handler(
 
       if (isDelivery) {
         delivery = await prisma.delivery.create({ data: {} })
-
-        const totalInCents = Math.floor(Number(Number(total).toFixed(2)) * 100)
         const doordashDelivery = await doordash.createDelivery({
           external_delivery_id: delivery.id,
           pickup_address: storeAddress,
           pickup_phone_number: storePhone,
           pickup_business_name: storeName,
           dropoff_address: customerAddress,
+          dropoff_instructions: deliveryInstructions,
           dropoff_phone_number: customerPhone,
-          order_value: totalInCents,
+          order_value: convertToCents(total),
           dropoff_contact_given_name: customerName,
+          tip: convertToCents(tip),
         })
 
         order = await prisma.order.create({
@@ -78,12 +84,8 @@ export default async function handler(
 
         await prisma.delivery.update({
           where: { id: delivery.id },
-          data: { orderId: order.id },
-        })
-
-        await prisma.delivery.update({
-          where: { id: delivery.id },
           data: {
+            orderId: order.id,
             status: doordashDelivery.data.delivery_status,
             pickupTime: doordashDelivery.data.pickup_time_estimated,
             dropoffTime: doordashDelivery.data.dropoff_time_estimated,
@@ -99,7 +101,7 @@ export default async function handler(
             items,
             subtotal,
             storeId,
-            tax,
+            tax: new Prisma.Decimal(tax),
             total,
             type,
           },
@@ -108,6 +110,7 @@ export default async function handler(
 
       res.status(200).json({ order, delivery })
     } catch (e) {
+      console.log(e)
       res.status(405).json(e)
     }
   } else {
