@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useContext } from "react"
+import { type Dispatch, type SetStateAction, useContext } from "react"
 import { storeContext } from "../../contexts/storeContext"
 import { RxHamburgerMenu } from "react-icons/rx"
 import { NavLink, NavLinkContainer } from "./NavMenu.styles"

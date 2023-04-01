@@ -11,7 +11,7 @@ import {
 import { IconContext } from "react-icons/lib"
 import { RxHamburgerMenu } from "react-icons/rx"
 import { BsCart2 } from "react-icons/bs"
-import { Dispatch, SetStateAction, useContext } from "react"
+import { type Dispatch, type SetStateAction, useContext } from "react"
 import { cartContext } from "../../contexts/cartContext"
 import { getCartItemCount } from "../../lib/cart"
 import type { StoreType } from "../../types/StoreType"
