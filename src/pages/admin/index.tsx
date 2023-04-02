@@ -39,7 +39,7 @@ const Admin: NextPage = () => {
         </div>
         <div>
           {stores.map((store, i) => (
-            <span key={i}>({store.name})</span>
+            <span key={i}>{store.name}</span>
           ))}
         </div>
         <div className="mt-8 grid w-full grid-cols-3 gap-8">
@@ -78,9 +78,9 @@ const Admin: NextPage = () => {
             <h3>{selectedStore?.stripeAccountId || ""}</h3>
           </div>
 
-          <div>DERP</div>
-          <div>DERP</div>
-          <div>DERP</div>
+          <div>.</div>
+          <div>.</div>
+          <div>.</div>
         </div>
       </div>
     )

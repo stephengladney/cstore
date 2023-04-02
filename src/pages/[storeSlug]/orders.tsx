@@ -138,9 +138,12 @@ const Orders: NextPage<{ store: Store }> = ({ store }: { store: Store }) => {
     return (
       // <div className="grid w-screen grid-cols-[1fr,2fr]">
       <div className="h-screen w-screen">
-        <h1 className="bg-slate-800 p-3 font-poppins text-4xl font-bold text-white">
-          Orders
-        </h1>
+        <div className="flex w-full flex-row  items-center bg-slate-800 px-2">
+          <h1 className=" p-3 font-poppins text-4xl font-bold text-white">
+            Orders
+          </h1>
+          <h3 className="grow text-right text-white">{store.name}</h3>
+        </div>
         {orders?.map((order: Order) => {
           const s = order.items.length > 1 ? "s" : ""
           return (
