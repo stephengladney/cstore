@@ -3,6 +3,7 @@ import type { MenuCategoryType } from "../types/MenuCategoryType"
 import type { MenuType } from "../types/MenuType"
 import { Prisma, PrismaClient } from "@prisma/client"
 import type { Decimal } from "@prisma/client/runtime"
+import * as fs from "fs"
 
 const prisma = new PrismaClient()
 
@@ -12,7 +13,7 @@ function getCategoryIdFromName(name: string): number {
     Candy: 2,
     Chips: 3,
   }
-  return ids[name] || 0
+  return ids[name] ?? 0
 }
 
 type DbMenuItem = {
@@ -24,23 +25,35 @@ type DbMenuItem = {
   imageUrl: string
 }
 
-const csvText = `Coke,Drinks,2.00,,TRUE,a
-Diet Coke,Drinks,2.00,,TRUE,b
-Sprite,Drinks,2.00,,TRUE,c
-Lays,Chips,1.52,,TRUE,d
-Fritos,Chips,1.50,,FALSE,e`
+export async function getCsvText(file: string) {
+  const data = await fs.promises.readFile(file)
+  return data.toString()
+}
+
+// export function createMenuCategoriesFromCsv(text: string) {
+//   const categories = text.split("\n")
+//   for (let i = 0; i < categories.length; i++) {
+//     try {
+//       await prisma.menuCategory.create({data:{
+//         name: categories[i] as string,
+//         menuId:
+
+//       }})
+//     }
+//   }
+// }
 
 export function getMenuItemsFromCsv(text: string): DbMenuItem[] {
   const items: string[] = text.split("\n")
   return items.map((item) => {
     const itemProperties = item.split(",")
     return {
-      name: itemProperties[0] || "Untitled",
+      name: itemProperties[0] ?? "Untitled",
       categoryId: getCategoryIdFromName(itemProperties[1] as string),
-      price: new Prisma.Decimal(itemProperties[2] || 0),
-      description: itemProperties[3] || "",
+      price: new Prisma.Decimal(itemProperties[2] ?? 0),
+      description: itemProperties[3] ?? "",
       isAvailable: itemProperties[4] === "TRUE",
-      imageUrl: itemProperties[5] || "",
+      imageUrl: itemProperties[5] ?? "",
     }
   })
 }
@@ -57,9 +70,9 @@ export async function createItemsInDatabase(items: DbMenuItem[]) {
   await prisma.$disconnect()
 }
 
-export async function csvToDatabase() {
-  await createItemsInDatabase(getMenuItemsFromCsv(csvText))
-}
+// export async function csvToDatabase() {
+//   await createItemsInDatabase(getMenuItemsFromCsv(csvText))
+// }
 
 export function getMenuFromApiMenuItems(items: MenuItemType[]): MenuType {
   const categories: { [key: string]: MenuItemType[] } = {}

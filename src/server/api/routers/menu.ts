@@ -32,6 +32,14 @@ ORDER BY "menuId","categoryId";
   getAll: publicProcedure.query(({ ctx }) => {
     return ctx.prisma.menu.findMany()
   }),
+  getAllByStoreId: publicProcedure
+    .input(z.object({ id: z.number() }))
+    .query(async ({ input, ctx }) => {
+      const ids = await ctx.prisma.menu.findMany({
+        where: { storeId: input.id },
+      })
+      return ids
+    }),
   getByStoreId: publicProcedure
     .input(z.object({ id: z.number() }))
     .query(async ({ input, ctx }) => {
@@ -67,6 +75,11 @@ export const categoryRouter = createTRPCRouter({
   getAll: publicProcedure.query(async ({ ctx }) => {
     return ctx.prisma.menuCategory.findMany()
   }),
+  getByMenuId: publicProcedure
+    .input(z.object({ id: z.number() }))
+    .query(({ input, ctx }) => {
+      return ctx.prisma.menuCategory.findMany({ where: { menuId: input.id } })
+    }),
 })
 
 export const itemRouter = createTRPCRouter({
