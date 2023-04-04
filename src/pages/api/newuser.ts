@@ -1,5 +1,4 @@
 import type { NextApiRequest, NextApiResponse } from "next"
-import { csvToDatabase } from "../../lib/menu"
 import { PrismaClient } from "@prisma/client"
 
 const prisma = new PrismaClient()

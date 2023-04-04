@@ -2,7 +2,11 @@ import { z } from "zod"
 
 import { createTRPCRouter, publicProcedure } from "../trpc"
 import type { MenuItemType } from "../../../types/MenuItemType"
-import { getMenuFromApiMenuItems } from "../../../lib/menu"
+import {
+  getMenuFromApiMenuItems,
+  createCategoriesFromCsvText,
+  createItemsFromCsvText,
+} from "../../../lib/menu"
 
 export const menuRouter = createTRPCRouter({
   create: publicProcedure
@@ -72,6 +76,11 @@ export const categoryRouter = createTRPCRouter({
     .mutation(({ input, ctx }) => {
       return ctx.prisma.menuCategory.create({ data: input })
     }),
+  createFromCsv: publicProcedure
+    .input(z.object({ menuId: z.number(), text: z.string() }))
+    .mutation(({ input }) => {
+      return createCategoriesFromCsvText(input.text, input.menuId)
+    }),
   getAll: publicProcedure.query(async ({ ctx }) => {
     return ctx.prisma.menuCategory.findMany()
   }),
@@ -94,5 +103,10 @@ export const itemRouter = createTRPCRouter({
     )
     .mutation(async ({ input, ctx }) => {
       return ctx.prisma.menuItem.create({ data: input })
+    }),
+  createFromCsv: publicProcedure
+    .input(z.object({ menuId: z.number(), text: z.string() }))
+    .mutation(({ input }) => {
+      return createItemsFromCsvText(input.text, input.menuId)
     }),
 })
