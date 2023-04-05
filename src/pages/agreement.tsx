@@ -9,7 +9,7 @@ const Section = ({ children }: ReactComponents) => (
 )
 const CategoryHeader = ({ children }: ReactComponents) => (
   <>
-    <h2 className="px-2 py-4 text-3xl font-bold lg:text-2xl">{children}</h2>
+    <h2 className="px-2 py-4 text-4xl font-bold lg:text-2xl">{children}</h2>
     <div></div>
   </>
 )
@@ -31,8 +31,8 @@ const Agreement: NextPage = () => {
         <h1 className="flex justify-center">
           <BsFillBagCheckFill className="mt-4 mr-2 mb-[5px] text-8xl text-red-600 lg:text-6xl" />
         </h1>
-        <h1 className="p-8 text-center text-4xl font-bold lg:text-5xl">
-          Farely Merchant Agreement
+        <h1 className="p-8 text-center text-5xl font-bold lg:text-5xl">
+          Merchant Agreement
         </h1>
         <p className="p-4 pb-10 text-center text-2xl lg:text-base">
           We are very excited to work with you and your store! Please fill out
@@ -178,9 +178,12 @@ const Agreement: NextPage = () => {
         </div> */}
           </Section>
         </div>
+        <CategoryHeader>Terms and Conditions</CategoryHeader>
         <div className="grid grid-rows-2 lg:grid-cols-2 lg:grid-rows-none">
           <div>
-            <CategoryHeader>Annual Commitment</CategoryHeader>
+            <h3 className="px-2 py-4 text-2xl font-bold lg:text-base">
+              Annual Commitment
+            </h3>
             <p className="p-3 text-2xl lg:text-base">
               The term of this agreement will be for one year. Subsequent terms
               will also be for a term of one year and the agreement shall
@@ -190,7 +193,9 @@ const Agreement: NextPage = () => {
             </p>
           </div>
           <div>
-            <CategoryHeader>Hardware</CategoryHeader>
+            <h3 className="px-2 py-4 text-2xl font-bold lg:text-base">
+              Hardware
+            </h3>
             <p className="p-3 text-2xl lg:text-base">
               Farely will provide hardware to the merchant to use to access the
               application. The tablet remains the property of Farely and shall
