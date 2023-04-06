@@ -35,10 +35,10 @@ const Agreement: NextPage = () => {
           Merchant Agreement
         </h1>
         <p className="p-4 pb-10 text-center text-2xl lg:text-base">
-          We are very excited to work with you and your store! Please fill out
-          the information below and review the terms of our subscription
-          agreement. If you have any questions about anything on this form,
-          please contact your sales representative.
+          We are very excited to work with you! Please fill out the information
+          below and review the terms of our subscription agreement. If you have
+          any questions about anything on this form, please don&apos;t hesitate
+          to contact us.
         </p>
         <div>
           <Section>
@@ -52,7 +52,7 @@ const Agreement: NextPage = () => {
                 />
               </div>
               <div className="p-3">
-                <InputLabel>Primary Contact Name</InputLabel>
+                <InputLabel>Contact Person Name</InputLabel>
                 <input
                   type="text"
                   className="w-full rounded border-[1px] border-solid border-slate-500 p-6 lg:p-2"
@@ -68,14 +68,14 @@ const Agreement: NextPage = () => {
             </div>
             <div className="grid grid-rows-2 lg:grid-cols-2 lg:grid-rows-none">
               <div className="p-3">
-                <InputLabel>Primary Contact Email</InputLabel>
+                <InputLabel>Contact Person Email</InputLabel>
                 <input
                   type="text"
                   className="w-full rounded border-[1px] border-solid border-slate-500 p-6 lg:p-2"
                 />
               </div>
               <div className="p-3">
-                <InputLabel>Primary Contact Phone</InputLabel>
+                <InputLabel>Contact Person Phone</InputLabel>
                 <input
                   type="text"
                   className="w-full rounded border-[1px] border-solid border-slate-500 p-6 lg:p-2"

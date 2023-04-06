@@ -1,4 +1,4 @@
-import { Order } from "@prisma/client"
+import type { Order } from "@prisma/client"
 
 export function capitalizeFirstLetter(str: string) {
   return str.charAt(0).toUpperCase() + str.substring(1)

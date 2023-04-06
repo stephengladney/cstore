@@ -9,6 +9,13 @@ import { api } from "../../utils/api"
 import { capitalizeFirstLetter } from "./OrderComponent"
 import type { CartItem } from "../../types/Cart"
 
+function formatPhoneNumber(phoneNumber: string) {
+  const areaCode = phoneNumber.substring(2, 5)
+  const prefix = phoneNumber.substring(5, 8)
+  const suffix = phoneNumber.substring(8)
+  return `(${areaCode}) ${prefix}-${suffix}`
+}
+
 export function OrderDetailsComponent({
   selectedOrder,
   handleBackClick,
@@ -44,11 +51,21 @@ export function OrderDetailsComponent({
       >
         {capitalizeFirstLetter(selectedOrder.type)}
       </h3>
-      {selectedOrder.type === "delivery" && (
+      {
         <h4 className="text-center font-poppins text-lg">
-          Doordash Support Reference
-          <br />#{delivery?.supportReference ?? ""}
+          Customer Phone: {formatPhoneNumber(selectedOrder.customerPhone)}
         </h4>
+      }
+      {selectedOrder.type === "delivery" && (
+        <>
+          <h4 className="text-center font-poppins text-lg">
+            Doordash Support: x
+          </h4>
+          <h4 className="text-center font-poppins text-lg">
+            Doordash Support Reference
+            <br />#{delivery?.supportReference ?? ""}
+          </h4>
+        </>
       )}
       <div className="p-12 font-poppins text-3xl">
         <div className="grid grid-cols-[1fr,1fr] rounded-xl border-[1px] border-solid border-slate-500">
