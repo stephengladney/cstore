@@ -56,4 +56,20 @@ export const orderRouter = createTRPCRouter({
       })
       return orders
     }),
+  confirm: publicProcedure
+    .input(z.number())
+    .mutation(async ({ input, ctx }) => {
+      await ctx.prisma.order.update({
+        where: { id: input },
+        data: { status: "confirmed" },
+      })
+    }),
+  markReady: publicProcedure
+    .input(z.number())
+    .mutation(async ({ input, ctx }) => {
+      await ctx.prisma.order.update({
+        where: { id: input },
+        data: { status: "ready" },
+      })
+    }),
 })

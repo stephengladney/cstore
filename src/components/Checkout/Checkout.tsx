@@ -187,7 +187,7 @@ export function Checkout({ closeModal, setIsMobileCheckout }: CheckoutProps) {
         <div className="grid grid-rows-[1fr,1fr] lg:grid-cols-[1fr,1fr] lg:grid-rows-none lg:gap-4">
           <div>
             <label className="mb-2 block font-poppins text-[14.88px] font-medium text-[#30313D]">
-              Name
+              First & Last Name
             </label>
             <input
               type="text"
