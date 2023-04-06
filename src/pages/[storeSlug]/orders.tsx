@@ -9,6 +9,7 @@ import useSound from "use-sound"
 import { useSession } from "next-auth/react"
 import { OrderComponent } from "../../components/OrdersScreen/OrderComponent"
 import { OrderDetailsComponent } from "../../components/OrdersScreen/OrderDetailsComponent"
+import Head from "next/head"
 
 const prisma = new PrismaClient()
 
@@ -29,15 +30,13 @@ const Orders: NextPage<{ store: Store }> = ({ store }: { store: Store }) => {
 
   const isUserHasAccess = !!user && user.stores.includes(store.id)
 
-  api.order.getByStoreId.useQuery(
-    { id: store.id },
-    {
-      enabled: !!session && isUserHasAccess,
-      refetchInterval: 30000,
-      refetchIntervalInBackground: true,
-      onSettled: (data) => setOrders(data ?? []),
-    }
-  )
+  // Order poller
+  api.order.getOrdersTodayByStoreId.useQuery(store.id, {
+    enabled: !!session && isUserHasAccess,
+    refetchInterval: 30000,
+    refetchIntervalInBackground: true,
+    onSettled: (data) => setOrders(data ?? []),
+  })
 
   const { mutate: confirmOrder } = api.order.confirm.useMutation()
   const { mutate: markReady } = api.order.markReady.useMutation()
@@ -52,6 +51,7 @@ const Orders: NextPage<{ store: Store }> = ({ store }: { store: Store }) => {
       confirmOrder(selectedOrder.id)
       updateOrderStatusLocally(selectedOrder.id, "confirmed")
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedOrder])
 
   const updateOrderStatusLocally = (orderId: number, status: string) => {
@@ -75,35 +75,47 @@ const Orders: NextPage<{ store: Store }> = ({ store }: { store: Store }) => {
 
   if (isLoading || status === "loading") return <div>Loading...</div>
   if (!isLoading && !isUserHasAccess) return <div>Not Allowed</div>
-  if (selectedOrder)
-    return (
-      <OrderDetailsComponent
-        handleBackClick={handleBackClick}
-        handleMarkReadyClick={handleMarkReadyClick}
-        selectedOrder={selectedOrder}
-        store={store}
-      />
-    )
-  else
-    return (
-      <div className="h-screen w-screen">
-        <div className="flex w-full flex-row  items-center bg-slate-800 px-2">
-          <h1 className=" p-3 font-poppins text-4xl font-bold text-white">
-            Orders
-          </h1>
-          <h3 className="grow text-right text-white">{store.name}</h3>
+
+  return (
+    <>
+      <Head>
+        <title>{`Online Orders`}</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      {selectedOrder && (
+        <OrderDetailsComponent
+          handleBackClick={handleBackClick}
+          handleMarkReadyClick={handleMarkReadyClick}
+          selectedOrder={selectedOrder}
+          store={store}
+        />
+      )}
+      {!selectedOrder && (
+        <div className="h-screen w-screen">
+          <div
+            className="flex w-full flex-row  items-center px-2"
+            style={{ backgroundColor: store.color }}
+          >
+            <h1 className=" p-3 font-poppins text-4xl font-bold text-white">
+              Orders
+            </h1>
+            <h3 className="grow text-right font-poppins text-white">
+              {store.name}
+            </h3>
+          </div>
+          {orders?.map((order: Order, i) => {
+            return (
+              <OrderComponent
+                key={`order-${i}`}
+                order={order}
+                handleSelectOrder={handleSelectOrder}
+              />
+            )
+          })}
         </div>
-        {orders?.map((order: Order, i) => {
-          return (
-            <OrderComponent
-              key={`order-${i}`}
-              order={order}
-              handleSelectOrder={handleSelectOrder}
-            />
-          )
-        })}
-      </div>
-    )
+      )}
+    </>
+  )
 }
 
 export default Orders

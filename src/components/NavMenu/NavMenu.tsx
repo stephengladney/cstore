@@ -24,11 +24,11 @@ export function NavMenu({
   return (
     <div
       className={`${
-        !isNavMenuOpen ? "ml-[-25rem]" : ""
+        !isNavMenuOpen ? "ml-[-30rem]" : ""
       } absolute z-10 h-full w-full py-3.5 px-4 text-white lg:w-80 lg:py-2.5 lg:px-6`}
       style={{
         backgroundColor: store.color,
-        transition: "margin-left ease-out 0.35s",
+        transition: "margin-left ease-out 0.25s",
       }}
     >
       <RxHamburgerMenu
