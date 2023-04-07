@@ -4,6 +4,17 @@ export function capitalizeFirstLetter(str: string) {
   return str.charAt(0).toUpperCase() + str.substring(1)
 }
 
+export function formatTime(time: Date) {
+  const timeString = time.toLocaleTimeString()
+  return timeString.substring(0, 4) + " " + timeString.slice(-2)
+}
+
+export function getPickupTimeFromPlacedAtTime(time: Date) {
+  const _time = new Date(time)
+  _time.setMinutes(time.getMinutes() + 15)
+  return _time
+}
+
 function getOrderBackgroundColor(order: Order) {
   switch (order.status) {
     case "unconfirmed":
@@ -31,11 +42,13 @@ export function OrderComponent({
       )}`}
       onClick={() => handleSelectOrder(order)}
     >
-      <div className="grid grid-cols-[1fr,1fr,1fr] text-xl font-bold">
-        <div>
-          #{order.id} {order.customerName}
-        </div>
+      <div className="grid grid-cols-[0.5fr,1.5fr,1fr,1fr,0.75fr] text-xl font-bold">
+        <div>{order.id}</div>
+        <div>{order.customerName}</div>
         <div className="text-center">{capitalizeFirstLetter(order.type)}</div>
+        <div className="text-center">
+          {formatTime(getPickupTimeFromPlacedAtTime(order.createdAt))}
+        </div>
         <div className="text-right">
           {order.items.length} item{s}
         </div>

@@ -103,6 +103,13 @@ const Orders: NextPage<{ store: Store }> = ({ store }: { store: Store }) => {
               {store.name}
             </h3>
           </div>
+          <div className="grid grid-cols-[0.5fr,1.5fr,1fr,1fr,0.75fr] border-b-[1px] border-solid border-slate-400 bg-slate-300 p-4 text-xl font-bold">
+            <h1>#</h1>
+            <h1>Customer</h1>
+            <h1 className="text-center">Type</h1>
+            <h1 className="text-center">Pickup at</h1>
+            <h1 className="text-right">Item Count</h1>
+          </div>
           {orders?.map((order: Order, i) => {
             return (
               <OrderComponent

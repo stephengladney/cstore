@@ -6,7 +6,11 @@ import {
 import { BiArrowBack } from "react-icons/bi"
 import { PricingContainer } from "../OrderCart/CartPricing/CartPricing.styles"
 import { api } from "../../utils/api"
-import { capitalizeFirstLetter } from "./OrderComponent"
+import {
+  capitalizeFirstLetter,
+  formatTime,
+  getPickupTimeFromPlacedAtTime,
+} from "./OrderComponent"
 import type { CartItem } from "../../types/Cart"
 
 function formatPhoneNumber(phoneNumber: string) {
@@ -71,11 +75,17 @@ export function OrderDetailsComponent({
         <div className="grid grid-cols-[1fr,1fr] rounded-xl border-[1px] border-solid border-slate-500">
           <div className="flex flex-col items-center border-r border-solid border-slate-500 p-2 text-2xl font-bold">
             <div>Placed at</div>
-            <div className="mt-2 font-normal">4:01 PM</div>
+            <div className="mt-2 font-normal">
+              {formatTime(selectedOrder.createdAt)}
+            </div>
           </div>
           <div className="flex flex-col items-center border-r border-solid border-slate-500 p-2 text-2xl font-bold">
             <div>Pickup at</div>
-            <div className="mt-2 font-normal">4:16 PM</div>
+            <div className="mt-2 font-normal">
+              {formatTime(
+                getPickupTimeFromPlacedAtTime(selectedOrder.createdAt)
+              )}
+            </div>
           </div>
         </div>
         <div className="mt-8 grid grid-cols-[1fr,5fr,2fr] font-poppins">

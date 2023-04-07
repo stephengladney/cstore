@@ -3,9 +3,9 @@ import { Elements } from "@stripe/react-stripe-js"
 import { loadStripe } from "@stripe/stripe-js"
 import { env } from "../../env/client.mjs"
 import {
-  ChangeEvent,
-  Dispatch,
-  SetStateAction,
+  type ChangeEvent,
+  type Dispatch,
+  type SetStateAction,
   useContext,
   useEffect,
   useState,
@@ -108,6 +108,7 @@ export function Checkout({ closeModal, setIsMobileCheckout }: CheckoutProps) {
           //NO OP
         })
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fulfillmentMethod, store.stripeAccountId, cart.items])
 
   return (

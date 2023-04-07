@@ -3,12 +3,6 @@ import { storeContext } from "../../contexts/storeContext"
 import { RxHamburgerMenu } from "react-icons/rx"
 import { NavLink, NavLinkContainer } from "./NavMenu.styles"
 
-const navLinks = [
-  { title: "Store", url: "/" },
-  { title: "About", url: "/" },
-  { title: "Support", url: "/" },
-]
-
 export function NavMenu({
   isNavMenuOpen,
   setIsNavMenuOpen,
@@ -20,6 +14,12 @@ export function NavMenu({
   const handleDrawerClick = () => {
     setIsNavMenuOpen((isNavMenuOpen) => !isNavMenuOpen)
   }
+
+  const navLinks = [
+    { title: "Store", url: `/${store.slug}` },
+    { title: "About", url: "/" },
+    { title: "Support", url: "/support" },
+  ]
 
   return (
     <div
