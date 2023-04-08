@@ -1,4 +1,5 @@
 import type { Order } from "@prisma/client"
+import { group } from "console"
 
 export function capitalizeFirstLetter(str: string) {
   return str.charAt(0).toUpperCase() + str.substring(1)
@@ -6,7 +7,9 @@ export function capitalizeFirstLetter(str: string) {
 
 export function formatTime(time: Date) {
   const timeString = time.toLocaleTimeString()
-  return timeString.substring(0, 4) + " " + timeString.slice(-2)
+  const timeStringRegEx = /([0-9]+):([0-9]{2}):[0-9]{2} (AM|PM)/
+  const grouped = timeStringRegEx.exec(timeString)
+  return `${grouped![1]!}:${grouped![2]!} ${grouped![3]!}`
 }
 
 export function getPickupTimeFromPlacedAtTime(time: Date) {
