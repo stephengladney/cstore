@@ -19,6 +19,7 @@ export function NavMenu({
     { title: "Store", url: `/${store.slug}` },
     { title: "About", url: "/" },
     { title: "Support", url: "/support" },
+    { title: "Feedback", url: "/feedback" },
   ]
 
   return (

@@ -18,7 +18,6 @@ export function ItemContainer({
       onClick={onClick}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
-      // style={{ gridTemplateColumns: "0.75fr 7fr 1.5gr" }}
     >
       {children}
     </div>
@@ -70,9 +69,10 @@ export function RemoveItemButtonContainer({ children }: ReactComponents) {
 }
 
 export function RemoveItemButton({
-  children,
   onClick,
-}: ReactComponents & { onClick: (e: React.MouseEvent<HTMLElement>) => void }) {
+}: {
+  onClick: (e: React.MouseEvent<HTMLElement>) => void
+}) {
   return (
     <span className="text-sm text-red-600 hover:underline" onClick={onClick}>
       Remove
