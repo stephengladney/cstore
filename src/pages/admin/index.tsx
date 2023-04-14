@@ -39,7 +39,9 @@ const Admin: NextPage = () => {
         </div>
         <div>
           {stores.map((store, i) => (
-            <span key={i}>{store.name}</span>
+            <span className="mr-4" key={i}>
+              {store.name}
+            </span>
           ))}
         </div>
         <div className="mt-8 grid w-full grid-cols-3 gap-8">
@@ -84,7 +86,15 @@ const Admin: NextPage = () => {
         </div>
       </div>
     )
-  } else return null
+  } else
+    return (
+      <div className="flex h-screen w-full items-center justify-center">
+        <h1 className="text-center font-poppins text-2xl">
+          You do not have any stores set up yet. <br />
+          Please contact your account manager to create your first store.
+        </h1>
+      </div>
+    )
 }
 
 export default Admin
