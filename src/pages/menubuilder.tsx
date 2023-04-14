@@ -261,7 +261,7 @@ const MenuBuilder: NextPage = () => {
                   name: itemName,
                   description: itemDescription,
                 })
-                clearInputs()
+                // clearInputs()
               }}
             >
               Create Item
