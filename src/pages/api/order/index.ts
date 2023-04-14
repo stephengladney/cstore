@@ -2,7 +2,7 @@ import { env } from "../../../env/server.mjs"
 import type { NextApiRequest, NextApiResponse } from "next"
 import * as DoorDashClient from "@doordash/sdk"
 import { Prisma, PrismaClient } from "@prisma/client"
-import { CartItem } from "../../../types/Cart.js"
+import type { CartItem } from "../../../types/Cart.js"
 
 const prisma = new PrismaClient()
 const doordash = new DoorDashClient.DoorDashClient({

@@ -17,6 +17,7 @@ import { DimmerProvider } from "../../contexts/dimmerContext"
 import { Dimmer } from "../../components/Dimmer"
 import { Checkout } from "../../components/Checkout/Checkout"
 import type { StoreType } from "../../types/StoreType"
+import { NavMenu } from "../../components/NavMenu/NavMenu"
 
 const prisma = new PrismaClient()
 
@@ -29,6 +30,7 @@ const StoreHome: NextPage<{
   })
   const [isDimmed, setIsDimmed] = useState(false)
   const [isMobileCheckout, setIsMobileCheckout] = useState(false)
+  const [isNavMenuOpen, setIsNavMenuOpen] = useState(false)
 
   const cartModalRef = useRef<PopupActions>({
     open: () => undefined,
@@ -68,6 +70,10 @@ const StoreHome: NextPage<{
         <Dimmer isDimmed={isDimmed} />
         <DimmerProvider value={{ isDimmed, setIsDimmed }}>
           <StoreProvider value={store}>
+            <NavMenu
+              isNavMenuOpen={isNavMenuOpen}
+              setIsNavMenuOpen={setIsNavMenuOpen}
+            />
             <CartProvider value={{ cart, dispatch, openCartModal }}>
               {isMobileCheckout && (
                 <div className="animate-fadein p-4 pt-6">
@@ -90,6 +96,8 @@ const StoreHome: NextPage<{
                 <div className="flex h-screen flex-col">
                   <Header
                     openCartModal={() => setIsMobileCheckout(true)}
+                    isNavMenuOpen={isNavMenuOpen}
+                    setIsNavMenuOpen={setIsNavMenuOpen}
                     store={store}
                     callback={callback ?? ""}
                   />

@@ -3,7 +3,7 @@ import { cartContext } from "../../../contexts/cartContext"
 import type { CartItem } from "../../../types/Cart"
 import {
   ItemContainer,
-  ItemCategory,
+  // ItemCategory,
   ItemName,
   ItemQuantity,
   ItemPrice,
@@ -41,9 +41,7 @@ export function CartItemComponent({
       <ItemName>{item.name}</ItemName>
       {isHover ? (
         <RemoveItemButtonContainer>
-          <RemoveItemButton onClick={handleRemoveItemClick}>
-            &times;
-          </RemoveItemButton>
+          <RemoveItemButton onClick={handleRemoveItemClick} />
         </RemoveItemButtonContainer>
       ) : (
         <ItemPrice>{Number(item.price).toFixed(2)}</ItemPrice>

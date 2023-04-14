@@ -3,17 +3,9 @@ import type { MenuCategoryType } from "../types/MenuCategoryType"
 import type { MenuType } from "../types/MenuType"
 import { Prisma, PrismaClient } from "@prisma/client"
 import type { Decimal } from "@prisma/client/runtime"
+import * as fs from "fs"
 
 const prisma = new PrismaClient()
-
-function getCategoryIdFromName(name: string): number {
-  const ids: { [key: string]: number } = {
-    Drinks: 1,
-    Candy: 2,
-    Chips: 3,
-  }
-  return ids[name] || 0
-}
 
 type DbMenuItem = {
   name: string
@@ -24,23 +16,45 @@ type DbMenuItem = {
   imageUrl: string
 }
 
-const csvText = `Coke,Drinks,2.00,,TRUE,a
-Diet Coke,Drinks,2.00,,TRUE,b
-Sprite,Drinks,2.00,,TRUE,c
-Lays,Chips,1.52,,TRUE,d
-Fritos,Chips,1.50,,FALSE,e`
+export async function getCsvText(file: string) {
+  const data = await fs.promises.readFile(file)
+  return data.toString()
+}
 
-export function getMenuItemsFromCsv(text: string): DbMenuItem[] {
+export async function createCategoriesFromCsvText(
+  csvText: string,
+  menuId: number
+) {
+  const categories = csvText.replaceAll("\r", "").split("\n")
+  for (let i = 0; i < categories.length; i++) {
+    try {
+      await prisma.menuCategory.create({
+        data: {
+          name: categories[i] as string,
+          menuId,
+        },
+      })
+    } catch (e) {
+      throw e
+    }
+  }
+}
+
+export async function getMenuItemsFromCsv(
+  text: string,
+  menuId: number
+): Promise<DbMenuItem[]> {
+  const categoryMap = await getCategoryNameToIdMap(menuId)
   const items: string[] = text.split("\n")
   return items.map((item) => {
     const itemProperties = item.split(",")
     return {
-      name: itemProperties[0] || "Untitled",
-      categoryId: getCategoryIdFromName(itemProperties[1] as string),
-      price: new Prisma.Decimal(itemProperties[2] || 0),
-      description: itemProperties[3] || "",
+      name: itemProperties[0] ?? "Untitled",
+      categoryId: categoryMap[itemProperties[1] as string] as number,
+      price: new Prisma.Decimal(itemProperties[2] ?? 0),
+      description: itemProperties[3] ?? "",
       isAvailable: itemProperties[4] === "TRUE",
-      imageUrl: itemProperties[5] || "",
+      imageUrl: itemProperties[5] ?? "",
     }
   })
 }
@@ -57,8 +71,18 @@ export async function createItemsInDatabase(items: DbMenuItem[]) {
   await prisma.$disconnect()
 }
 
-export async function csvToDatabase() {
-  await createItemsInDatabase(getMenuItemsFromCsv(csvText))
+export async function createItemsFromCsvText(csvText: string, menuId: number) {
+  await createItemsInDatabase(await getMenuItemsFromCsv(csvText, menuId))
+}
+
+export async function getCategoryNameToIdMap(menuId: number) {
+  const categories = await prisma.menuCategory.findMany({ where: { menuId } })
+  const it = categories.reduce((acc: { [key: string]: number }, category) => {
+    acc[String(category.name)] = category.id
+    return acc
+  }, {})
+  console.log(it)
+  return it
 }
 
 export function getMenuFromApiMenuItems(items: MenuItemType[]): MenuType {

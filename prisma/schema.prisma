@@ -79,7 +79,7 @@ model Order {
     type          String     @default("pickup")
     store         Store      @relation(fields: [storeId], references: [id], onDelete: Cascade)
     storeId       Int        @default(1)
-    isAccepted    Boolean    @default(false)
+    status        String     @default("unconfirmed")
     createdAt     DateTime   @default(now())
     updatedAt     DateTime   @updatedAt
     Delivery      Delivery[]

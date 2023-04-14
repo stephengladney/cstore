@@ -7,6 +7,7 @@ type DispatchPayload = {
 }
 
 export const cartContext = createContext({
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   dispatch: (_: DispatchPayload) => {
     items: []
   },
