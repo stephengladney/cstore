@@ -7,7 +7,7 @@ import type { MenuItemType } from "../types/MenuItemType"
 import type { Store } from "@prisma/client"
 import { useSession } from "next-auth/react"
 
-function getUiMenu(menu?: MenuType) {
+function getUiMenu(menu: MenuType, deleteItem: (n: number) => void) {
   if (!menu) return null
 
   const { categories } = menu
@@ -24,7 +24,10 @@ function getUiMenu(menu?: MenuType) {
           </div>
           <div className="col-span-1 pt-1 text-right text-sm">
             $ {Number(item.price).toFixed(2)}
-            <button className="ml-4 rounded-full bg-red-600 py-1 px-2 text-xs text-white hover:bg-red-700">
+            <button
+              className="ml-4 rounded-full bg-red-600 py-1 px-2 text-xs text-white hover:bg-red-700"
+              onClick={() => deleteItem(item.id)}
+            >
               X
             </button>
           </div>
@@ -59,6 +62,7 @@ const MenuBuilder: NextPage = () => {
   const { mutate: createCategoriesFromCsv } =
     api.category.createFromCsv.useMutation()
   const { mutate: createItemsFromCsv } = api.item.createFromCsv.useMutation()
+  const { mutate: deleteItem } = api.item.deleteById.useMutation()
   const { data: stores } = api.store.getByIds.useQuery(
     { ids: user?.stores ?? [] },
     { enabled: !!user?.stores }
@@ -262,6 +266,9 @@ const MenuBuilder: NextPage = () => {
                   description: itemDescription,
                 })
                 // clearInputs()
+                setItemName("")
+                setItemPrice("")
+                setItemDescription("")
               }}
             >
               Create Item
@@ -317,7 +324,9 @@ const MenuBuilder: NextPage = () => {
           <h2 className="mt-4 mb-4 text-lg font-bold">
             {menus?.find((menu) => menu.id === menuId)?.name ?? ""}
           </h2>
-          {menus?.find((menu) => menu.id === menuId) && menu && getUiMenu(menu)}
+          {menus?.find((menu) => menu.id === menuId) &&
+            menu &&
+            getUiMenu(menu, deleteItem)}
         </div>
       </div>
     )

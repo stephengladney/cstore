@@ -109,4 +109,9 @@ export const itemRouter = createTRPCRouter({
     .mutation(({ input }) => {
       return createItemsFromCsvText(input.text, input.menuId)
     }),
+  deleteById: publicProcedure
+    .input(z.number())
+    .mutation(async ({ input, ctx }) => {
+      await ctx.prisma.menuItem.delete({ where: { id: input } })
+    }),
 })
