@@ -74,7 +74,15 @@ export function MenuItemNameContainer({ children }: ReactComponents) {
 }
 
 export function MenuItemPhoto({ src }: { src: string }) {
-  return <Image src={src} alt="Product photo" height={80} width={80} />
+  return (
+    <Image
+      src={src}
+      alt="Product photo"
+      height={80}
+      width={80}
+      className="rounded-md border-[1px] border-solid border-gray-300"
+    />
+  )
 }
 
 export function MenuItemPrice({ children }: ReactComponents) {
