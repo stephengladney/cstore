@@ -8,6 +8,7 @@ import type { MenuItemType } from "../../types/MenuItemType"
 import type { CartItem } from "../../types/Cart"
 import { OrderCart } from "../OrderCart/OrderCart"
 import { dimmerContext } from "../../contexts/dimmerContext"
+import { storeContext } from "../../contexts/storeContext"
 
 export function OrderingContainer({}) {
   const [selectedItem, setSelectedItem] = useState<
@@ -15,6 +16,7 @@ export function OrderingContainer({}) {
   >()
   const [selectedCartItemIndex, setSelectedCartItemIndex] = useState<number>()
   const { setIsDimmed } = useContext(dimmerContext)
+  const store = useContext(storeContext)
   const orderItemModalRef = useRef<PopupActions>({
     open: () => undefined,
     close: () => undefined,
@@ -51,7 +53,15 @@ export function OrderingContainer({}) {
 
   return (
     <>
-      <div className="flex grow justify-center overflow-y-scroll px-0 lg:px-10">
+      <div className="flex grow flex-col items-center overflow-y-scroll px-0 lg:px-10">
+        <div className="mt-8 flex w-full flex-col items-start px-4 font-poppins md:px-0">
+          <h1 className="text-3xl lg:text-4xl">
+            Welcome to
+            <br />
+            {store.name}
+          </h1>
+          <h2 className="text-sm">{store.address}</h2>
+        </div>
         <OrderingMenu setSelectedItem={setSelectedItem} />
         <OrderItemModal
           closeModal={closeModal}
