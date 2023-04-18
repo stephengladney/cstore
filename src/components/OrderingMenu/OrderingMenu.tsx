@@ -61,7 +61,6 @@ export function OrderingMenu({ setSelectedItem }: MenuProps) {
 
   useEffect(() => {
     if (menu) setSearchedMenu(searchMenu(menu, searchQuery))
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [menu, searchQuery])
 
