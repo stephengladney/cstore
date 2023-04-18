@@ -9,7 +9,7 @@ import type { CartItem } from "../../types/Cart"
 import { OrderCart } from "../OrderCart/OrderCart"
 import { dimmerContext } from "../../contexts/dimmerContext"
 import { storeContext } from "../../contexts/storeContext"
-// import { formatPhoneNumber } from "../OrdersScreen/OrderDetailsComponent"
+import { formatPhoneNumber } from "../../lib/client"
 
 export function OrderingContainer({}) {
   const [selectedItem, setSelectedItem] = useState<
@@ -59,11 +59,11 @@ export function OrderingContainer({}) {
           <h1 className="text-3xl lg:text-4xl">
             Welcome to
             <br />
-            {store?.name}
+            {store.name}
           </h1>
-          <h2 className="mt-1 text-sm leading-6">{store?.address}</h2>
+          <h2 className="mt-1 text-sm leading-6">{store.address}</h2>
           <h2 className="text-sm leading-5">
-            {/* {formatPhoneNumber(store?.phone as string)} */}
+            {formatPhoneNumber(store.phone as string)}
           </h2>
         </div>
         <OrderingMenu setSelectedItem={setSelectedItem} />
