@@ -106,8 +106,12 @@ export const itemRouter = createTRPCRouter({
     }),
   createFromCsv: publicProcedure
     .input(z.object({ menuId: z.number(), text: z.string() }))
-    .mutation(({ input }) => {
-      return createItemsFromCsvText(input.text, input.menuId)
+    .mutation(async ({ input }) => {
+      try {
+        return createItemsFromCsvText(input.text, input.menuId)
+      } catch (e) {
+        //NO OP
+      }
     }),
   deleteById: publicProcedure
     .input(z.number())

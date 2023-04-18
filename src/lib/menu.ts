@@ -81,7 +81,6 @@ export async function getCategoryNameToIdMap(menuId: number) {
     acc[String(category.name)] = category.id
     return acc
   }, {})
-  console.log(it)
   return it
 }
 
