@@ -13,7 +13,7 @@ import {
 } from "./OrderComponent"
 import type { CartItem } from "../../types/Cart"
 
-function formatPhoneNumber(phoneNumber: string) {
+export function formatPhoneNumber(phoneNumber: string) {
   const areaCode = phoneNumber.substring(2, 5)
   const prefix = phoneNumber.substring(5, 8)
   const suffix = phoneNumber.substring(8)
