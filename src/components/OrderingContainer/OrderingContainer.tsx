@@ -55,24 +55,26 @@ export function OrderingContainer({}) {
   return (
     <>
       <div className="flex grow flex-col items-center overflow-y-scroll px-0 lg:px-10">
-        <div className="mt-8 flex w-full flex-col items-start px-4 font-poppins md:px-0">
-          <h1 className="text-3xl lg:text-4xl">
-            Welcome to
-            <br />
-            {store.name}
-          </h1>
-          <h2 className="mt-1 text-sm leading-6">{store.address}</h2>
-          <h2 className="text-sm leading-5">
-            {formatPhoneNumber(store.phone as string)}
-          </h2>
+        <div>
+          <div className="mt-8 flex w-full flex-col items-start px-4 font-poppins md:px-0">
+            <h1 className="text-3xl lg:text-4xl">
+              Welcome to
+              <br />
+              {store.name}
+            </h1>
+            <h2 className="mt-1 text-sm leading-6">{store.address}</h2>
+            <h2 className="text-sm leading-5">
+              {formatPhoneNumber(store.phone as string)}
+            </h2>
+          </div>
+          <OrderingMenu setSelectedItem={setSelectedItem} />
+          <OrderItemModal
+            closeModal={closeModal}
+            selectedCartItemIndex={selectedCartItemIndex}
+            modalRef={orderItemModalRef}
+            selectedItem={selectedItem}
+          />
         </div>
-        <OrderingMenu setSelectedItem={setSelectedItem} />
-        <OrderItemModal
-          closeModal={closeModal}
-          selectedCartItemIndex={selectedCartItemIndex}
-          modalRef={orderItemModalRef}
-          selectedItem={selectedItem}
-        />
       </div>
       <OrderCart cart={cart} editCartItem={editCartItem} />
     </>
