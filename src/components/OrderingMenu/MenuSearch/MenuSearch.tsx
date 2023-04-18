@@ -23,7 +23,7 @@ export function MenuSearch({
     })
   }
 
-  const handleCancel = () => {
+  const handleClear = () => {
     setInputValue("")
     startTransition(() => {
       setSearchQuery("")
@@ -41,7 +41,7 @@ export function MenuSearch({
         size={20}
         fill="#A1A1AA"
         className="z-10 ml-[-35px] cursor-pointer"
-        onClick={handleCancel}
+        onClick={handleClear}
       />
     </div>
   )
