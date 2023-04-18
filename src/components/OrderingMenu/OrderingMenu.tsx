@@ -16,6 +16,7 @@ import { LoadingSpinner } from "../LoadingSpinner/LoadingSpinner"
 import { MenuSearch } from "./MenuSearch/MenuSearch"
 import type { MenuType } from "../../types/MenuType"
 import type { MenuCategoryType } from "../../types/MenuCategoryType"
+import { RequestItem } from "./MenuSearch/RequestItem"
 
 function searchMenu(menu: MenuType, string: string) {
   const results = { categories: [] as MenuCategoryType[] }
@@ -68,13 +69,9 @@ export function OrderingMenu({ setSelectedItem }: MenuProps) {
     setMenuToRender({
       id: menu?.id ?? 0,
       name: menu?.name as string,
-      ...getMenuToRender(),
+      ...(getMenuToRender() ?? { categories: [] }),
     })
   }, [searchQuery])
-
-  useEffect(() => {
-    console.log(menuToRender)
-  }, [menuToRender])
 
   if (isLoading)
     return (
@@ -97,8 +94,9 @@ export function OrderingMenu({ setSelectedItem }: MenuProps) {
               {i !== menuToRender.categories!.length - 1 && <CategoryDivider />}
             </Fragment>
           ))}
-          <div style={{ minHeight: "100px" }} />
         </MenuContainer>
+        <RequestItem />
+        <div style={{ minHeight: "100px" }} />
       </div>
     )
   else return <div>Error</div>
