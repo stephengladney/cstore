@@ -55,22 +55,18 @@ export function OrderingMenu({ setSelectedItem }: MenuProps) {
     id: store.id,
   })
   const [searchQuery, setSearchQuery] = useState("")
-  const [menuToRender, setMenuToRender] = useState<MenuType | null | undefined>(
+  const [searchedMenu, setSearchedMenu] = useState<MenuType | null | undefined>(
     menu
   )
 
-  const getMenuToRender = () => {
-    if (menu) {
-      if (searchQuery) {
-        return searchMenu(menu, searchQuery)
-      } else return menu
-    } else return null
-  }
-
   useEffect(() => {
-    setMenuToRender(getMenuToRender())
+    if (menu) setSearchedMenu(searchMenu(menu, searchQuery))
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [menu, searchQuery])
+
+  const menuToRender =
+    searchQuery && searchedMenu?.categories ? searchedMenu : menu
 
   if (isLoading)
     return (
