@@ -19,7 +19,11 @@ import type { MenuCategoryType } from "../../types/MenuCategoryType"
 import { RequestItem } from "./MenuSearch/RequestItem"
 
 function searchMenu(menu: MenuType, string: string) {
-  const results = { categories: [] as MenuCategoryType[] }
+  const results = {
+    id: menu.id,
+    name: menu.name,
+    categories: [] as MenuCategoryType[],
+  }
   menu.categories?.forEach((category) => {
     const categoryMatchesQuery = String(category.name)
       .toLowerCase()
@@ -58,20 +62,15 @@ export function OrderingMenu({ setSelectedItem }: MenuProps) {
   const getMenuToRender = () => {
     if (menu) {
       if (searchQuery) {
-        const searchedMenu = searchMenu(menu, searchQuery)
-        if (searchedMenu.categories.length > 0) return searchedMenu
-        else return null
+        return searchMenu(menu, searchQuery)
       } else return menu
     } else return null
   }
 
   useEffect(() => {
-    setMenuToRender({
-      id: menu?.id ?? 0,
-      name: menu?.name as string,
-      ...(getMenuToRender() ?? { categories: [] }),
-    })
-  }, [searchQuery])
+    setMenuToRender(getMenuToRender())
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [menu, searchQuery])
 
   if (isLoading)
     return (
