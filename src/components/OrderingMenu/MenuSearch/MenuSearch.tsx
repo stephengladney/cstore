@@ -5,7 +5,7 @@ import {
   useTransition,
   useState,
 } from "react"
-import { IoMdClose } from "react-icons/io"
+import { MdClose } from "react-icons/md"
 
 export function MenuSearch({
   setSearchQuery,
@@ -37,7 +37,7 @@ export function MenuSearch({
         placeholder="Search..."
         value={inputValue}
       />
-      <IoMdClose
+      <MdClose
         size={20}
         fill="#A1A1AA"
         className="z-10 ml-[-35px] cursor-pointer"

@@ -4,6 +4,7 @@ import {
   type SetStateAction,
   useContext,
   useState,
+  useEffect,
 } from "react"
 import { MenuCategoryComponent } from "./MenuCategory/MenuCategoryComponent"
 import { CategoryDivider, MenuContainer } from "./OrderingMenu.styles"
@@ -49,12 +50,31 @@ export function OrderingMenu({ setSelectedItem }: MenuProps) {
     id: store.id,
   })
   const [searchQuery, setSearchQuery] = useState("")
+  const [menuToRender, setMenuToRender] = useState<MenuType | null | undefined>(
+    menu
+  )
 
-  const menuToRender = searchQuery
-    ? menu
-      ? searchMenu(menu, searchQuery)
-      : null
-    : menu
+  const getMenuToRender = () => {
+    if (menu) {
+      if (searchQuery) {
+        const searchedMenu = searchMenu(menu, searchQuery)
+        if (searchedMenu.categories.length > 0) return searchedMenu
+        else return null
+      } else return menu
+    } else return null
+  }
+
+  useEffect(() => {
+    setMenuToRender({
+      id: menu?.id ?? 0,
+      name: menu?.name as string,
+      ...getMenuToRender(),
+    })
+  }, [searchQuery])
+
+  useEffect(() => {
+    console.log(menuToRender)
+  }, [menuToRender])
 
   if (isLoading)
     return (
@@ -62,12 +82,12 @@ export function OrderingMenu({ setSelectedItem }: MenuProps) {
         <LoadingSpinner />
       </div>
     )
-  else if (menuToRender)
+  else if (menuToRender?.categories)
     return (
       <div className="flex w-full flex-col">
         <MenuSearch setSearchQuery={setSearchQuery} />
         <MenuContainer>
-          {menuToRender.categories!.map((category: MenuCategoryType, i) => (
+          {menuToRender.categories.map((category: MenuCategoryType, i) => (
             <Fragment key={`menu-category-${category.name}`}>
               <MenuCategoryComponent
                 items={category.items}
