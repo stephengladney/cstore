@@ -51,9 +51,11 @@ interface MenuProps {
 
 export function OrderingMenu({ setSelectedItem }: MenuProps) {
   const store = useContext(storeContext)
-  const { data: menu, isLoading } = api.menu.getByStoreId.useQuery({
-    id: store.id,
-  })
+  // const { data: menu, isLoading } = api.menu.getByStoreId.useQuery({
+  //   id: store.id,
+  // })
+  const isLoading = true
+  const menu = { id: 1, name: "menu", categories: [] }
   const [searchQuery, setSearchQuery] = useState("")
   const [searchedMenu, setSearchedMenu] = useState<MenuType | null | undefined>(
     menu
@@ -69,7 +71,7 @@ export function OrderingMenu({ setSelectedItem }: MenuProps) {
 
   if (isLoading)
     return (
-      <div className="mt-[200px]">
+      <div className="mt-[200px] flex flex-row justify-center">
         <LoadingSpinner />
       </div>
     )
