@@ -51,11 +51,9 @@ interface MenuProps {
 
 export function OrderingMenu({ setSelectedItem }: MenuProps) {
   const store = useContext(storeContext)
-  // const { data: menu, isLoading } = api.menu.getByStoreId.useQuery({
-  //   id: store.id,
-  // })
-  const isLoading = true
-  const menu = { id: 1, name: "menu", categories: [] }
+  const { data: menu, isLoading } = api.menu.getByStoreId.useQuery({
+    id: store.id,
+  })
   const [searchQuery, setSearchQuery] = useState("")
   const [searchedMenu, setSearchedMenu] = useState<MenuType | null | undefined>(
     menu
