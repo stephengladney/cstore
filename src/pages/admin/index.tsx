@@ -12,16 +12,17 @@ const SectionHeader = ({ children }: ReactComponents) => {
 
 const Admin: NextPage = () => {
   const { data: session } = useSession({ required: true })
-  const { data: user } = api.user.getByEmail.useQuery(
+  const { data: user, isLoading: isUserLoading } = api.user.getByEmail.useQuery(
     {
       email: session?.user.email as string,
     },
     { enabled: !!session }
   )
-  const { data: stores } = api.store.getByIds.useQuery(
-    { ids: user?.stores || [] },
-    { enabled: !!user }
-  )
+  const { data: stores, isLoading: isStoresLoading } =
+    api.store.getByIds.useQuery(
+      { ids: user?.stores || [] },
+      { enabled: !!user }
+    )
   const [selectedStore, setSelectedStore] = useState<Store>()
 
   useEffect(() => {
@@ -86,7 +87,7 @@ const Admin: NextPage = () => {
         </div>
       </div>
     )
-  } else
+  } else if (!isUserLoading && !isStoresLoading) {
     return (
       <div className="flex h-screen w-full items-center justify-center">
         <h1 className="text-center font-poppins text-2xl">
@@ -95,6 +96,13 @@ const Admin: NextPage = () => {
         </h1>
       </div>
     )
+  } else {
+    return (
+      <div className="flex h-screen w-full items-center justify-center">
+        <h1 className="text-center font-poppins text-2xl">Loading...</h1>
+      </div>
+    )
+  }
 }
 
 export default Admin
