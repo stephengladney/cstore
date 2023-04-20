@@ -122,10 +122,10 @@ const Home: NextPage = () => {
                 {'"We\'ve done over $1,000 in revenue last month."'}
               </h2>
               <h3 className="text-md mt-4 text-center font-poppins font-bold text-red-600 lg:text-right">
-                Vik Patel
+                John Doe
               </h3>
               <h3 className="text-md text-center font-poppins font-bold  text-slate-600 lg:text-right">
-                Owner, Kirkwood Neighborhood Market
+                Owner, Neighborhood Market
               </h3>
             </div>
             <div className="py-12">
@@ -133,10 +133,10 @@ const Home: NextPage = () => {
                 {'"We\'ve done over $1,000 in revenue last month."'}
               </h2>
               <h3 className="text-md mt-4 text-center font-poppins font-bold text-red-600 lg:text-right">
-                Vik Patel
+                John Doe
               </h3>
               <h3 className="text-md text-center font-poppins font-bold text-slate-600 lg:text-right">
-                Owner, Kirkwood Neighborhood Market
+                Owner, Neighborhood Market
               </h3>
             </div>
             <div className="py-12">
@@ -144,10 +144,10 @@ const Home: NextPage = () => {
                 {'"We\'ve done over $1,000 in revenue last month."'}
               </h2>
               <h3 className="text-md mt-4 text-center font-poppins font-bold text-red-600 lg:text-right">
-                Vik Patel
+                John Doe
               </h3>
               <h3 className="text-md text-center font-poppins font-bold text-slate-600 lg:text-right">
-                Owner, Kirkwood Neighborhood Market
+                Owner, Neighborhood Market
               </h3>
             </div>
           </div>
