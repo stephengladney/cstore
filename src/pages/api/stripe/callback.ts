@@ -25,7 +25,7 @@ export default async function handler(
         stripeAccessToken: response.access_token,
       },
     })
-    res.send("Success!")
+    res.redirect("../../admin")
   } catch (e) {
     res.send("Error authorizing Stripe")
   }

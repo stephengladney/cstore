@@ -18,11 +18,13 @@ const Admin: NextPage = () => {
     },
     { enabled: !!session }
   )
-  const { data: stores, isLoading: isStoresLoading } =
-    api.store.getByIds.useQuery(
-      { ids: user?.stores || [] },
-      { enabled: !!user }
-    )
+  // const { data: stores, isLoading: isStoresLoading } =
+  //   api.store.getByIds.useQuery(
+  //     { ids: user?.stores || [] },
+  //     { enabled: !!user }
+  //   )
+  const stores = []
+  const isStoresLoading = false
   const [selectedStore, setSelectedStore] = useState<Store>()
 
   useEffect(() => {
@@ -89,9 +91,13 @@ const Admin: NextPage = () => {
     )
   } else if (!isUserLoading && !isStoresLoading) {
     return (
-      <div className="flex h-screen w-full items-center justify-center">
+      <div className="flex h-screen w-full flex-col items-center justify-center">
+        <h1 className="mb-8 text-center font-poppins text-3xl font-bold">
+          Welcome to Farely!
+        </h1>
         <h1 className="text-center font-poppins text-2xl">
-          You do not have any stores set up yet. <br />
+          You do not have any stores set up yet.{" "}
+          <br className="hidden md:block" />
           Please contact your account manager to create your first store.
         </h1>
       </div>

@@ -25,7 +25,7 @@ const StripeAuth: NextPage = () => {
 
   return (
     <div className="flex h-screen w-full flex-col items-center justify-center">
-      <h1 className="font-poppins text-2xl font-bold">
+      <h1 className="text-center font-poppins text-2xl font-bold">
         Select your store and click Authorize
       </h1>
       <div className="my-8">
