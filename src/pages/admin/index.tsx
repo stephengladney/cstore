@@ -18,13 +18,12 @@ const Admin: NextPage = () => {
     },
     { enabled: !!session }
   )
-  // const { data: stores, isLoading: isStoresLoading } =
-  //   api.store.getByIds.useQuery(
-  //     { ids: user?.stores || [] },
-  //     { enabled: !!user }
-  //   )
-  const stores = []
-  const isStoresLoading = false
+  const { data: stores, isLoading: isStoresLoading } =
+    api.store.getByIds.useQuery(
+      { ids: user?.stores || [] },
+      { enabled: !!user }
+    )
+
   const [selectedStore, setSelectedStore] = useState<Store>()
 
   useEffect(() => {
