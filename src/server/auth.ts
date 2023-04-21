@@ -53,6 +53,12 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   secret: env.JWT_SECRET,
+  theme: {
+    colorScheme: "light", // "auto" | "dark" | "light"
+    brandColor: "rgb(220,38,38)", // Hex color code
+    logo: "https://farely.app/favicon.ico", // Absolute URL to image
+    buttonText: "rgb(220,38,38)", // Hex color code
+  },
 }
 
 /**
