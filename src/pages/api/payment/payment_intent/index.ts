@@ -24,8 +24,9 @@ export default async function handler(
         id: paymentIntent.id,
         clientSecret: paymentIntent.client_secret,
       })
-    } catch ({ message }) {
-      res.status(500).end(message as string)
+    } catch (e) {
+      const { message } = e as { message: string }
+      res.status(500).end(message)
     }
   } else if (req.method === "PUT") {
     const { paymentIntentId, field, value } = req.body as {
