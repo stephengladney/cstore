@@ -54,7 +54,7 @@ export function CheckoutForm({
                 closeModal()
                 setIsMobileCheckout && setIsMobileCheckout(false)
               })
-              .catch((e) => {
+              .catch(() => {
                 setIsPending(false)
               })
           })
@@ -72,7 +72,7 @@ export function CheckoutForm({
             ) {
               setIsAddressError(true)
             } else {
-              alert(`There was a problem: ${String(e)}`)
+              alert(JSON.stringify(e))
             }
           })
       })

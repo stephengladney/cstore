@@ -40,6 +40,9 @@ export default async function handler(
       console.log(e)
       res.status(500).end(e)
     }
+  } else if (req.method === "GET" && req.query.stephen === "true") {
+    const client = new DoorDashClient.DoorDashClient(accessKey)
+    res.send(await client.getDelivery(req.query.id as string))
   } else {
     res.setHeader("Allow", "POST")
     res.status(405).end("Method Not Allowed")
