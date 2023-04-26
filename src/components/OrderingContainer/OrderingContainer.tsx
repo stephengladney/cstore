@@ -55,11 +55,12 @@ export function OrderingContainer({}) {
   return (
     <>
       <div className="flex grow flex-col items-center overflow-y-scroll px-0 lg:px-10">
-        <div>
+        <div className="w-full">
           <div className="mt-8 flex w-full flex-col items-start px-4 font-poppins md:px-0">
             <h1 className="text-3xl lg:text-4xl">
               Welcome to
-              <br />
+              <br className="lg:hidden" />
+              <span className="hidden lg:inline"> </span>
               {store.name}
             </h1>
             <h2 className="mt-1 text-sm leading-6">{store.address}</h2>
