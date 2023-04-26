@@ -68,8 +68,8 @@ export function OrderingContainer({
               <span className="hidden lg:inline"> </span>
               {store.name}
             </h1>
-            <h2 className="mt-1 text-sm leading-6">{store.address}</h2>
-            <h2 className="text-sm leading-5">
+            <h2 className="mt-1 text-base leading-6">{store.address}</h2>
+            <h2 className="text-base leading-6">
               {formatPhoneNumber(store.phone as string)}
             </h2>
           </div>
