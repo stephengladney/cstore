@@ -20,6 +20,7 @@ import PlacesAutocomplete from "react-places-autocomplete"
 
 const stripe = loadStripe(env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
 const FulfillmentMethods = { PICKUP: "PICKUP", DELIVERY: "DELIVERY" } as const
+const farelyStripeAccountId = "acct_1MXAaDCtOqAVlzo3"
 
 interface CheckoutProps {
   closeModal: () => void
@@ -33,7 +34,10 @@ export function Checkout({ closeModal, setIsMobileCheckout }: CheckoutProps) {
   const [fulfillmentMethod, setFulfillmentMethod] =
     useState<keyof typeof FulfillmentMethods>("PICKUP")
   const [paymentIntentId, setPaymentIntentId] = useState<string>()
+  // const [deliveryPaymentIntentId, setDeliveryPaymentIntentId] =
+  // useState<string>()
   const [clientSecret, setClientSecret] = useState<string>()
+  // const [deliveryClientSecret, setDeliveryClientSecret] = useState<string>()
   const [isAddressError, setIsAddressError] = useState(false)
 
   const isPickupSelected = fulfillmentMethod === "PICKUP"
@@ -99,15 +103,26 @@ export function Checkout({ closeModal, setIsMobileCheckout }: CheckoutProps) {
         .put("/api/payment/payment_intent", {
           field: "amount",
           paymentIntentId: paymentIntentId,
-          value: isDeliverySelected ? totalWithDelivery : totalWithDelivery,
+          value: total,
         })
-        .then(() => {
+        .finally(() => {
           // NO OP
         })
-        .catch(() => {
-          //NO OP
-        })
     }
+    // if (isDeliverySelected && !deliveryPaymentIntentId) {
+    //   axios
+    //     .post("/api/payment/payment_intent", {
+    //       amount: 9.75 + Number(tip),
+    //       stripeAccountId: farelyStripeAccountId,
+    //     })
+    //     .then(({ data: { id, clientSecret } }) => {
+    //       setDeliveryClientSecret(clientSecret as string)
+    //       setDeliveryPaymentIntentId(id as string)
+    //     })
+    //     .catch(() => {
+    //       // NO OP
+    //     })
+    // }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fulfillmentMethod, store.stripeAccountId, cart.items])
 
