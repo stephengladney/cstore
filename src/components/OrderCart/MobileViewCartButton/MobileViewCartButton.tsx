@@ -1,4 +1,4 @@
-import { Cart } from "../../../types/Cart"
+import type { Cart } from "../../../types/Cart"
 import { useContext } from "react"
 import { storeContext } from "../../../contexts/storeContext"
 
