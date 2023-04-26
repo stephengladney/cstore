@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "MenuItem" ADD COLUMN     "taxRate" INTEGER NOT NULL DEFAULT 0;

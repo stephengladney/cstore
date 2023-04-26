@@ -17,8 +17,10 @@ export function getCheckoutPricingFromCartItems(items: CartItem[]): {
   total: number
 } {
   const subtotal = items.reduce((acc, item) => acc + Number(item.price), 0)
-  const taxRate = 0.04
-  const tax = subtotal * taxRate
+  const tax = items.reduce(
+    (acc, item) => acc + 0 * item.price * item.quantity,
+    0
+  )
   const total = subtotal + tax
 
   return { subtotal, tax, total }

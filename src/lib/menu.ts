@@ -98,6 +98,7 @@ export function getMenuFromApiMenuItems(items: MenuItemType[]): MenuType {
     imageUrl: item.imageUrl,
     isAvailable: item.isAvailable,
     price: item.price,
+    taxRate: item.taxRate,
   })
 
   items.forEach((item) => {

@@ -39,6 +39,7 @@ const doordashDeliveryItem = {
   quantity: 1,
   description: "Delivery by Doordash",
   categoryName: "",
+  taxRate: 0,
 }
 
 export function Checkout({
@@ -155,9 +156,10 @@ export function Checkout({
     } else {
       setCartToRender({
         ...cart,
-        items: cart.items.filter((item) => item.id !== 0),
+        items: cart.items.filter((item) => item.name !== "Delivery"),
       })
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fulfillmentMethod])
 
   useEffect(() => {
@@ -165,8 +167,8 @@ export function Checkout({
   }, [cartToRender])
 
   useEffect(() => {
-    console.log(cartPricing)
-  }, [cartPricing])
+    setCartToRender(cart)
+  }, [cart])
 
   return (
     <div>
