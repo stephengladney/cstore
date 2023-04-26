@@ -60,8 +60,8 @@ const StoreHome: NextPage<{
   }, [store])
 
   useEffect(() => {
-    if (cart.items.length === 0 && isMobileCheckout) setIsMobileCheckout(false)
-  }, [cart])
+    if (!!cart.items.length && isMobileCheckout) setIsMobileCheckout(false)
+  }, [cart, isMobileCheckout])
 
   if (store) {
     return (
