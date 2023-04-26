@@ -84,7 +84,7 @@ const StoreHome: NextPage<{
                     <div className="-mt-[2px]">&times;</div>
                   </button>
                   <h1 className="block pb-4 text-center font-poppins text-3xl font-bold text-slate-700">
-                    Checkout
+                    Your Order
                   </h1>
                   <Checkout
                     closeModal={closeCartModal}
@@ -106,7 +106,9 @@ const StoreHome: NextPage<{
                     {callback ? (
                       <CallbackHandler callback={callback} />
                     ) : (
-                      <OrderingContainer />
+                      <OrderingContainer
+                        openCartModal={() => setIsMobileCheckout(true)}
+                      />
                     )}
                   </Body>
                 </div>

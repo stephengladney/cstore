@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef } from "react"
+import { Dispatch, SetStateAction, useContext, useEffect, useRef } from "react"
 import { OrderingMenu } from "../OrderingMenu/OrderingMenu"
 import { useState } from "react"
 import { OrderItemModal } from "../OrderingMenu/OrderItemModal/OrderItemModal"
@@ -12,7 +12,11 @@ import { dimmerContext } from "../../contexts/dimmerContext"
 import { storeContext } from "../../contexts/storeContext"
 import { formatPhoneNumber } from "../../lib/client"
 
-export function OrderingContainer({}) {
+export function OrderingContainer({
+  openCartModal,
+}: {
+  openCartModal: () => void
+}) {
   const [selectedItem, setSelectedItem] = useState<
     MenuItemType | CartItem | undefined
   >()
@@ -80,7 +84,7 @@ export function OrderingContainer({}) {
       </div>
       <OrderCart cart={cart} editCartItem={editCartItem} />
       {cart.items.length > 0 && (
-        <MobileViewCartButton cart={cart} onClick={() => undefined} />
+        <MobileViewCartButton cart={cart} onClick={openCartModal} />
       )}
     </>
   )
