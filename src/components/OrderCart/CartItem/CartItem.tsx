@@ -15,10 +15,12 @@ import {
 
 export function CartItemComponent({
   index,
+  isItemRemovable = true,
   item,
   onClick,
 }: {
   index: number
+  isItemRemovable?: boolean
   item: CartItem
   onClick: () => void
 }) {
@@ -39,7 +41,7 @@ export function CartItemComponent({
       {/* <ItemCategory>{item.categoryName}</ItemCategory> */}
       <ItemQuantity>{item.quantity || 1} x</ItemQuantity>
       <ItemName>{item.name}</ItemName>
-      {isHover ? (
+      {isHover && isItemRemovable ? (
         <RemoveItemButtonContainer>
           <RemoveItemButton onClick={handleRemoveItemClick} />
         </RemoveItemButtonContainer>

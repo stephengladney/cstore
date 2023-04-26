@@ -14,6 +14,10 @@ import { cartContext } from "../../contexts/cartContext"
 import { getCheckoutPricingFromCartItems } from "../../lib/order"
 import { storeContext } from "../../contexts/storeContext"
 import { CheckoutForm } from "./CheckoutForm"
+import { CartItemsContainer } from "../OrderCart/OrderCart.styles"
+import { CartItemComponent } from "../OrderCart/CartItem/CartItem"
+import { CartPricing } from "../OrderCart/CartPricing/CartPricing"
+import { CheckoutContainer } from "../OrderCart/OrderCart.styles"
 import PhoneInput from "react-phone-input-2"
 import "react-phone-input-2/lib/style.css"
 import PlacesAutocomplete from "react-places-autocomplete"
@@ -24,13 +28,29 @@ const farelyStripeAccountId = "acct_1MXAaDCtOqAVlzo3"
 
 interface CheckoutProps {
   closeModal: () => void
+  isMobileCheckout: boolean
   setIsMobileCheckout?: Dispatch<SetStateAction<boolean>>
 }
 
-export function Checkout({ closeModal, setIsMobileCheckout }: CheckoutProps) {
+const doordashDeliveryItem = {
+  id: 0,
+  name: "Delivery",
+  price: 7,
+  quantity: 1,
+  description: "Delivery by Doordash",
+  categoryName: "",
+}
+
+export function Checkout({
+  closeModal,
+  isMobileCheckout,
+  setIsMobileCheckout,
+}: CheckoutProps) {
   const { cart } = useContext(cartContext)
   const store = useContext(storeContext)
-  const { subtotal, tax, total } = getCheckoutPricingFromCartItems(cart.items)
+  const [cartPricing, setCartPricing] = useState(
+    getCheckoutPricingFromCartItems(cart.items)
+  )
   const [fulfillmentMethod, setFulfillmentMethod] =
     useState<keyof typeof FulfillmentMethods>("PICKUP")
   const [paymentIntentId, setPaymentIntentId] = useState<string>()
@@ -42,9 +62,9 @@ export function Checkout({ closeModal, setIsMobileCheckout }: CheckoutProps) {
 
   const isPickupSelected = fulfillmentMethod === "PICKUP"
   const isDeliverySelected = fulfillmentMethod === "DELIVERY"
-  const [tip, setTip] = useState(Number(total * 0.15).toFixed(2))
+  const [tip, setTip] = useState(Number(cartPricing.total * 0.2).toFixed(2))
   const [deliveryInstructions, setDeliveryInstructions] = useState("")
-  const totalWithDelivery = Number(Number(total) + 7 + Number(tip)).toFixed(2)
+  const [cartToRender, setCartToRender] = useState(cart)
 
   const [customerInfo, setCustomerInfo] = useState({
     name: "",
@@ -72,14 +92,14 @@ export function Checkout({ closeModal, setIsMobileCheckout }: CheckoutProps) {
       customerPhone: customerInfo.phone,
       items: cart.items,
       deliveryInstructions,
-      subtotal,
+      subtotal: cartPricing.subtotal,
       storeAddress: store.address,
       storeId: store.id,
       storeName: store.name,
       storePhone: store.phone,
-      tax,
+      tax: cartPricing.tax,
       tip,
-      total,
+      total: cartPricing.total,
       type: isDeliverySelected ? "delivery" : "pickup",
     })
   }
@@ -88,7 +108,7 @@ export function Checkout({ closeModal, setIsMobileCheckout }: CheckoutProps) {
     if (!paymentIntentId) {
       axios
         .post("/api/payment/payment_intent", {
-          amount: total,
+          amount: cartPricing.total,
           stripeAccountId: store.stripeAccountId,
         })
         .then(({ data: { id, clientSecret } }) => {
@@ -103,7 +123,7 @@ export function Checkout({ closeModal, setIsMobileCheckout }: CheckoutProps) {
         .put("/api/payment/payment_intent", {
           field: "amount",
           paymentIntentId: paymentIntentId,
-          value: total,
+          value: cartPricing.total,
         })
         .finally(() => {
           // NO OP
@@ -126,37 +146,68 @@ export function Checkout({ closeModal, setIsMobileCheckout }: CheckoutProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fulfillmentMethod, store.stripeAccountId, cart.items])
 
+  useEffect(() => {
+    if (fulfillmentMethod === "DELIVERY") {
+      setCartToRender({
+        ...cart,
+        items: [...cart.items, doordashDeliveryItem],
+      })
+    } else {
+      setCartToRender({
+        ...cart,
+        items: cart.items.filter((item) => item.id !== 0),
+      })
+    }
+  }, [fulfillmentMethod])
+
+  useEffect(() => {
+    setCartPricing(getCheckoutPricingFromCartItems(cartToRender.items))
+  }, [cartToRender])
+
+  useEffect(() => {
+    console.log(cartPricing)
+  }, [cartPricing])
+
   return (
     <div>
-      {/* <CartItemsContainer>
-        {cart.items.map((item, i) => (
-          <CartItemComponent
-            index={i}
-            key={`cart-item-${i}`}
-            item={item}
-            onClick={() => null}
-          />
-        ))}
-      </CartItemsContainer>
-      <CheckoutContainer>
-        <CartPricing
-          label="Subtotal"
-          amount={subtotal}
-          style={{ color: "#666" }}
-        />
-        <CartPricing label="Tax" amount={tax} style={{ color: "#666" }} />
-        <CartPricing
-          isBig
-          amount={total}
-          label="Total"
-          style={{ marginTop: "10px" }}
-        />
-      </CheckoutContainer> */}
+      {isMobileCheckout && (
+        <>
+          <CartItemsContainer>
+            {cartToRender.items.map((item, i) => (
+              <CartItemComponent
+                index={i}
+                key={`cart-item-${i}`}
+                isItemRemovable={item.name !== "Delivery"}
+                item={item}
+                onClick={() => null}
+              />
+            ))}
+          </CartItemsContainer>
+          <CheckoutContainer>
+            <CartPricing
+              label="Subtotal"
+              amount={cartPricing.subtotal}
+              style={{ color: "#666" }}
+            />
+            <CartPricing
+              label="Tax"
+              amount={cartPricing.tax}
+              style={{ color: "#666" }}
+            />
+            <CartPricing
+              isBig
+              amount={cartPricing.total}
+              label="Total"
+              style={{ marginTop: "10px" }}
+            />
+          </CheckoutContainer>
+        </>
+      )}
       <h1
         className="w-full py-2 text-center font-poppins text-5xl font-bold"
         style={{ color: store.color }}
       >
-        ${isDeliverySelected ? totalWithDelivery : Number(total).toFixed(2)}
+        ${Number(cartPricing.total).toFixed(2)}
       </h1>
 
       <div className="py-5">

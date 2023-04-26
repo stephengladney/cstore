@@ -18,6 +18,7 @@ import { Dimmer } from "../../components/Dimmer"
 import { Checkout } from "../../components/Checkout/Checkout"
 import type { StoreType } from "../../types/StoreType"
 import { NavMenu } from "../../components/NavMenu/NavMenu"
+import { isBoxedPrimitive } from "util/types"
 
 const prisma = new PrismaClient()
 
@@ -88,6 +89,7 @@ const StoreHome: NextPage<{
                   </h1>
                   <Checkout
                     closeModal={closeCartModal}
+                    isMobileCheckout={true}
                     setIsMobileCheckout={setIsMobileCheckout}
                   />
                 </div>
