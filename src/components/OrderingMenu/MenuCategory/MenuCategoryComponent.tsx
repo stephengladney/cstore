@@ -1,4 +1,4 @@
-import { type SetStateAction, useState } from "react"
+import { type SetStateAction } from "react"
 import {
   CategoryContainer,
   CategoryHeader,
