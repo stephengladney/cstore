@@ -8,7 +8,7 @@ import {
   ItemDescription,
   ItemHeader,
   ItemName,
-  ItemPrice,
+  // ItemPrice,
   OrderButton,
   ItemImage,
   ItemInfo,
@@ -36,7 +36,6 @@ export function OrderItemModal({
   selectedCartItemIndex,
   selectedItem,
 }: OrderItemModalProps) {
-  // const [deliveryInstructions, setDeliveryInstructions] = useState("")
   const [quantity, setQuantity] = useState(1)
 
   const increaseQuantity = () => setQuantity((quantity) => quantity + 1)

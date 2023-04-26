@@ -9,8 +9,6 @@ import {
 } from "./ModalOrderCart.styles"
 import { Checkout } from "../Checkout/Checkout"
 
-type ModalOrderCartView = "cart" | "checkout"
-
 export function ModalOrderCart({
   closeModal,
   modalRef,
