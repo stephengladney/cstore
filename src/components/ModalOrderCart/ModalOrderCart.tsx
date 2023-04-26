@@ -1,4 +1,4 @@
-import { type MutableRefObject, useContext, useState, useEffect } from "react"
+import { type MutableRefObject } from "react"
 import type { PopupActions } from "reactjs-popup/dist/types"
 import Popup from "reactjs-popup"
 import type { Cart } from "../../types/Cart"
