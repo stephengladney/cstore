@@ -24,7 +24,6 @@ import PlacesAutocomplete from "react-places-autocomplete"
 
 const stripe = loadStripe(env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
 const FulfillmentMethods = { PICKUP: "PICKUP", DELIVERY: "DELIVERY" } as const
-const farelyStripeAccountId = "acct_1MXAaDCtOqAVlzo3"
 
 interface CheckoutProps {
   closeModal: () => void

@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useContext, useEffect, useRef } from "react"
+import { useContext, useEffect, useRef } from "react"
 import { OrderingMenu } from "../OrderingMenu/OrderingMenu"
 import { useState } from "react"
 import { OrderItemModal } from "../OrderingMenu/OrderItemModal/OrderItemModal"
@@ -60,8 +60,8 @@ export function OrderingContainer({
   return (
     <>
       <div className="flex grow flex-col items-center overflow-y-scroll px-0 lg:px-10">
-        <div className="w-full">
-          <div className="mt-8 flex w-full flex-col items-start px-4 font-poppins lg:px-0">
+        <div className="w-full text-slate-800">
+          <div className="mt-8 flex w-full flex-col items-start px-4 font-poppins  lg:px-0">
             <h1 className="text-3xl lg:text-4xl">
               Welcome to
               <br className="lg:hidden" />
