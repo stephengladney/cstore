@@ -82,7 +82,7 @@ export function OrderDetailsComponent({
             </div>
           </div>
         </div>
-        <div className="mt-8 grid grid-cols-[1fr,5fr,2fr] font-poppins">
+        <div className="mt-8 grid grid-cols-[0.35fr,1fr,4fr,2fr] font-poppins">
           {selectedOrder.items.map((item, i) => (
             <LineItem key={i} item={item as CartItem} />
           ))}
