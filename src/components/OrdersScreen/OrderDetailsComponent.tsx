@@ -1,8 +1,6 @@
 import type { Order, Store } from "@prisma/client"
-import {
-  LineItem,
-  PriceLineItem,
-} from "../CallbackHandler/CallbackHandler.styles"
+import { PriceLineItem } from "../CallbackHandler/CallbackHandler.styles"
+import { OrderLineItem } from "./OrderLineItem"
 import { BiArrowBack } from "react-icons/bi"
 import { PricingContainer } from "../OrderCart/CartPricing/CartPricing.styles"
 import { api } from "../../utils/api"
@@ -35,12 +33,12 @@ export function OrderDetailsComponent({
       <div className="flex flex-row items-center">
         <BiArrowBack
           size={52}
-          className="my-4 ml-4 mr-2"
+          className="my-8 ml-8 mr-2"
           onClick={handleBackClick}
         />
         {/* <span className="text-2xl">Back to orders</span> */}
       </div>
-      <h1 className="mt-12 mb-4 text-center font-poppins text-6xl font-bold">
+      <h1 className="my-4 text-center font-poppins text-6xl font-bold">
         #{selectedOrder.id} {selectedOrder.customerName}
       </h1>
       <h3
@@ -57,7 +55,7 @@ export function OrderDetailsComponent({
       {selectedOrder.type === "delivery" && (
         <>
           <h4 className="text-center font-poppins text-lg">
-            Doordash Support: x
+            Doordash Support: (855) 973-1040
           </h4>
           <h4 className="text-center font-poppins text-lg">
             Doordash Support Reference
@@ -82,9 +80,9 @@ export function OrderDetailsComponent({
             </div>
           </div>
         </div>
-        <div className="mt-8 grid grid-cols-[1fr,5fr,2fr] font-poppins">
+        <div className="mt-8 grid grid-cols-[0.35fr,1fr,4fr,2fr] font-poppins">
           {selectedOrder.items.map((item, i) => (
-            <LineItem key={i} item={item as CartItem} />
+            <OrderLineItem key={i} item={item as CartItem} />
           ))}
         </div>
         <div className="mt-12 font-poppins">

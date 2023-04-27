@@ -1,5 +1,6 @@
 import type { CartItem } from "../../types/Cart"
 import type { ReactComponents } from "../../types/React"
+import Image from "next/image"
 
 export function ItemsContainer({ children }: ReactComponents) {
   return (

@@ -10,6 +10,10 @@ const SectionHeader = ({ children }: ReactComponents) => {
   return <h3 className="pb-6 text-2xl font-bold text-slate-700">{children}</h3>
 }
 
+function withMin(n: number, min: number) {
+  return n > min ? n : min
+}
+
 const Admin: NextPage = () => {
   const { data: session } = useSession({ required: true })
   const { data: user, isLoading: isUserLoading } = api.user.getByEmail.useQuery(
@@ -25,10 +29,43 @@ const Admin: NextPage = () => {
     )
 
   const [selectedStore, setSelectedStore] = useState<Store>()
+  const { data: orderTotalsForToday } =
+    api.order.getOrdersTotalsForToday.useQuery(selectedStore?.id ?? 0, {
+      enabled: !!selectedStore,
+    })
+
+  const { data: orderTotalsForThisMonth } =
+    api.order.getOrdersTotalsForThisMonth.useQuery(selectedStore?.id ?? 0, {
+      enabled: !!selectedStore,
+    })
 
   useEffect(() => {
     if (stores && !selectedStore) setSelectedStore(stores[0] as Store)
   }, [stores, selectedStore])
+
+  const grossToday = orderTotalsForToday?.total ?? 0
+  const taxToday = orderTotalsForToday?.tax ?? 0
+  const doordashFeesToday = withMin(
+    (orderTotalsForToday?.total ?? 0) -
+      (orderTotalsForToday?.subtotal ?? 0) -
+      (orderTotalsForToday?.tax ?? 0),
+    0
+  )
+  const netToday = grossToday - taxToday - doordashFeesToday
+
+  const grossThisMonth = orderTotalsForThisMonth?.total ?? 0
+  const taxThisMonth = orderTotalsForThisMonth?.tax ?? 0
+  const doordashFeesThisMonth = withMin(
+    (orderTotalsForThisMonth?.total ?? 0) -
+      (orderTotalsForThisMonth?.subtotal ?? 0) -
+      (orderTotalsForThisMonth?.tax ?? 0),
+    0
+  )
+  const netThisMonth = grossThisMonth - taxThisMonth - doordashFeesThisMonth
+
+  useEffect(() => {
+    console.log(orderTotalsForThisMonth)
+  }, [orderTotalsForThisMonth])
 
   if (stores && stores.length > 0) {
     return (
@@ -50,12 +87,48 @@ const Admin: NextPage = () => {
           <div>
             <SectionHeader>Sales</SectionHeader>
             <div className="pb-3">
-              <h3>Today</h3>
-              <h3 className="text-xl font-bold text-green-600">$0.00</h3>
+              <h3 className="mb-3 text-xl underline">Today</h3>
+              <div className="grid grid-cols-2">
+                <h3 className="text-xl font-bold ">Gross Deposit</h3>
+                <h3 className="text-xl font-bold ">
+                  ${Number(grossToday).toFixed(2) ?? "..."}
+                </h3>
+                <h3 className="text-xl ">Doordash</h3>
+                <h3 className="text-xl ">
+                  ${Number(doordashFeesToday).toFixed(2) ?? "..."}
+                </h3>
+                <h3 className="text-xl ">Tax</h3>
+                <h3 className="text-xl ">
+                  ${Number(taxToday).toFixed(2) ?? "..."}
+                </h3>
+
+                <h3 className="text-xl font-bold text-green-600">Net Sales</h3>
+                <h3 className="text-xl font-bold text-green-600">
+                  ${Number(netToday).toFixed(2) ?? "..."}
+                </h3>
+              </div>
             </div>
             <div className="py-3">
-              <h3>This Month</h3>
-              <h3 className="text-xl font-bold text-green-600">$0.00</h3>
+              <h3 className="mb-3 text-xl underline">This Month</h3>
+              <div className="grid grid-cols-2">
+                <h3 className="text-xl font-bold ">Gross Deposit</h3>
+                <h3 className="text-xl font-bold ">
+                  ${Number(grossThisMonth).toFixed(2) ?? "..."}
+                </h3>
+                <h3 className="text-xl">Doordash</h3>
+                <h3 className="text-xl">
+                  ${Number(doordashFeesThisMonth).toFixed(2) ?? "..."}
+                </h3>
+                <h3 className="text-xl">Tax</h3>
+                <h3 className="text-xl">
+                  ${Number(taxThisMonth).toFixed(2) ?? "..."}
+                </h3>
+
+                <h3 className="text-xl font-bold text-green-600">Net Sales</h3>
+                <h3 className="text-xl font-bold text-green-600">
+                  ${Number(netThisMonth).toFixed(2) ?? "..."}
+                </h3>
+              </div>
             </div>
           </div>
           <div>
