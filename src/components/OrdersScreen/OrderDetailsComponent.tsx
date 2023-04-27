@@ -38,7 +38,7 @@ export function OrderDetailsComponent({
         />
         {/* <span className="text-2xl">Back to orders</span> */}
       </div>
-      <h1 className="mt-12 mb-4 text-center font-poppins text-6xl font-bold">
+      <h1 className="my-4 text-center font-poppins text-6xl font-bold">
         #{selectedOrder.id} {selectedOrder.customerName}
       </h1>
       <h3
