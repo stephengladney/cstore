@@ -1,8 +1,6 @@
 import type { Order, Store } from "@prisma/client"
-import {
-  LineItem,
-  PriceLineItem,
-} from "../CallbackHandler/CallbackHandler.styles"
+import { PriceLineItem } from "../CallbackHandler/CallbackHandler.styles"
+import { OrderLineItem } from "./OrderLineItem"
 import { BiArrowBack } from "react-icons/bi"
 import { PricingContainer } from "../OrderCart/CartPricing/CartPricing.styles"
 import { api } from "../../utils/api"
@@ -84,7 +82,7 @@ export function OrderDetailsComponent({
         </div>
         <div className="mt-8 grid grid-cols-[0.35fr,1fr,4fr,2fr] font-poppins">
           {selectedOrder.items.map((item, i) => (
-            <LineItem key={i} item={item as CartItem} />
+            <OrderLineItem key={i} item={item as CartItem} />
           ))}
         </div>
         <div className="mt-12 font-poppins">
