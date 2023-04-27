@@ -57,7 +57,7 @@ export function OrderDetailsComponent({
       {selectedOrder.type === "delivery" && (
         <>
           <h4 className="text-center font-poppins text-lg">
-            Doordash Support: x
+            Doordash Support: (855) 973-1040
           </h4>
           <h4 className="text-center font-poppins text-lg">
             Doordash Support Reference
