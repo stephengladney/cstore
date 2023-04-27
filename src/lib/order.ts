@@ -11,9 +11,15 @@ export interface OrderForParsing {
   storeId: number
 }
 
-export function getCheckoutPricingFromCartItems(items: CartItem[]): {
+export function getCheckoutPricingFromCartItems(
+  items: CartItem[],
+  tip = 0,
+  deliveryFee = 0
+): {
+  deliveryFee: number
   subtotal: number
   tax: number
+  tip: number
   total: number
 } {
   const subtotal = items.reduce((acc, item) => acc + Number(item.price), 0)
@@ -21,9 +27,9 @@ export function getCheckoutPricingFromCartItems(items: CartItem[]): {
     (acc, item) => acc + 0 * item.price * item.quantity,
     0
   )
-  const total = subtotal + tax
+  const total = subtotal + tax + tip + deliveryFee
 
-  return { subtotal, tax, total }
+  return { deliveryFee, subtotal, tax, tip, total }
 }
 
 export function money(n: number) {

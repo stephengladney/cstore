@@ -9,6 +9,7 @@ import {
   useContext,
   useEffect,
   useState,
+  useRef,
 } from "react"
 import { cartContext } from "../../contexts/cartContext"
 import { getCheckoutPricingFromCartItems } from "../../lib/order"
@@ -21,9 +22,11 @@ import { CheckoutContainer } from "../OrderCart/OrderCart.styles"
 import PhoneInput from "react-phone-input-2"
 import "react-phone-input-2/lib/style.css"
 import PlacesAutocomplete from "react-places-autocomplete"
+import { debounce } from "debounce"
 
 const stripe = loadStripe(env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
 const FulfillmentMethods = { PICKUP: "PICKUP", DELIVERY: "DELIVERY" } as const
+const doordashDeliveryFee = 7
 
 interface CheckoutProps {
   closeModal: () => void
@@ -41,6 +44,27 @@ const doordashDeliveryItem = {
   taxRate: 0,
 }
 
+function withMin(n: number, min: number) {
+  return n > min ? n : min
+}
+
+// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
+const debouncedUpdatePaymentIntent = debounce(
+  (paymentIntentId: string, total: number) => {
+    axios
+      .put("/api/payment/payment_intent", {
+        field: "amount",
+        paymentIntentId: paymentIntentId,
+        value: total,
+      })
+      .finally(() => {
+        // NO OP
+      })
+  },
+  2000,
+  false
+)
+
 export function Checkout({
   closeModal,
   isMobileCheckout,
@@ -48,23 +72,29 @@ export function Checkout({
 }: CheckoutProps) {
   const { cart } = useContext(cartContext)
   const store = useContext(storeContext)
-  const [cartPricing, setCartPricing] = useState(
-    getCheckoutPricingFromCartItems(cart.items)
-  )
+
   const [fulfillmentMethod, setFulfillmentMethod] =
-    useState<keyof typeof FulfillmentMethods>("PICKUP")
+    useState<keyof typeof FulfillmentMethods>("DELIVERY")
+  const isGettingPaymentIntentId = useRef(false)
   const [paymentIntentId, setPaymentIntentId] = useState<string>()
-  // const [deliveryPaymentIntentId, setDeliveryPaymentIntentId] =
-  // useState<string>()
   const [clientSecret, setClientSecret] = useState<string>()
-  // const [deliveryClientSecret, setDeliveryClientSecret] = useState<string>()
   const [isAddressError, setIsAddressError] = useState(false)
 
   const isPickupSelected = fulfillmentMethod === "PICKUP"
   const isDeliverySelected = fulfillmentMethod === "DELIVERY"
-  const [tip, setTip] = useState(Number(cartPricing.total * 0.2).toFixed(2))
+  const [tip, setTip] = useState(
+    Number(
+      withMin(getCheckoutPricingFromCartItems(cart.items).subtotal * 0.2, 4)
+    ).toFixed(2)
+  )
+  const [cartPricing, setCartPricing] = useState(
+    getCheckoutPricingFromCartItems(
+      cart.items,
+      fulfillmentMethod === "DELIVERY" ? Number(tip) : 0,
+      doordashDeliveryFee
+    )
+  )
   const [deliveryInstructions, setDeliveryInstructions] = useState("")
-  const [cartToRender, setCartToRender] = useState(cart)
 
   const [customerInfo, setCustomerInfo] = useState({
     name: "",
@@ -105,7 +135,18 @@ export function Checkout({
   }
 
   useEffect(() => {
-    if (!paymentIntentId) {
+    setCartPricing(
+      getCheckoutPricingFromCartItems(
+        cart.items,
+        isDeliverySelected ? Number(tip) : 0,
+        isDeliverySelected ? doordashDeliveryFee : 0
+      )
+    )
+  }, [isDeliverySelected, cart.items, tip])
+
+  useEffect(() => {
+    if (!paymentIntentId && !isGettingPaymentIntentId.current) {
+      isGettingPaymentIntentId.current = true
       axios
         .post("/api/payment/payment_intent", {
           amount: cartPricing.total,
@@ -114,75 +155,55 @@ export function Checkout({
         .then(({ data: { id, clientSecret } }) => {
           setClientSecret(clientSecret as string)
           setPaymentIntentId(id as string)
+          isGettingPaymentIntentId.current = false
         })
         .catch(() => {
           // NO OP
         })
-    } else {
-      axios
-        .put("/api/payment/payment_intent", {
-          field: "amount",
-          paymentIntentId: paymentIntentId,
-          value: cartPricing.total,
-        })
-        .finally(() => {
-          // NO OP
-        })
-    }
-    // if (isDeliverySelected && !deliveryPaymentIntentId) {
-    //   axios
-    //     .post("/api/payment/payment_intent", {
-    //       amount: 9.75 + Number(tip),
-    //       stripeAccountId: farelyStripeAccountId,
-    //     })
-    //     .then(({ data: { id, clientSecret } }) => {
-    //       setDeliveryClientSecret(clientSecret as string)
-    //       setDeliveryPaymentIntentId(id as string)
-    //     })
-    //     .catch(() => {
-    //       // NO OP
-    //     })
-    // }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [fulfillmentMethod, store.stripeAccountId, cart.items])
-
-  useEffect(() => {
-    if (fulfillmentMethod === "DELIVERY") {
-      setCartToRender({
-        ...cart,
-        items: [...cart.items, doordashDeliveryItem],
-      })
-    } else {
-      setCartToRender({
-        ...cart,
-        items: cart.items.filter((item) => item.name !== "Delivery"),
-      })
+    } else if (paymentIntentId) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+      debouncedUpdatePaymentIntent(paymentIntentId, cartPricing.total)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [fulfillmentMethod])
-
-  useEffect(() => {
-    setCartPricing(getCheckoutPricingFromCartItems(cartToRender.items))
-  }, [cartToRender])
-
-  useEffect(() => {
-    setCartToRender(cart)
-  }, [cart])
+  }, [cartPricing])
 
   return (
     <div>
       {isMobileCheckout && (
         <>
           <CartItemsContainer>
-            {cartToRender.items.map((item, i) => (
+            {cart.items.map((item, i) => (
               <CartItemComponent
                 index={i}
                 key={`cart-item-${i}`}
-                isItemRemovable={item.name !== "Delivery"}
                 item={item}
                 onClick={() => null}
               />
             ))}
+            {isDeliverySelected && (
+              <>
+                <CartItemComponent
+                  index={0}
+                  isItemRemovable={false}
+                  item={doordashDeliveryItem}
+                  onClick={() => null}
+                />
+                <CartItemComponent
+                  index={0}
+                  isItemRemovable={false}
+                  item={{
+                    id: 0,
+                    name: "Driver Tip",
+                    price: Number(tip),
+                    categoryName: "",
+                    description: "",
+                    quantity: 1,
+                    taxRate: 0,
+                  }}
+                  onClick={() => null}
+                />
+              </>
+            )}
           </CartItemsContainer>
           <CheckoutContainer>
             <CartPricing
@@ -204,12 +225,14 @@ export function Checkout({
           </CheckoutContainer>
         </>
       )}
-      <h1
-        className="w-full py-2 text-center font-poppins text-5xl font-bold"
-        style={{ color: store.color }}
-      >
-        ${Number(cartPricing.total).toFixed(2)}
-      </h1>
+      {!isMobileCheckout && (
+        <h1
+          className="w-full py-2 text-center font-poppins text-5xl font-bold"
+          style={{ color: store.color }}
+        >
+          ${Number(cartPricing.total).toFixed(2)}
+        </h1>
+      )}
 
       <div className="py-5">
         <ul className="flex flex-row justify-center gap-8">
