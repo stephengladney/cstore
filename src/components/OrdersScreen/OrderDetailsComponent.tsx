@@ -33,7 +33,7 @@ export function OrderDetailsComponent({
       <div className="flex flex-row items-center">
         <BiArrowBack
           size={52}
-          className="my-4 ml-4 mr-2"
+          className="my-8 ml-8 mr-2"
           onClick={handleBackClick}
         />
         {/* <span className="text-2xl">Back to orders</span> */}
