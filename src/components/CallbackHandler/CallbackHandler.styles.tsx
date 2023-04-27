@@ -13,18 +13,10 @@ export function ItemsContainer({ children }: ReactComponents) {
 export function LineItem({ item }: { item: CartItem }) {
   return (
     <>
-      <div className="flex items-center">{item.quantity} x</div>
-      <Image
-        className="my-4 "
-        src={item.imageUrl as string}
-        height={150}
-        width={150}
-        alt={item.name}
-      />
-      <div className="flex items-center">{item.name}</div>
-      <div className="flex items-center justify-end">
-        $ {Number(item.price).toFixed(2)}
-      </div>
+      <div>{item.quantity} x</div>
+
+      <div>{item.name}</div>
+      <div className="text-right">$ {Number(item.price).toFixed(2)}</div>
     </>
   )
 }
