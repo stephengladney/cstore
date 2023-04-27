@@ -55,7 +55,7 @@ export function MenuItemName({
 }: ReactComponents & IsDisabled) {
   return (
     <div
-      className={`font-poppins font-semibold ${
+      className={`pr-1 font-poppins font-semibold ${
         isDisabled ? "text-disabled text-slate-400" : " text-gray-800"
       } text-base `}
     >

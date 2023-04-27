@@ -1,4 +1,4 @@
-import { type SetStateAction, useState } from "react"
+import { type SetStateAction } from "react"
 import {
   CategoryContainer,
   CategoryHeader,
@@ -22,23 +22,20 @@ export function MenuCategoryComponent({
   name,
   setSelectedItem,
 }: CategoryProps) {
-  const [isExpanded, setIsExpanded] = useState(true)
   return (
     <CategoryContainer>
-      <CategoryHeader onClick={() => setIsExpanded(!isExpanded)}>
+      <CategoryHeader>
         <CategoryName>{name}</CategoryName>
       </CategoryHeader>
-      {isExpanded && (
-        <ItemsContainer>
-          {items.map((item, i) => (
-            <MenuItemComponent
-              item={item}
-              key={`item-${i}`}
-              setSelectedItem={setSelectedItem}
-            />
-          ))}
-        </ItemsContainer>
-      )}
+      <ItemsContainer>
+        {items.map((item, i) => (
+          <MenuItemComponent
+            item={item}
+            key={`item-${i}`}
+            setSelectedItem={setSelectedItem}
+          />
+        ))}
+      </ItemsContainer>
     </CategoryContainer>
   )
 }

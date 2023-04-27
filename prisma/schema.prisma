@@ -47,6 +47,7 @@ model MenuItem {
     imageUrl    String?
     isAvailable Boolean      @default(true)
     price       Decimal      @db.Decimal(10, 2)
+    taxRate     Int          @default(0)
     createdAt   DateTime     @default(now())
     updatedAt   DateTime     @updatedAt
 }

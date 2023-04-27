@@ -9,4 +9,5 @@ export type MenuItemType = Omit<
   menuId?: number
   menuName?: string
   price: number
+  taxRate: number
 }

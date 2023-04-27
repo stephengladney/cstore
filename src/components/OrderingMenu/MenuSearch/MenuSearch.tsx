@@ -30,19 +30,21 @@ export function MenuSearch({
     })
   }
   return (
-    <div className="mt-6 mb-4 flex  items-center  px-4 md:mt-10 md:px-0">
-      <input
-        className="border-gr w-full max-w-[500px] rounded-lg border-[1px] border-solid border-gray-300 py-2 px-4 font-poppins"
-        onChange={handleChange}
-        placeholder="Search..."
-        value={inputValue}
-      />
-      <MdClose
-        size={20}
-        fill="#A1A1AA"
-        className="z-10 ml-[-35px] cursor-pointer"
-        onClick={handleClear}
-      />
+    <div className="mt-6 mb-4 px-4 md:mt-10 md:px-0">
+      <div className="border-gr flex w-full max-w-[500px] items-center rounded-lg border-[1px] border-solid border-gray-300 py-2 px-4">
+        <input
+          className="grow border-0 font-poppins focus:outline-none"
+          onChange={handleChange}
+          placeholder="Search..."
+          value={inputValue}
+        />
+        <MdClose
+          size={20}
+          fill="#A1A1AA"
+          className="cursor-pointer"
+          onClick={handleClear}
+        />
+      </div>
     </div>
   )
 }

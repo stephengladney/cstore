@@ -59,6 +59,10 @@ const StoreHome: NextPage<{
     }
   }, [store])
 
+  useEffect(() => {
+    if (!cart.items.length && isMobileCheckout) setIsMobileCheckout(false)
+  }, [cart, isMobileCheckout])
+
   if (store) {
     return (
       <>
@@ -84,10 +88,11 @@ const StoreHome: NextPage<{
                     <div className="-mt-[2px]">&times;</div>
                   </button>
                   <h1 className="block pb-4 text-center font-poppins text-3xl font-bold text-slate-700">
-                    Checkout
+                    Your Order
                   </h1>
                   <Checkout
                     closeModal={closeCartModal}
+                    isMobileCheckout={true}
                     setIsMobileCheckout={setIsMobileCheckout}
                   />
                 </div>
@@ -105,7 +110,9 @@ const StoreHome: NextPage<{
                     {callback ? (
                       <CallbackHandler callback={callback} />
                     ) : (
-                      <OrderingContainer />
+                      <OrderingContainer
+                        openCartModal={() => setIsMobileCheckout(true)}
+                      />
                     )}
                   </Body>
                 </div>
