@@ -63,10 +63,6 @@ const Admin: NextPage = () => {
   )
   const netThisMonth = grossThisMonth - taxThisMonth - doordashFeesThisMonth
 
-  useEffect(() => {
-    console.log(orderTotalsForThisMonth)
-  }, [orderTotalsForThisMonth])
-
   if (stores && stores.length > 0) {
     return (
       <div className="p-8 font-poppins">
