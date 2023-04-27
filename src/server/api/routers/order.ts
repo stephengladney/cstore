@@ -56,6 +56,52 @@ export const orderRouter = createTRPCRouter({
       })
       return orders
     }),
+  getOrdersTotalsForToday: publicProcedure
+    .input(z.number())
+    .query(async ({ input, ctx }) => {
+      const orders = await ctx.prisma.order.findMany({
+        orderBy: { createdAt: "desc" },
+        where: {
+          storeId: input,
+          createdAt: { gte: new Date(new Date().toDateString()) },
+        },
+      })
+      const totals = orders.reduce(
+        (acc, order) => {
+          return {
+            total: acc.total + Number(order.total),
+            subtotal: acc.subtotal + Number(order.subtotal),
+            tax: acc.tax + Number(order.tax),
+          }
+        },
+        { subtotal: 0, tax: 0, total: 0 }
+      )
+      return totals
+    }),
+  getOrdersTotalsForThisMonth: publicProcedure
+    .input(z.number())
+    .query(async ({ input, ctx }) => {
+      const _date = new Date()
+      _date.setDate(1)
+      const orders = await ctx.prisma.order.findMany({
+        orderBy: { createdAt: "desc" },
+        where: {
+          storeId: input,
+          createdAt: { gte: new Date(_date.toDateString()) },
+        },
+      })
+      const totals = orders.reduce(
+        (acc, order) => {
+          return {
+            total: acc.total + Number(order.total),
+            subtotal: acc.subtotal + Number(order.subtotal),
+            tax: acc.tax + Number(order.tax),
+          }
+        },
+        { subtotal: 0, tax: 0, total: 0 }
+      )
+      return totals
+    }),
   confirm: publicProcedure
     .input(z.number())
     .mutation(async ({ input, ctx }) => {

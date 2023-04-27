@@ -14,7 +14,6 @@ export function LineItem({ item }: { item: CartItem }) {
   return (
     <>
       <div>{item.quantity} x</div>
-
       <div>{item.name}</div>
       <div className="text-right">$ {Number(item.price).toFixed(2)}</div>
     </>
