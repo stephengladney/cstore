@@ -59,15 +59,16 @@ export const orderRouter = createTRPCRouter({
   getOrdersTotalsForToday: publicProcedure
     .input(z.number())
     .query(async ({ input, ctx }) => {
-      const _date = new Date()
-      _date.setHours(0)
-      _date.setMinutes(0)
-      _date.setSeconds(0)
+      let date: Date | number = new Date()
+      if (new Date().getHours() <= 4) {
+        date = Date.now() - 1000 * 60 * 60 * 5
+        date = new Date(date)
+      }
       const orders = await ctx.prisma.order.findMany({
         orderBy: { createdAt: "desc" },
         where: {
           storeId: input,
-          createdAt: { gte: new Date(_date.toDateString()) },
+          createdAt: { gte: new Date(date.toDateString()) },
         },
       })
       const totals = orders.reduce(
@@ -86,6 +87,9 @@ export const orderRouter = createTRPCRouter({
     .input(z.number())
     .query(async ({ input, ctx }) => {
       const _date = new Date()
+      _date.setHours(0)
+      _date.setMinutes(0)
+      _date.setSeconds(1)
       _date.setDate(1)
       const orders = await ctx.prisma.order.findMany({
         orderBy: { createdAt: "desc" },
