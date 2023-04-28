@@ -74,7 +74,12 @@ const Admin: NextPage = () => {
         </div>
         <div>
           {stores.map((store, i) => (
-            <span className="mr-4" key={i}>
+            <span
+              className={`mr-4 ${
+                selectedStore?.id === store.id ? "underline" : ""
+              }`}
+              key={i}
+            >
               {store.name}
             </span>
           ))}
