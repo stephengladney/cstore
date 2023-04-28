@@ -51,7 +51,8 @@ const Admin: NextPage = () => {
       (orderTotalsForToday?.tax ?? 0),
     0
   )
-  const netToday = grossToday - taxToday - doordashFeesToday
+  const salesToday = grossToday - doordashFeesToday
+  const netToday = salesToday - taxToday
 
   const grossThisMonth = orderTotalsForThisMonth?.total ?? 0
   const taxThisMonth = orderTotalsForThisMonth?.tax ?? 0
@@ -61,7 +62,8 @@ const Admin: NextPage = () => {
       (orderTotalsForThisMonth?.tax ?? 0),
     0
   )
-  const netThisMonth = grossThisMonth - taxThisMonth - doordashFeesThisMonth
+  const salesThisMonth = grossThisMonth - doordashFeesThisMonth
+  const netThisMonth = salesThisMonth - taxThisMonth
 
   if (stores && stores.length > 0) {
     return (
@@ -70,7 +72,7 @@ const Admin: NextPage = () => {
           <h1 className="font-poppins text-3xl font-bold text-slate-700">
             Admin Dashboard
           </h1>
-          <div className="flex flex-row items-center justify-end">( )</div>
+          <div className="flex flex-row items-center justify-end"></div>
         </div>
         <div>
           {stores.map((store, i) => (
@@ -84,49 +86,56 @@ const Admin: NextPage = () => {
             </span>
           ))}
         </div>
-        <div className="mt-8 grid w-full grid-cols-3 gap-8">
+        <div className="mt-8 grid max-w-[1200px] grid-rows-[auto,auto,auto] gap-8 lg:grid-cols-3 lg:gap-28">
           <div>
             <SectionHeader>Sales</SectionHeader>
             <div className="pb-3">
               <h3 className="mb-3 text-xl underline">Today</h3>
-              <div className="grid grid-cols-2">
+              <div className="grid grid-cols-[3fr,1fr]">
                 <h3 className="text-xl font-bold ">Gross Deposit</h3>
-                <h3 className="text-xl font-bold ">
+                <h3 className="text-right text-xl font-bold">
                   ${Number(grossToday).toFixed(2) ?? "..."}
                 </h3>
-                <h3 className="text-xl ">Doordash</h3>
-                <h3 className="text-xl ">
-                  ${Number(doordashFeesToday).toFixed(2) ?? "..."}
+                <h3 className="text-xl">Doordash</h3>
+                <h3 className="text-right text-xl">
+                  (${Number(doordashFeesToday).toFixed(2) ?? "..."})
                 </h3>
-                <h3 className="text-xl ">Tax</h3>
-                <h3 className="text-xl ">
+                <h3 className="text-xl">Sales</h3>
+                <h3 className="text-right text-xl">
+                  ${Number(salesToday).toFixed(2) ?? "..."}
+                </h3>
+                <h3 className="text-xl">Tax</h3>
+                <h3 className="text-right text-xl">
                   ${Number(taxToday).toFixed(2) ?? "..."}
                 </h3>
-
                 <h3 className="text-xl font-bold text-green-600">Net Sales</h3>
-                <h3 className="text-xl font-bold text-green-600">
+                <h3 className="text-right text-xl font-bold text-green-600">
                   ${Number(netToday).toFixed(2) ?? "..."}
                 </h3>
               </div>
             </div>
             <div className="py-3">
               <h3 className="mb-3 text-xl underline">This Month</h3>
-              <div className="grid grid-cols-2">
-                <h3 className="text-xl font-bold ">Gross Deposit</h3>
-                <h3 className="text-xl font-bold ">
+              <div className="grid grid-cols-[3fr,1fr]">
+                <h3 className="text-xl font-bold">Gross Deposit</h3>
+                <h3 className="text-right text-xl font-bold">
                   ${Number(grossThisMonth).toFixed(2) ?? "..."}
                 </h3>
                 <h3 className="text-xl">Doordash</h3>
-                <h3 className="text-xl">
-                  ${Number(doordashFeesThisMonth).toFixed(2) ?? "..."}
+                <h3 className="text-right text-xl">
+                  (${Number(doordashFeesThisMonth).toFixed(2) ?? "..."})
+                </h3>
+                <h3 className="text-xl">Sales</h3>
+                <h3 className="text-right text-xl">
+                  ${Number(salesThisMonth).toFixed(2) ?? "..."}
                 </h3>
                 <h3 className="text-xl">Tax</h3>
-                <h3 className="text-xl">
+                <h3 className="text-right text-xl">
                   ${Number(taxThisMonth).toFixed(2) ?? "..."}
                 </h3>
 
                 <h3 className="text-xl font-bold text-green-600">Net Sales</h3>
-                <h3 className="text-xl font-bold text-green-600">
+                <h3 className="text-right text-xl font-bold text-green-600">
                   ${Number(netThisMonth).toFixed(2) ?? "..."}
                 </h3>
               </div>
