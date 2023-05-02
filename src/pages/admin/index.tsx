@@ -5,13 +5,10 @@ import Link from "next/link"
 import { useEffect, useState } from "react"
 import { api } from "../../utils/api"
 import type { Store } from "@prisma/client"
+import { clampNumber } from "gladknee"
 
 const SectionHeader = ({ children }: ReactComponents) => {
   return <h3 className="pb-6 text-2xl font-bold text-slate-700">{children}</h3>
-}
-
-function withMin(n: number, min: number) {
-  return n > min ? n : min
 }
 
 const Admin: NextPage = () => {
@@ -45,7 +42,7 @@ const Admin: NextPage = () => {
 
   const grossToday = orderTotalsForToday?.total ?? 0
   const taxToday = orderTotalsForToday?.tax ?? 0
-  const doordashFeesToday = withMin(
+  const doordashFeesToday = clampNumber(
     (orderTotalsForToday?.total ?? 0) -
       (orderTotalsForToday?.subtotal ?? 0) -
       (orderTotalsForToday?.tax ?? 0),
@@ -56,7 +53,7 @@ const Admin: NextPage = () => {
 
   const grossThisMonth = orderTotalsForThisMonth?.total ?? 0
   const taxThisMonth = orderTotalsForThisMonth?.tax ?? 0
-  const doordashFeesThisMonth = withMin(
+  const doordashFeesThisMonth = clampNumber(
     (orderTotalsForThisMonth?.total ?? 0) -
       (orderTotalsForThisMonth?.subtotal ?? 0) -
       (orderTotalsForThisMonth?.tax ?? 0),

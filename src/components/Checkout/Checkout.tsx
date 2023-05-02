@@ -23,6 +23,7 @@ import PhoneInput from "react-phone-input-2"
 import "react-phone-input-2/lib/style.css"
 import PlacesAutocomplete from "react-places-autocomplete"
 import { debounce } from "debounce"
+import { clampNumber } from "gladknee"
 
 const stripe = loadStripe(env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
 const FulfillmentMethods = { PICKUP: "PICKUP", DELIVERY: "DELIVERY" } as const
@@ -42,10 +43,6 @@ const doordashDeliveryItem = {
   description: "Delivery by Doordash",
   categoryName: "",
   taxRate: 0,
-}
-
-function withMin(n: number, min: number) {
-  return n > min ? n : min
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
@@ -84,7 +81,7 @@ export function Checkout({
   const isDeliverySelected = fulfillmentMethod === "DELIVERY"
   const [tip, setTip] = useState(
     Number(
-      withMin(getCheckoutPricingFromCartItems(cart.items).subtotal * 0.2, 4)
+      clampNumber(getCheckoutPricingFromCartItems(cart.items).subtotal * 0.2, 3)
     ).toFixed(2)
   )
   const [cartPricing, setCartPricing] = useState(
