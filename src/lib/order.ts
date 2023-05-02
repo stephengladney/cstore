@@ -24,7 +24,7 @@ export function getCheckoutPricingFromCartItems(
 } {
   const subtotal = items.reduce((acc, item) => acc + Number(item.price), 0)
   const tax = items.reduce(
-    (acc, item) => acc + 0 * item.price * item.quantity,
+    (acc, item) => acc + item.price * (item.taxRate / 100),
     0
   )
   const total = subtotal + tax + tip + deliveryFee
