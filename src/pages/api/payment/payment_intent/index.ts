@@ -11,6 +11,8 @@ export default async function handler(
     const { amount, stripeAccountId } = req.body as {
       amount: number
       stripeAccountId: string
+      deliveryFee: number
+      tip: number
     }
     try {
       const totalInCents = Math.floor(Number(Number(amount).toFixed(2)) * 100)
@@ -19,6 +21,10 @@ export default async function handler(
         automatic_payment_methods: { enabled: true },
         currency: "usd",
         on_behalf_of: stripeAccountId,
+        transfer_data: {
+          amount: 0,
+          destination: stripeAccountId,
+        },
       })
       res.json({
         id: paymentIntent.id,
