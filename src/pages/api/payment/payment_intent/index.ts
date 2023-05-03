@@ -2,6 +2,7 @@ import { env } from "../../../../env/server.mjs"
 import Stripe from "stripe"
 import type { NextApiRequest, NextApiResponse } from "next"
 const stripe = new Stripe(env.STRIPE_PRIVATE_KEY, { apiVersion: "2022-11-15" })
+import { combineObjects } from "gladknee"
 
 const convertToCents = (amount: number) =>
   Math.floor(Number(Number(amount).toFixed(2)) * 100)
@@ -22,7 +23,6 @@ export default async function handler(
       const deliveryFeeInCents = convertToCents(deliveryFee)
       const tipInCents = convertToCents(tip)
       const amountToMerchant = totalInCents - deliveryFeeInCents - tipInCents
-      console.log(`AMOUNT TO MERCHANT: ${amountToMerchant}`)
 
       const paymentIntent = await stripe.paymentIntents.create({
         amount: totalInCents,
@@ -39,20 +39,28 @@ export default async function handler(
         clientSecret: paymentIntent.client_secret,
       })
     } catch (e) {
+      console.log(e)
       const { message } = e as { message: string }
       res.status(500).end(message)
     }
   } else if (req.method === "PUT") {
-    const { paymentIntentId, field, value } = req.body as {
+    const { paymentIntentId, amount, deliveryFee, tip } = req.body as {
       paymentIntentId: string
-      field: string
-      value: string | number
+      amount: number
+      deliveryFee: number
+      tip: number
     }
+
+    const totalInCents = convertToCents(amount)
+    const deliveryFeeInCents = convertToCents(deliveryFee)
+    const tipInCents = convertToCents(tip)
+    const amountToMerchant = totalInCents - deliveryFeeInCents - tipInCents
+
     await stripe.paymentIntents.update(paymentIntentId, {
-      [field]:
-        field === "amount"
-          ? Math.floor(Number(Number(value).toFixed(2)) * 100)
-          : value,
+      amount: totalInCents,
+      transfer_data: {
+        amount: amountToMerchant,
+      },
     })
     res.status(200).end()
   } else {
