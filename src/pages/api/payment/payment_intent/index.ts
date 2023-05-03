@@ -3,26 +3,34 @@ import Stripe from "stripe"
 import type { NextApiRequest, NextApiResponse } from "next"
 const stripe = new Stripe(env.STRIPE_PRIVATE_KEY, { apiVersion: "2022-11-15" })
 
+const convertToCents = (amount: number) =>
+  Math.floor(Number(Number(amount).toFixed(2)) * 100)
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   if (req.method === "POST") {
-    const { amount, stripeAccountId } = req.body as {
+    const { amount, deliveryFee, stripeAccountId, tip } = req.body as {
       amount: number
       stripeAccountId: string
       deliveryFee: number
       tip: number
     }
     try {
-      const totalInCents = Math.floor(Number(Number(amount).toFixed(2)) * 100)
+      const totalInCents = convertToCents(amount)
+      const deliveryFeeInCents = convertToCents(deliveryFee)
+      const tipInCents = convertToCents(tip)
+      const amountToMerchant = totalInCents - deliveryFeeInCents - tipInCents
+      console.log(`AMOUNT TO MERCHANT: ${amountToMerchant}`)
+
       const paymentIntent = await stripe.paymentIntents.create({
         amount: totalInCents,
         automatic_payment_methods: { enabled: true },
         currency: "usd",
         on_behalf_of: stripeAccountId,
         transfer_data: {
-          amount: 0,
+          amount: amountToMerchant,
           destination: stripeAccountId,
         },
       })

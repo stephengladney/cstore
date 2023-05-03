@@ -147,6 +147,8 @@ export function Checkout({
         .post("/api/payment/payment_intent", {
           amount: cartPricing.total,
           stripeAccountId: store.stripeAccountId,
+          deliveryFee: isDeliverySelected ? doordashDeliveryFee : 0,
+          tip: Number(tip),
         })
         .then(({ data: { id, clientSecret } }) => {
           setClientSecret(clientSecret as string)
