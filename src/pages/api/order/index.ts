@@ -25,7 +25,6 @@ export default async function handler(
         createdAt: { gte: new Date(new Date().toDateString()) },
       },
     })
-    // res.setHeader("Access-Control-Allow-Origin", "*") //only needed
     return res.send(orders)
   }
   if (req.method === "POST") {
