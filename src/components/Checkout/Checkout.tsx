@@ -46,12 +46,18 @@ const doordashDeliveryItem = {
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
 const debouncedUpdatePaymentIntent = debounce(
-  (paymentIntentId: string, total: number) => {
+  (
+    paymentIntentId: string,
+    amount: number,
+    deliveryFee: number,
+    tip: number
+  ) => {
     axios
       .put("/api/payment/payment_intent", {
-        field: "amount",
         paymentIntentId: paymentIntentId,
-        value: total,
+        amount,
+        deliveryFee,
+        tip,
       })
       .finally(() => {
         // NO OP
@@ -147,6 +153,8 @@ export function Checkout({
         .post("/api/payment/payment_intent", {
           amount: cartPricing.total,
           stripeAccountId: store.stripeAccountId,
+          deliveryFee: isDeliverySelected ? doordashDeliveryFee : 0,
+          tip: Number(tip),
         })
         .then(({ data: { id, clientSecret } }) => {
           setClientSecret(clientSecret as string)
@@ -158,7 +166,12 @@ export function Checkout({
         })
     } else if (paymentIntentId) {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-      debouncedUpdatePaymentIntent(paymentIntentId, cartPricing.total)
+      debouncedUpdatePaymentIntent(
+        paymentIntentId,
+        cartPricing.total,
+        cartPricing.deliveryFee,
+        cartPricing.tip
+      )
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cartPricing])

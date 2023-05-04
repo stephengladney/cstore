@@ -17,6 +17,16 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  if (req.method === "GET") {
+    const orders = await prisma.order.findMany({
+      orderBy: { createdAt: "desc" },
+      where: {
+        storeId: 1,
+        createdAt: { gte: new Date(new Date().toDateString()) },
+      },
+    })
+    return res.send(orders)
+  }
   if (req.method === "POST") {
     const {
       customerAddress,

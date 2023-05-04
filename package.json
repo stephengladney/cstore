@@ -23,7 +23,7 @@
     "@trpc/server": "^10.9.0",
     "axios": "^1.3.4",
     "cookies-next": "^2.1.1",
-    "gladknee": "^1.0.9",
+    "gladknee": "^1.1.6",
     "install": "^0.13.0",
     "next": "13.1.6",
     "next-auth": "^4.19.0",
