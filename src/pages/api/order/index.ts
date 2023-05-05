@@ -18,13 +18,19 @@ export default async function handler(
   res: NextApiResponse
 ) {
   if (req.method === "GET") {
+    let date: Date | number = new Date()
+    if (new Date().getHours() <= 4) {
+      date = Date.now() - 1000 * 60 * 60 * 5
+      date = new Date(date)
+    }
     const orders = await prisma.order.findMany({
       orderBy: { createdAt: "desc" },
       where: {
         storeId: 1,
-        createdAt: { gte: new Date(new Date().toDateString()) },
+        createdAt: { gte: date },
       },
     })
+
     return res.send(orders)
   }
   if (req.method === "POST") {
