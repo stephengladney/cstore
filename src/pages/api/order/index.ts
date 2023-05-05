@@ -27,7 +27,7 @@ export default async function handler(
       orderBy: { createdAt: "desc" },
       where: {
         storeId: 1,
-        createdAt: { gte: date },
+        createdAt: { gte: new Date(date.toDateString()) },
       },
     })
 

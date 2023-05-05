@@ -56,7 +56,7 @@ export const orderRouter = createTRPCRouter({
         orderBy: { createdAt: "desc" },
         where: {
           storeId: input,
-          createdAt: { gte: date },
+          createdAt: { gte: new Date(date.toDateString()) },
         },
       })
       return orders
