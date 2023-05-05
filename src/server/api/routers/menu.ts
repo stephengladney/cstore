@@ -89,6 +89,23 @@ export const categoryRouter = createTRPCRouter({
     .query(({ input, ctx }) => {
       return ctx.prisma.menuCategory.findMany({ where: { menuId: input.id } })
     }),
+  getCategoryCountByStoreId: publicProcedure
+    .input(z.number())
+    .query(async ({ input, ctx }) => {
+      try {
+        const categoryCount = (await ctx.prisma.$queryRaw`
+        SELECT COUNT("Menu"."storeId") as "categories" from "MenuCategory"
+INNER JOIN "Menu"
+ON "MenuCategory"."menuId" = "Menu".id
+INNER JOIN "Store"
+ON "Menu"."storeId" = "Store".id
+WHERE "Menu"."storeId" = ${input};
+        `) as [{ categories: number }]
+        return BigInt(categoryCount[0].categories).valueOf()
+      } catch (e) {
+        return 0
+      }
+    }),
 })
 
 export const itemRouter = createTRPCRouter({
@@ -117,5 +134,24 @@ export const itemRouter = createTRPCRouter({
     .input(z.number())
     .mutation(async ({ input, ctx }) => {
       await ctx.prisma.menuItem.delete({ where: { id: input } })
+    }),
+  getItemCountByStoreId: publicProcedure
+    .input(z.number())
+    .query(async ({ input, ctx }) => {
+      try {
+        const itemCount = (await ctx.prisma.$queryRaw`
+        SELECT COUNT("Menu"."storeId") as "items" from "MenuItem"
+INNER JOIN "MenuCategory"
+ON "MenuItem"."categoryId" = "MenuCategory".id
+INNER JOIN "Menu"
+ON "MenuCategory"."menuId" = "Menu".id
+INNER JOIN "Store"
+ON "Menu"."storeId" = "Store".id
+WHERE "Menu"."storeId" = ${input};
+        `) as [{ items: number }]
+        return BigInt(itemCount[0].items).valueOf()
+      } catch (e) {
+        return 0
+      }
     }),
 })
