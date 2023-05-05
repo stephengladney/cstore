@@ -28,12 +28,15 @@ const Orders: NextPage<{ store: Store }> = ({ store }: { store: Store }) => {
   const isUserHasAccess = !!user && user.stores.includes(store.id)
 
   // Order poller
-  api.order.getOrdersTodayByStoreId.useQuery(store.id, {
-    enabled: !!session && isUserHasAccess,
-    refetchInterval: 30000,
-    refetchIntervalInBackground: true,
-    onSettled: (data) => setOrders(data ?? []),
-  })
+  api.order.getOrdersByStoreIdAndDate.useQuery(
+    { storeId: store.id, date: new Date().toDateString() },
+    {
+      enabled: !!session && isUserHasAccess,
+      refetchInterval: 30000,
+      refetchIntervalInBackground: true,
+      onSettled: (data) => setOrders(data ?? []),
+    }
+  )
 
   const { mutate: confirmOrder } = api.order.confirm.useMutation()
   const { mutate: markReady } = api.order.markReady.useMutation()
