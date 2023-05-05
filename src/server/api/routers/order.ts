@@ -47,11 +47,16 @@ export const orderRouter = createTRPCRouter({
   getOrdersTodayByStoreId: publicProcedure
     .input(z.number())
     .query(async ({ input, ctx }) => {
+      let date: Date | number = new Date()
+      if (new Date().getHours() <= 4) {
+        date = Date.now() - 1000 * 60 * 60 * 5
+        date = new Date(date)
+      }
       const orders = await ctx.prisma.order.findMany({
         orderBy: { createdAt: "desc" },
         where: {
           storeId: input,
-          createdAt: { gte: new Date(new Date().toDateString()) },
+          createdAt: { gte: date },
         },
       })
       return orders
