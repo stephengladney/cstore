@@ -18,7 +18,7 @@ export function ModalOrderCart({
   modalRef: MutableRefObject<PopupActions>
 }) {
   return (
-    <Popup ref={modalRef} onClose={closeModal}>
+    <Popup ref={modalRef} onClose={closeModal} closeOnDocumentClick={false}>
       <ModalWrapper>
         <ModalContent>
           <CloseButton closeModal={closeModal} />

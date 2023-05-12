@@ -99,6 +99,7 @@ export function getMenuFromApiMenuItems(items: MenuItemType[]): MenuType {
     isAvailable: item.isAvailable,
     price: item.price,
     taxRate: item.taxRate,
+    ageRequired: item.ageRequired,
   })
 
   items.forEach((item) => {

@@ -37,7 +37,8 @@ export function money(n: number) {
 }
 
 export function getAgeRequirementFromCartItems(items: CartItem[]) {
-  const ages = items.map((item) => (item.ageRequired ?? 0) as number)
+  items.forEach((item) => console.log(item))
+  const ages = items.map((item) => item.ageRequired ?? 0)
   return Math.max(...ages)
 }
 
