@@ -137,6 +137,30 @@ export function Checkout({
   }
 
   useEffect(() => {
+    // const s = document.createElement("script")
+    // s.type = "text/javascript"
+    // s.innerHTML = `
+    // (function(w,d) {
+    //   if (getCookie("ac_custom_verified")) return;
+    //   var config = {
+    //     mode: "manual",
+    //     key: "API KEY",
+    //     onready: function() {
+    //       AgeCheckerAPI.show();
+    //     },
+    //     onclosed: function() {
+    //       setCookie("ac_custom_verified", true);
+    //     }
+    //   };
+    //   w.AgeCheckerConfig=config;if(config.path&&(w.location.pathname+w.location.search).indexOf(config.path)) return;
+    //   var h=d.getElementsByTagName("head")[0];var a=d.createElement("script");a.src="https://cdn.agechecker.net/static/popup/v1/popup.js";a.crossOrigin="anonymous";
+    //   a.onerror=function(a){w.location.href="https://agechecker.net/loaderror";};h.insertBefore(a,h.firstChild);
+    // })(window, document);
+    // `
+    // document.body.appendChild(s)
+  }, [])
+
+  useEffect(() => {
     setCartPricing(
       getCheckoutPricingFromCartItems(
         cart.items,
@@ -452,6 +476,7 @@ export function Checkout({
           />
         </Elements>
       )}
+      <button id="order">DERP</button>
     </div>
   )
 }
