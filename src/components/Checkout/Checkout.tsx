@@ -476,7 +476,6 @@ export function Checkout({
           />
         </Elements>
       )}
-      <button id="order">DERP</button>
     </div>
   )
 }
