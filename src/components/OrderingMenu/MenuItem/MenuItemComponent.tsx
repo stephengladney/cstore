@@ -32,7 +32,10 @@ export function MenuItemComponent({ item, setSelectedItem }: MenuItemProps) {
       }}
     >
       <MenuItemPrimaryContainer>
-        <MenuItemPhoto src={item.imageUrl ?? ""} />
+        <MenuItemPhoto
+          isAvailable={item.isAvailable}
+          src={item.imageUrl ?? ""}
+        />
       </MenuItemPrimaryContainer>
       <MenuItemSecondaryContainer>
         <MenuItemHeader>

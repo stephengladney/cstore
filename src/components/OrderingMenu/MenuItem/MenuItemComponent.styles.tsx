@@ -14,8 +14,9 @@ export function MenuItemContainer({
     <div
       className={`grid ${
         isDisabled ? "cursor-not-allowed" : "cursor-pointer"
-      } grid w-screen grid-cols-[1fr,3fr] rounded-lg border-b bg-white p-3 hover:bg-slate-100 hover:drop-shadow-sm md:w-full  lg:border lg:border-solid lg:border-gray-300 lg:odd:col-span-1 lg:even:col-span-1`}
+      } grid w-48 rounded-lg border-b bg-white p-2 hover:bg-slate-100 hover:drop-shadow-sm md:w-full  lg:grid-cols-[1fr,3fr] lg:border lg:border-solid lg:border-gray-300 lg:p-3 lg:odd:col-span-1 lg:even:col-span-1`}
       onClick={onClick}
+      // style={{ border: "1px solid green" }}
     >
       {children}
     </div>
@@ -30,7 +31,7 @@ export function MenuItemDescription({
     <div
       className={`${
         isDisabled ? "text-disabled" : ""
-      } py-2 font-poppins text-[14px] text-gray-600`}
+      } hidden py-2 font-poppins text-[14px] text-gray-600 lg:block`}
     >
       {children}
     </div>
@@ -38,15 +39,25 @@ export function MenuItemDescription({
 }
 
 export function MenuItemHeader({ children }: ReactComponents) {
-  return <div className="flex flex-row lg:items-start">{children}</div>
+  return (
+    <div className="flex flex-col lg:flex-row lg:items-start">{children}</div>
+  )
 }
 
 export function MenuItemPrimaryContainer({ children }: ReactComponents) {
-  return <div className="flex flex-col justify-center">{children}</div>
+  return (
+    <div className="flex flex-col justify-start lg:justify-center">
+      {children}
+    </div>
+  )
 }
 
 export function MenuItemSecondaryContainer({ children }: ReactComponents) {
-  return <div className="flex flex-col justify-center px-4">{children}</div>
+  return (
+    <div className="flex flex-col justify-start lg:justify-center lg:px-4">
+      {children}
+    </div>
+  )
 }
 
 export function MenuItemName({
@@ -57,7 +68,7 @@ export function MenuItemName({
     <div
       className={`pr-1 font-poppins font-semibold ${
         isDisabled ? "text-disabled text-slate-400" : " text-gray-800"
-      } text-base `}
+      } text-xs lg:text-base`}
     >
       {children}
     </div>
@@ -73,33 +84,45 @@ export function MenuItemNameContainer({ children }: ReactComponents) {
   //  vertical-align: bottom?
 }
 
-export function MenuItemPhoto({ src }: { src: string }) {
+export function MenuItemPhoto({
+  isAvailable,
+  src,
+}: {
+  isAvailable: boolean
+  src: string
+}) {
   return (
     <Image
       src={src}
       alt="Product photo"
       height={80}
       width={80}
-      className="rounded-md border-[1px] border-solid border-gray-300"
+      className={`rounded-md border-[1px] border-solid border-gray-300 ${
+        !isAvailable ? "grayscale" : ""
+      }`}
     />
   )
 }
 
 export function MenuItemPrice({ children }: ReactComponents) {
   return (
-    <span className="text-md mt-1 font-poppins text-sm font-semibold leading-4 text-gray-600">
+    <span className="lg:text-md mt-1 font-poppins text-xs font-semibold leading-4 text-gray-600">
       {children}
     </span>
   )
 }
 
 export function MenuItemPriceContainer({ children }: ReactComponents) {
-  return <div className="flex flex-grow justify-end">{children}</div>
+  return (
+    <div className="flex flex-grow justify-start lg:justify-end">
+      {children}
+    </div>
+  )
 }
 
 export function UnavailablePill() {
   return (
-    <div className="mx-2 rounded-3xl bg-gray-300 px-2 py-1 font-poppins text-xs">
+    <div className="mx-2 hidden rounded-3xl bg-gray-300 px-2 py-1 font-poppins text-xs lg:block">
       Unavailable
     </div>
   )
