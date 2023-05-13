@@ -11,7 +11,7 @@ export function CategoryHeader({
   onClick,
 }: ReactComponents & { onClick?: () => void }) {
   return (
-    <div className="my-4" onClick={onClick}>
+    <div className="lg:my-4" onClick={onClick}>
       {children}
     </div>
   )
