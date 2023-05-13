@@ -90,7 +90,8 @@ export function OrderingMenu({ setSelectedItem }: MenuProps) {
           ))}
         </MenuContainer>
         <RequestItem />
-        <div style={{ minHeight: "100px" }} />
+
+        <div style={{ minHeight: "300px" }} />
       </div>
     )
   else return <div>Error</div>
