@@ -31,7 +31,7 @@ export function CategoryName({ children }: ReactComponents) {
 
 export function ItemsContainer({ children }: ReactComponents) {
   return (
-    <div className="lg:m-w-4xl flex flex-row overflow-x-scroll py-2 lg:grid lg:grid-cols-3 lg:flex-col lg:gap-4">
+    <div className="lg:m-w-4xl flex flex-row overflow-x-scroll py-2 pl-2 md:pl-0 lg:grid lg:grid-cols-3 lg:flex-col lg:gap-4">
       {children}
     </div>
   )
