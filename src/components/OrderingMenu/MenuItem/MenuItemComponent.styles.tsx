@@ -92,7 +92,7 @@ export function MenuItemPhoto({
   src: string
 }) {
   return (
-    <div className="relative h-[80px] w-[80px]">
+    <div className="relative h-[100px] w-[100px]">
       <Image
         src={src}
         alt="Product photo"
