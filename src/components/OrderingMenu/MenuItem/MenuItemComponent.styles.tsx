@@ -14,7 +14,7 @@ export function MenuItemContainer({
     <div
       className={`grid ${
         isDisabled ? "cursor-not-allowed" : "cursor-pointer"
-      } grid w-full rounded-lg border-b bg-white p-2 hover:bg-slate-100 hover:drop-shadow-sm md:w-full  lg:grid-cols-[1fr,3fr] lg:border lg:border-solid lg:border-gray-300 lg:p-3 lg:odd:col-span-1 lg:even:col-span-1`}
+      } grid rounded-lg bg-white p-2 hover:bg-slate-100 hover:drop-shadow-sm md:w-full lg:grid-cols-[1fr,3fr]  lg:border lg:border-b lg:border-solid lg:border-gray-300 lg:p-3 lg:odd:col-span-1 lg:even:col-span-1`}
       onClick={onClick}
       // style={{ border: "1px solid green" }}
     >
@@ -77,7 +77,7 @@ export function MenuItemName({
 
 export function MenuItemNameContainer({ children }: ReactComponents) {
   return (
-    <div className="flex h-full flex-grow items-center justify-start">
+    <div className="flex h-full items-center justify-start lg:flex-grow">
       {children}
     </div>
   )
@@ -92,15 +92,18 @@ export function MenuItemPhoto({
   src: string
 }) {
   return (
-    <Image
-      src={src}
-      alt="Product photo"
-      height={80}
-      width={80}
-      className={`rounded-md border-[1px] border-solid border-gray-300 ${
-        !isAvailable ? "grayscale" : ""
-      }`}
-    />
+    <div className="relative h-[80px] w-[80px]">
+      <Image
+        src={src}
+        alt="Product photo"
+        fill
+        // height={80}
+        // width={80}
+        className={`rounded-md border-[1px] border-solid border-gray-300 ${
+          !isAvailable ? "grayscale" : ""
+        }`}
+      />
+    </div>
   )
 }
 
