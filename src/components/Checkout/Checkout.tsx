@@ -12,7 +12,10 @@ import {
   useRef,
 } from "react"
 import { cartContext } from "../../contexts/cartContext"
-import { getCheckoutPricingFromCartItems } from "../../lib/order"
+import {
+  getAgeRequirementFromCartItems,
+  getCheckoutPricingFromCartItems,
+} from "../../lib/order"
 import { storeContext } from "../../contexts/storeContext"
 import { CheckoutForm } from "./CheckoutForm"
 import { CartItemsContainer } from "../OrderCart/OrderCart.styles"
@@ -22,7 +25,7 @@ import { CheckoutContainer } from "../OrderCart/OrderCart.styles"
 import PhoneInput from "react-phone-input-2"
 import "react-phone-input-2/lib/style.css"
 import PlacesAutocomplete from "react-places-autocomplete"
-import { clampNumber, debounce } from "gladknee"
+import { clampNumber, debounce, getCookie } from "gladknee"
 
 const stripe = loadStripe(env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
 const FulfillmentMethods = { PICKUP: "PICKUP", DELIVERY: "DELIVERY" } as const
@@ -42,6 +45,7 @@ const doordashDeliveryItem = {
   description: "Delivery by Doordash",
   categoryName: "",
   taxRate: 0,
+  ageRequired: 0,
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
@@ -137,6 +141,34 @@ export function Checkout({
   }
 
   useEffect(() => {
+    if (
+      getAgeRequirementFromCartItems(cart.items) > 0 &&
+      !getCookie("ac_custom_verified")
+    ) {
+      const s = document.createElement("script")
+      s.type = "text/javascript"
+      s.innerHTML = `
+    (function(w,d) {
+      var config = {
+        mode: "manual",
+        key: "${env.NEXT_PUBLIC_AGECHECKER_KEY}",
+        onready: function() {
+          AgeCheckerAPI.show();
+        },
+        onclosed: function() {
+          document.cookie = "ac_custom_verified=true;expires=Mon, 09 May 2033 02:50:47 GMT"
+        }
+      };
+      w.AgeCheckerConfig=config;if(config.path&&(w.location.pathname+w.location.search).indexOf(config.path)) return;
+      var h=d.getElementsByTagName("head")[0];var a=d.createElement("script");a.src="https://cdn.agechecker.net/static/popup/v1/popup.js";a.crossOrigin="anonymous";
+      a.onerror=function(a){w.location.href="https://agechecker.net/loaderror";};h.insertBefore(a,h.firstChild);
+    })(window, document);
+    `
+      document.body.appendChild(s)
+    }
+  }, [])
+
+  useEffect(() => {
     setCartPricing(
       getCheckoutPricingFromCartItems(
         cart.items,
@@ -208,6 +240,7 @@ export function Checkout({
                     description: "",
                     quantity: 1,
                     taxRate: 0,
+                    ageRequired: null,
                   }}
                   onClick={() => null}
                 />

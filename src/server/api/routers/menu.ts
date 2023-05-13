@@ -23,7 +23,7 @@ export const menuRouter = createTRPCRouter({
     .input(z.object({ id: z.number() }))
     .query(async ({ input, ctx }) => {
       const rawItems = await ctx.prisma.$queryRaw`
-      SELECT "Menu".id as "menuId","MenuItem".id as "id","MenuItem"."isAvailable" as "isAvailable","MenuItem".price as "price","MenuItem"."imageUrl" as "imageUrl","MenuItem".name as "name","MenuItem".price as "price","MenuItem"."description" as "description","Menu"."name" as "menuName","MenuCategory"."name" as "categoryName"
+      SELECT "Menu".id as "menuId","MenuItem".id as "id","MenuItem"."isAvailable" as "isAvailable","MenuItem".price as "price","MenuItem"."imageUrl" as "imageUrl","MenuItem".name as "name","MenuItem".price as "price","MenuItem"."description" as "description","Menu"."name" as "menuName","MenuCategory"."name" as "categoryName","MenuItem"."ageRequired" as "ageRequired"
 FROM public."MenuCategory"
 INNER JOIN public."Menu"
 ON public."MenuCategory"."menuId" = public."Menu".id AND "MenuCategory"."menuId" = ${input.id}
@@ -52,7 +52,7 @@ ORDER BY "menuId","categoryId";
       })
       if (menu) {
         const rawItems = await ctx.prisma.$queryRaw`
-        SELECT "Menu".id as "menuId","MenuItem".id as "id","MenuItem"."isAvailable" as "isAvailable","MenuItem".price as "price","MenuItem"."imageUrl" as "imageUrl","MenuItem".name as "name","MenuItem".price as "price","MenuItem"."description" as "description","Menu"."name" as "menuName","MenuCategory"."name" as "categoryName","MenuItem"."taxRate" as "taxRate","MenuItem"."createdAt" as "createdAt"
+        SELECT "Menu".id as "menuId","MenuItem".id as "id","MenuItem"."isAvailable" as "isAvailable","MenuItem".price as "price","MenuItem"."imageUrl" as "imageUrl","MenuItem".name as "name","MenuItem".price as "price","MenuItem"."description" as "description","Menu"."name" as "menuName","MenuCategory"."name" as "categoryName","MenuItem"."taxRate" as "taxRate","MenuItem"."createdAt" as "createdAt","MenuItem"."ageRequired" as "ageRequired"
   FROM public."MenuCategory"
   INNER JOIN public."Menu"
   ON public."MenuCategory"."menuId" = public."Menu".id AND "MenuCategory"."menuId" = ${menu.id}

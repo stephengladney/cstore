@@ -6,6 +6,7 @@ export type Cart = {
 }
 
 export type CartItem = Omit<MenuItemType, "imageUrl" | "isAvailable"> & {
+  ageRequired: number | null
   imageUrl?: string | null
   instructions?: string
   quantity: number

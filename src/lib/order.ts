@@ -36,6 +36,11 @@ export function money(n: number) {
   return `$ ${n.toFixed(2)}`
 }
 
+export function getAgeRequirementFromCartItems(items: CartItem[]) {
+  const ages = items.map((item) => item.ageRequired ?? 0)
+  return Math.max(...ages)
+}
+
 export function getEmailBodyForOrder(order: OrderForParsing): string {
   const { items, customerName, id } = order
   let result = `<h1 style="font-size: 2em; font-family: Verdana, Geneva, Tahoma, sans-serif">
