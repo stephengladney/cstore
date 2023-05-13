@@ -30,7 +30,7 @@ export function MenuSearch({
     })
   }
   return (
-    <div className="mt-6 mb-4 px-4 md:mt-10 md:px-0">
+    <div className="sticky top-2 mt-6 mb-4 block bg-white px-4 py-1 md:mt-10 md:px-0">
       <div className="border-gr flex w-full max-w-[500px] items-center rounded-lg border-[1px] border-solid border-gray-300 py-2 px-4">
         <input
           className="grow border-0 font-poppins focus:outline-none"
