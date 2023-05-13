@@ -14,7 +14,7 @@ export function MenuItemContainer({
     <div
       className={`grid ${
         isDisabled ? "cursor-not-allowed" : "cursor-pointer"
-      } grid grid-rows-[110px,auto] rounded-lg bg-white p-2 hover:bg-slate-100 hover:drop-shadow-sm md:w-full md:grid-rows-none lg:grid-cols-[1fr,3fr]  lg:border lg:border-b lg:border-solid lg:border-gray-300 lg:p-3 lg:odd:col-span-1 lg:even:col-span-1`}
+      } grid grid-rows-[130px,auto] rounded-lg bg-white p-2 hover:bg-slate-100 hover:drop-shadow-sm md:w-full md:grid-rows-none lg:grid-cols-[1fr,3fr]  lg:border lg:border-b lg:border-solid lg:border-gray-300 lg:p-3 lg:odd:col-span-1 lg:even:col-span-1`}
       onClick={onClick}
       // style={{ border: "1px solid green" }}
     >
@@ -92,7 +92,7 @@ export function MenuItemPhoto({
   src: string
 }) {
   return (
-    <div className="relative h-[100px] w-[100px]">
+    <div className="relative h-[120px] w-[120px]">
       <Image
         src={src}
         alt="Product photo"
